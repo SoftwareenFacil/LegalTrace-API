@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Stock_Back.Models;
+using LegalTrace.Models;
 
-namespace Stock_Back.Controllers.Services
+namespace LegalTrace.Controllers.Services
 {
     public class ResponseService
     {

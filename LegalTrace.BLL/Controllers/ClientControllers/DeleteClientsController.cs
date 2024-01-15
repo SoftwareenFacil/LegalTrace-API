@@ -1,7 +1,7 @@
-﻿using Stock_Back.DAL.Context;
-using Stock_Back.DAL.Controllers.ClientControllers;
+﻿using LegalTrace.DAL.Context;
+using LegalTrace.DAL.Controllers.ClientControllers;
 
-namespace Stock_Back.BLL.Controllers.ClientControllers
+namespace LegalTrace.BLL.Controllers.ClientControllers
 {
     public class DeleteClientsController
     {

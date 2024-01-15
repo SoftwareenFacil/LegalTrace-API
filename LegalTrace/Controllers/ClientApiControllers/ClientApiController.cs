@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Stock_Back.DAL.Context;
-using Stock_Back.BLL.Models.ClientDTO;
+using LegalTrace.DAL.Context;
+using LegalTrace.BLL.Models.ClientDTO;
 
-namespace Stock_Back.Controllers.ClientApiControllers
+namespace LegalTrace.Controllers.ClientApiControllers
 {
     [SuperAdminRequired]
     [ApiController]

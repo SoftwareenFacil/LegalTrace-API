@@ -1,4 +1,4 @@
-﻿namespace Stock_Back.BLL.Models.UserDTO
+﻿namespace LegalTrace.BLL.Models.UserDTO
 {
     public class UserInsertDTO
     {

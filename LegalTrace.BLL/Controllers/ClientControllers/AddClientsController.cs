@@ -1,11 +1,11 @@
-﻿using Stock_Back.BLL.Models.ClientDTO;
-using Stock_Back.DAL.Context;
-using Stock_Back.DAL.Controllers.ClientControllers;
-using Stock_Back.DAL.Models;
+﻿using LegalTrace.BLL.Models.ClientDTO;
+using LegalTrace.DAL.Context;
+using LegalTrace.DAL.Controllers.ClientControllers;
+using LegalTrace.DAL.Models;
 using System.Numerics;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Stock_Back.BLL.Controllers.ClientControllers
+namespace LegalTrace.BLL.Controllers.ClientControllers
 {
     public class AddClientsController
     {

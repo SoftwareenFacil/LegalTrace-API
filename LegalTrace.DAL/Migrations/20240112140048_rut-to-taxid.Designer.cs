@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Stock_Back.DAL.Context;
+using LegalTrace.DAL.Context;
 
 #nullable disable
 
-namespace Stock_Back.DAL.Migrations
+namespace LegalTrace.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20240112140048_rut-to-taxid")]

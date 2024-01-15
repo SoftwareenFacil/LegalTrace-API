@@ -1,10 +1,10 @@
-﻿using Stock_Back.DAL.Context;
-using Stock_Back.BLL.Models;
-using Stock_Back.BLL.Models.UserDTO;
-using Stock_Back.DAL.Controllers.UserControllers;
-using Stock_Back.DAL.Models;
+﻿using LegalTrace.DAL.Context;
+using LegalTrace.BLL.Models;
+using LegalTrace.BLL.Models.UserDTO;
+using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Models;
 
-namespace Stock_Back.BLL.Controllers.UserControllers
+namespace LegalTrace.BLL.Controllers.UserControllers
 {
     public class UpdateUsersController
     {

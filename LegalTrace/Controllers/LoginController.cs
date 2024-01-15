@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Stock_Back.BLL.Models;
-using Stock_Back.BLL.Controllers.JwtControllers;
-using Stock_Back.DAL.Context;
+using LegalTrace.BLL.Models;
+using LegalTrace.BLL.Controllers.JwtControllers;
+using LegalTrace.DAL.Context;
 
-namespace Stock_Back.Controllers
+namespace LegalTrace.Controllers
 {
 
     [ApiController]

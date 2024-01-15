@@ -1,8 +1,8 @@
-﻿using Stock_Back.DAL.Context;
-using Stock_Back.BLL.Models.UserDTO;
-using Stock_Back.DAL.Controllers.UserControllers;
+﻿using LegalTrace.DAL.Context;
+using LegalTrace.BLL.Models.UserDTO;
+using LegalTrace.DAL.Controllers.UserControllers;
 
-namespace Stock_Back.BLL.Controllers.UserControllers
+namespace LegalTrace.BLL.Controllers.UserControllers
 {
     public class GetUsersController
     {

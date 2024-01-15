@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Stock_Back.BLL.Controllers.UserControllers;
-using Stock_Back.DAL.Context;
-using Stock_Back.Models;
-using Stock_Back.Controllers.Services;
+using LegalTrace.BLL.Controllers.UserControllers;
+using LegalTrace.DAL.Context;
+using LegalTrace.Models;
+using LegalTrace.Controllers.Services;
 
-namespace Stock_Back.Controllers.UserApiControllers
+namespace LegalTrace.Controllers.UserApiControllers
 {
     public class DeleteUser : ControllerBase
     {

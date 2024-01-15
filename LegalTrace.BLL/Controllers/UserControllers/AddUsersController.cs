@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Stock_Back.BLL.Models.UserDTO;
-using Stock_Back.DAL.Context;
-using Stock_Back.DAL.Controllers.UserControllers;
-using Stock_Back.DAL.Models;
+using LegalTrace.BLL.Models.UserDTO;
+using LegalTrace.DAL.Context;
+using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Numerics;
 
-namespace Stock_Back.BLL.Controllers.UserControllers
+namespace LegalTrace.BLL.Controllers.UserControllers
 {
     public class AddUsersController
     {
@@ -36,7 +36,8 @@ namespace Stock_Back.BLL.Controllers.UserControllers
                 Password = hasher.HashPassword(user.Password),
                 Phone = user.Phone,
                 Created = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
-                Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc)
+                Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
+                Vigency = true
             };
 
             

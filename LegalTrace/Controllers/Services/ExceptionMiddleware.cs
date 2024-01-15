@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Stock_Back.Controllers.Services
+namespace LegalTrace.Controllers.Services
 {
     public class ExceptionMiddleware
     {

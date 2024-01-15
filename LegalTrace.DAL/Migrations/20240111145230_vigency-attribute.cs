@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Stock_Back.DAL.Migrations
+namespace LegalTrace.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class vigencyattribute : Migration

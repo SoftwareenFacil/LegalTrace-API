@@ -1,4 +1,4 @@
-﻿namespace Stock_Back.Models
+﻿namespace LegalTrace.Models
 {
     public class ApiResponse<T>
     {

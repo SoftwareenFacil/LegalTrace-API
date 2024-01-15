@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Stock_Back.DAL.Migrations
+namespace LegalTrace.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class InitialUsers : Migration

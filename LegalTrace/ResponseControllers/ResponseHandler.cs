@@ -1,6 +1,6 @@
-﻿using Stock_Back.BLL.Models;
+﻿using LegalTrace.BLL.Models;
 
-namespace Stock_Back.UserJwt
+namespace LegalTrace.UserJwt
 {
     public class ResponseHandler
     {

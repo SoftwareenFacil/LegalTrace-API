@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stock_Back.DAL.Context;
+using LegalTrace.DAL.Context;
 
-namespace Stock_Back.DAL.Controllers.UserControllers
+namespace LegalTrace.DAL.Controllers.UserControllers
 {
     public class UserDelete
     {

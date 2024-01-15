@@ -1,7 +1,7 @@
 ﻿
 using System.Security.Cryptography;
 
-namespace Stock_Back.BLL.Controllers
+namespace LegalTrace.BLL.Controllers
 {
     public class Hasher
     {

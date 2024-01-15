@@ -1,4 +1,4 @@
-﻿namespace Stock_Back.BLL.Models
+﻿namespace LegalTrace.BLL.Models
 {
     public class UserCredentials
     {

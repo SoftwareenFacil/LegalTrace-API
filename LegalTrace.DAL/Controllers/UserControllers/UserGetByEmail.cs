@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stock_Back.DAL.Context;
-using Stock_Back.DAL.Models;
+using LegalTrace.DAL.Context;
+using LegalTrace.DAL.Models;
 
-namespace Stock_Back.DAL.Controllers.UserControllers
+namespace LegalTrace.DAL.Controllers.UserControllers
 {
     public class UserGetByEmail
     {

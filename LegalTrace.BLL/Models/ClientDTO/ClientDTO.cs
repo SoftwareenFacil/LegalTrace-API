@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stock_Back.BLL.Models.ClientDTO
+namespace LegalTrace.BLL.Models.ClientDTO
 {
     public class ClientDTO
     {

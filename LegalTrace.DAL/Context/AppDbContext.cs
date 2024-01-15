@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Stock_Back.DAL.Models;
+﻿using LegalTrace.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 
-namespace Stock_Back.DAL.Context
+namespace LegalTrace.DAL.Context
 {
     public class AppDbContext : DbContext
     {
@@ -12,18 +12,24 @@ namespace Stock_Back.DAL.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Client> Clients { get; set; }
-
+        public DbSet<ClientHistory> ClientHistory { get; set; }
+        public DbSet<Credential> Credentials { get; set; }
+        public DbSet<UserTask> UserTasks { get; set; }
+        public DbSet<StandardTask> StandardTasks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             var adminUser = new User
             {
                 Id = 1,
+                Name = "admin",
                 Email = "admin@admin.cl",
                 Password = HashPassword("admin1234"),
+                Phone = 0,
                 SuperAdmin = true,
                 Created = DateTime.UtcNow,
-                Updated = DateTime.UtcNow
+                Updated = DateTime.UtcNow,
+                Vigency = true
             };
 
             modelBuilder.Entity<User>().HasData(adminUser);

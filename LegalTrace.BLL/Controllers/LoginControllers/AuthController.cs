@@ -1,9 +1,9 @@
-﻿using Stock_Back.BLL.Models;
-using Stock_Back.DAL.Context;
-using Stock_Back.DAL.Controllers.UserControllers;
-using Stock_Back.BLL.Controllers.JwtControllers;
+﻿using LegalTrace.BLL.Models;
+using LegalTrace.DAL.Context;
+using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.BLL.Controllers.JwtControllers;
 
-namespace Stock_Back.BLL.Controllers.LoginControllers
+namespace LegalTrace.BLL.Controllers.LoginControllers
 {
     public class AuthController
     {

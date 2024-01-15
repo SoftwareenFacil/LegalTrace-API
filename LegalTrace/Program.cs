@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using Stock_Back.DAL.Context;
+using LegalTrace.DAL.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Stock_Back.BLL.Controllers.JwtControllers;
+using LegalTrace.BLL.Controllers.JwtControllers;
 
-namespace Stock_Back
+namespace LegalTrace
 {
     class Program
     {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Stock_Back.BLL.Controllers.ClientControllers;
-using Stock_Back.BLL.Models.ClientDTO;
-using Stock_Back.Controllers.Services;
-using Stock_Back.DAL.Context;
-using Stock_Back.Models;
+using LegalTrace.BLL.Controllers.ClientControllers;
+using LegalTrace.BLL.Models.ClientDTO;
+using LegalTrace.Controllers.Services;
+using LegalTrace.DAL.Context;
+using LegalTrace.Models;
 
-namespace Stock_Back.Controllers.ClientApiControllers
+namespace LegalTrace.Controllers.ClientApiControllers
 {
     public class InsertClient
     {
