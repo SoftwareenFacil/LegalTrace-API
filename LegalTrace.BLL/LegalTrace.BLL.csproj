@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>Stock_Back.BLL</RootNamespace>
+    <RootNamespace>LegalTrace.BLL</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Stock-Back.DAL\Stock-Back.DAL.csproj" />
+    <ProjectReference Include="..\LegalTrace.DAL\LegalTrace.DAL.csproj" />
   </ItemGroup>
 
 </Project>
