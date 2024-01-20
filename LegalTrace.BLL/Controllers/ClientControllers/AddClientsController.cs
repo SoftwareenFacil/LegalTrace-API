@@ -17,7 +17,6 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
 
         public async Task<int> AddClient(ClientInsertDTO client)
         {
-
             var clientGetter = new ClientGetByEmail(_context);
             if (await clientGetter.GetClientByEmail(client.Email) != null)
                 return -1;
@@ -36,9 +35,7 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 Created = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
                 Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc)
             };
-            
             return await clientCreator.InsertClient(clientCreate);
-
         }
     }
 }

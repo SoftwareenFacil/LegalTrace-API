@@ -25,7 +25,6 @@ namespace LegalTrace.DAL.Models
         [Required]
         public bool Vigency { get; set; }
         public List<UserTask> UserTasks { get; set; }
-        public List<StandardTask> StandardTasks { get; set; }
         public List<Credential> Credentials { get; set; }
         public List<ClientHistory> History { get; set; }
     }

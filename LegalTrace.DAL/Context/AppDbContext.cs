@@ -33,6 +33,26 @@ namespace LegalTrace.DAL.Context
             };
 
             modelBuilder.Entity<User>().HasData(adminUser);
+
+            modelBuilder.Entity<User>()
+            .HasMany(x => x.Tasks)
+            .WithOne(c => c.User)
+            .HasForeignKey(c => c.UserId);
+
+            modelBuilder.Entity<Client>()
+            .HasMany(x => x.UserTasks)
+            .WithOne(c => c.Client)
+            .HasForeignKey(c => c.ClientId);
+
+            modelBuilder.Entity<Client>()
+            .HasMany(x => x.Credentials)
+            .WithOne(c => c.Client)
+            .HasForeignKey(c => c.ClientId);
+
+            modelBuilder.Entity<Client>()
+            .HasMany(x => x.History)
+            .WithOne(c => c.Client)
+            .HasForeignKey(c => c.ClientId);
         }
         private string HashPassword(string password)
         {

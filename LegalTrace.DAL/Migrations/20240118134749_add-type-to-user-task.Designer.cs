@@ -3,6 +3,7 @@ using System;
 using LegalTrace.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LegalTrace.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240118134749_add-type-to-user-task")]
+    partial class addtypetousertask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,13 +214,13 @@ namespace LegalTrace.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2024, 1, 19, 11, 29, 57, 577, DateTimeKind.Utc).AddTicks(3487),
+                            Created = new DateTime(2024, 1, 18, 13, 47, 49, 270, DateTimeKind.Utc).AddTicks(6060),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "E4tPiyqRjRS3Sy95SoyHBBFI2JzbYXVXo9TcltUZKJXN5yf0",
+                            Password = "poDR1dm6XDWuEzs6pKB0vSMN4YX2AU0UZkFMIGQXxkQkL6jc",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 1, 19, 11, 29, 57, 577, DateTimeKind.Utc).AddTicks(3489),
+                            Updated = new DateTime(2024, 1, 18, 13, 47, 49, 270, DateTimeKind.Utc).AddTicks(6063),
                             Vigency = true
                         });
                 });
@@ -239,9 +242,6 @@ namespace LegalTrace.DAL.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Finished")
                         .HasColumnType("boolean");

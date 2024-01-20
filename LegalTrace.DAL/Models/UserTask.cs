@@ -16,6 +16,8 @@ namespace LegalTrace.DAL.Models
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
+        [Required]
+        public string Type { get; set; }
         public bool Repeatable { get; set; }
         [Required]
         public bool Vigency { get; set; }
@@ -26,6 +28,9 @@ namespace LegalTrace.DAL.Models
         [Required]
         public bool Finished { get; set; }
         [Required]
+        public DateTime DueDate { get; set; }
         public DateTime FinishedDate { get; set; }
+        public User User { get; set; }
+        public Client Client { get; set; }
     }
 }
