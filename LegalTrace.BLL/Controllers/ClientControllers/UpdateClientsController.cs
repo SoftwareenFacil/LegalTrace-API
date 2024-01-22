@@ -30,6 +30,10 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 client.Phone = clientEdited.Phone > 0 ? clientEdited.Phone : client.Phone;
                 client.Address = !string.IsNullOrEmpty(clientEdited.Address) ? clientEdited.Address : client.Address;
                 client.TaxId = !string.IsNullOrEmpty(clientEdited.TaxId) ? clientEdited.TaxId : client.TaxId;
+
+                DateTime utcNow = DateTime.UtcNow;
+                client.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
+
                 isUpdated = await clientUpdater.UpdateClient(client);
 
                 return (isUpdated, isClient);

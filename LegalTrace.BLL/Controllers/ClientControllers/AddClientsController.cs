@@ -22,8 +22,6 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 return -1;
 
             DateTime utcNow = DateTime.UtcNow;
-            TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
-            DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, chileTimeZone);
             var clientCreator = new ClientPost(_context);
             var clientCreate = new Client()
             {
@@ -32,8 +30,8 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 Phone = client.Phone,
                 TaxId = client.TaxId,
                 Address = client.Address,
-                Created = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
-                Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc)
+                Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc)
             };
             return await clientCreator.InsertClient(clientCreate);
         }

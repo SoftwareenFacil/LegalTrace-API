@@ -2,6 +2,7 @@
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.UserTaskControllers;
 using LegalTrace.DAL.Models;
+using Microsoft.VisualBasic;
 
 
 namespace LegalTrace.BLL.Controllers.UserTaskControllers
@@ -31,6 +32,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
             }
             else
             {
+                TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
+                DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(userTask.DueDate, chileTimeZone);
                 return new UserTaskDTO()
                 {
                     Id = userTask.Id,
@@ -40,7 +43,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                     Description = userTask.Description,
                     Type = userTask.Type,
                     Finished = userTask.Finished,
-                    DueDate = userTask.DueDate
+                    DueDate = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc)
                 };
             }
         }
@@ -53,17 +56,22 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
             if (userTasks.Count() > 0)
             {
                 List<UserTaskDTO> result = new List<UserTaskDTO>();
-                userTasks.ForEach(row => result.Add(new UserTaskDTO()
+                foreach(UserTask row in userTasks)
                 {
-                    Id = row.Id,
-                    ClientId = row.ClientId,
-                    UserId = row.UserId,
-                    Title = row.Title,
-                    Description = row.Description,
-                    Type= row.Type,
-                    Finished = row.Finished,
-                    DueDate = row.DueDate
-                }));
+                    TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
+                    DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(row.DueDate, chileTimeZone);
+                    result.Add(new UserTaskDTO()
+                    {
+                        Id = row.Id,
+                        ClientId = row.ClientId,
+                        UserId = row.UserId,
+                        Title = row.Title,
+                        Description = row.Description,
+                        Type = row.Type,
+                        Finished = row.Finished,
+                        DueDate = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc)
+                    });
+                }
                 return result;
             }
             else

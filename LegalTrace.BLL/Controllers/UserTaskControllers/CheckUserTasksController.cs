@@ -23,9 +23,6 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 var necesaryUserTasks = new List<UserTask>();
                 var newUserTasks = new List<UserTask>();
                 DateTime utcNow = DateTime.UtcNow;
-                TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
-                DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, chileTimeZone);
-
 
                 foreach (var userTask in userTasks)
                 {
@@ -45,8 +42,6 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                     await userTaskUpdater.UpdateUserTask(userTask);
                 }
 
-                // TODO: Buscar la forma de generar un nuevo ID para los newUserTasks
-                //Solucion pensada:
                 var userTaskCreator = new UserTaskPost(_context);
                 foreach (var userTask in newUserTasks)
                 {
@@ -59,8 +54,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                         Type = userTask.Type,
                         Repeatable = true,
                         Vigency = true,
-                        Created = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
-                        Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
+                        Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                        Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                         Finished = false,
                         DueDate = userTask.DueDate.AddDays(7)
                     };

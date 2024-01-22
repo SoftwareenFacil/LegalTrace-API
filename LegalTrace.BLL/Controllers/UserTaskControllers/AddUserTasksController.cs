@@ -29,8 +29,6 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                     {
 
                         DateTime utcNow = DateTime.UtcNow;
-                        TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
-                        DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, chileTimeZone);
                         var userTaskCreator = new UserTaskPost(_context);
                         var userTaskCreate = new UserTask()
                         {
@@ -41,8 +39,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                             Type = userTask.Type,
                             Repeatable = false,
                             Vigency = true,
-                            Created = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
-                            Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc),
+                            Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                            Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                             Finished = false,
                             DueDate = userTask.DueDate
                         };

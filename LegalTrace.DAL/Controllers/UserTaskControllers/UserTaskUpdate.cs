@@ -24,14 +24,10 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
                 response.Vigency = userTask.Vigency;
                 response.Finished = userTask.Finished;
                 response.FinishedDate = userTask.FinishedDate;
-                DateTime utcNow = DateTime.UtcNow;
-                TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
-                DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, chileTimeZone);
-                response.Updated = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc);
+                response.Updated = userTask.Updated;
 
                 if (await _context.SaveChangesAsync() > 0)
                     return true;
-
             }
             return false;
         }

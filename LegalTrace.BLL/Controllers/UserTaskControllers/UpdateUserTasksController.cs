@@ -51,8 +51,9 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 userTask.Type = userTaskEdited.Type;
                 userTask.UserId = user != null ? userTaskEdited.UserId : userTask.UserId;
                 userTask.ClientId = client != null ? userTaskEdited.ClientId : userTask.ClientId;
+                DateTime utcNow = DateTime.UtcNow;
+                userTask.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
                 isUpdated = await userTaskUpdater.UpdateUserTask(userTask);
-
             }
             return (isUpdated, isUserTask, isUser, isClient);
         }
