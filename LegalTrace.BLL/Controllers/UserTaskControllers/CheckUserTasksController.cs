@@ -16,35 +16,19 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<bool> CheckRepetitiveUserTasks()
         {
-            var userTaskGetter = new UserTaskGetAll(_context);
-            var userTasks = await userTaskGetter.GetAllUserTasks();
+            var userTaskGetter = new UserTaskGetRepeatable(_context);
+            var userTasks = await userTaskGetter.GetRepeatableUserTasks();
             if (userTasks.Any())
             {
-                var necesaryUserTasks = new List<UserTask>();
-                var newUserTasks = new List<UserTask>();
+                var userTaskUpdater = new UserTaskUpdate(_context);
+                var userTaskCreator = new UserTaskPost(_context);
                 DateTime utcNow = DateTime.UtcNow;
 
                 foreach (var userTask in userTasks)
                 {
-                    if (userTask.Vigency == true && userTask.Repeatable == true)
-                    {
-                        userTask.Vigency = false;
-                        userTask.Repeatable = false;
-                        necesaryUserTasks.Add(userTask);
-
-                        newUserTasks.Add(userTask);
-                    }
-                }
-
-                var userTaskUpdater = new UserTaskUpdate(_context);
-                foreach (var userTask in necesaryUserTasks)
-                {
+                    userTask.Vigency = false;
+                    userTask.Repeatable = false;
                     await userTaskUpdater.UpdateUserTask(userTask);
-                }
-
-                var userTaskCreator = new UserTaskPost(_context);
-                foreach (var userTask in newUserTasks)
-                {
                     var userTaskCreate = new UserTask()
                     {
                         UserId = userTask.UserId,

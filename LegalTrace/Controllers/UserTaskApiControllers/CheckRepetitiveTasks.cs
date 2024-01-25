@@ -25,7 +25,7 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
                 return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse($"User Tasks cannot be checked"));
 
             }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"User Tasks checked"));
+            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(null,$"User Tasks checked"));
 
         }
     }

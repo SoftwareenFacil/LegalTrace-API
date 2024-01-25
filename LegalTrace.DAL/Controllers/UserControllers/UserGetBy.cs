@@ -12,14 +12,13 @@ namespace LegalTrace.DAL.Controllers.UserControllers
             _context = dbContext;
         }
         
-        public async Task<List<User>> GetUserBy(int? id, string name, string email, DateTime? created, bool? vigency)
+        public async Task<List<User>> GetUserBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
         {
             if (id.HasValue)
             {
                 return new List<User> { await _context.Users.FirstOrDefaultAsync(u => u.Id == id.Value) };
             }
 
-            // Construir la consulta dinámicamente
             var query = _context.Users.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))

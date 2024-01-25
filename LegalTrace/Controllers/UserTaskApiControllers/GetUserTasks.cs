@@ -30,6 +30,17 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             }
             return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(userTasks, "Success when searching for user tasks"));
         }
+
+        public async Task<IActionResult> GetUserTaskBy(int? userId, int? clientId, DateTime? dueDate)
+        {
+            var userTasksGetter = new GetUserTasksController(_context);
+            var userTasks = await userTasksGetter.GetUserTaskBy(userId, clientId, dueDate);
+            if(userTasks.Count() > 0)
+            {
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(userTasks, "Success when searching for user tasks"));
+            }
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no user tasks with these parameters"));
+        }
         
     }
 }

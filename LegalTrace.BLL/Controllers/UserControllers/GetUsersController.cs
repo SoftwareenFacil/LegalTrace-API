@@ -19,7 +19,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
             return await GetUserById(id);
         }
 
-        public async Task<List<UserDTO>> GetUsersBy(int id, string name, string email, DateTime created, bool vigency)
+        public async Task<List<UserDTO>> GetUsersBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
         {
             var userGetter = new UserGetBy(_context);
             var users = await userGetter.GetUserBy(id, name, email, created, vigency);
@@ -36,7 +36,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
                 }));
                 return result;
             }
-            return null;
+            return new List<UserDTO>();
         }
 
 

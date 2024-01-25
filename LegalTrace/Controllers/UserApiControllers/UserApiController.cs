@@ -22,6 +22,13 @@ namespace LegalTrace.Controllers.UserApiControllers
             return await userGetter.GetResponseUsers(id);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsersBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
+        {
+            var userGetter = new GetUsers(_context);
+            return await userGetter.GetBy(id,name,email,created,vigency);
+        }
+
         [HttpPost]
         public async Task<IActionResult> InsertUser([FromBody] UserInsertDTO user)
         {
