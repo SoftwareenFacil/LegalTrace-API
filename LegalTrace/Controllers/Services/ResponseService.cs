@@ -9,7 +9,7 @@ namespace LegalTrace.Controllers.Services
         {
             if (apiResponse.Success)
                 return new OkObjectResult(apiResponse);
-            else if (apiResponse.Data != null && !string.IsNullOrEmpty(apiResponse.Message))
+            else if (apiResponse.Data == null && !string.IsNullOrEmpty(apiResponse.Message))
                 return new BadRequestObjectResult(apiResponse);
             else if (apiResponse.Data == null)
                 return new NotFoundObjectResult(apiResponse);

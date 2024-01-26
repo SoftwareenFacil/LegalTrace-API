@@ -1,11 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegalTrace.DAL.Controllers.UserTaskControllers
 {
@@ -16,8 +11,21 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
         {
             _context = dbContext;
         }
-        public async Task<List<UserTask>> GetUserTaskBy(int? userId, int? clientId, DateTime? dueDate)
+        public async Task<List<UserTask>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency)
         {
+            if (id.HasValue)
+            {
+                if (id.Value == 0)
+                {
+                    return await _context.UserTasks.Take(100).ToListAsync();
+                }
+                else
+                {
+                    var userTask = await _context.UserTasks.FirstOrDefaultAsync(u => u.Id == id.Value);
+                    return userTask == null ? new List<UserTask>() : new List<UserTask> { userTask };
+                }
+            }
+
             var query = _context.UserTasks.AsQueryable();
 
             if (userId.HasValue)
@@ -34,6 +42,16 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             {
                 var dueDateOnly = dueDate.Value.Date;
                 query = query.Where(userTask => userTask.DueDate.Date == dueDateOnly);
+            }
+
+            if (repeatable.HasValue)
+            {
+                query = query.Where(userTask => userTask.Repeatable == repeatable.Value);
+            }
+
+            if (vigency.HasValue)
+            {
+                query = query.Where(userTask => userTask.Vigency == vigency.Value);
             }
 
             var userTasks = await query.ToListAsync();

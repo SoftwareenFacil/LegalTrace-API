@@ -18,23 +18,10 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
 
         }
 
-        public async Task<IActionResult> GetResponseUserTasks(int id)
+        public async Task<IActionResult> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency)
         {
             var userTasksGetter = new GetUserTasksController(_context);
-            var userTasks = await userTasksGetter.GetUserTasks(id);
-            if (userTasks == null)
-            {
-                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(
-                id == 0 ? "There are no user tasks" : $"User task with id {id} not found"));
-
-            }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(userTasks, "Success when searching for user tasks"));
-        }
-
-        public async Task<IActionResult> GetUserTaskBy(int? userId, int? clientId, DateTime? dueDate)
-        {
-            var userTasksGetter = new GetUserTasksController(_context);
-            var userTasks = await userTasksGetter.GetUserTaskBy(userId, clientId, dueDate);
+            var userTasks = await userTasksGetter.GetUserTaskBy(id, userId, clientId, dueDate, repeatable, vigency);
             if(userTasks.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(userTasks, "Success when searching for user tasks"));

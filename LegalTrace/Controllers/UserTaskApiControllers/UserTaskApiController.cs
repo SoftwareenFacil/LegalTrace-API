@@ -17,17 +17,10 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserTasks(int id)
+        public async Task<IActionResult> GetUserTasksBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency)
         {
             var userTaskGetter = new GetUserTasks(_context);
-            return await userTaskGetter.GetResponseUserTasks(id);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetUserTaskBy(int? userId, int? clientId, DateTime? dueDate)
-        {
-            var userTaskGetter = new GetUserTasks(_context);
-            return await userTaskGetter.GetUserTaskBy(userId, clientId, dueDate);
+            return await userTaskGetter.GetUserTaskBy(id, userId, clientId, dueDate, repeatable, vigency);
         }
 
         [HttpPost]

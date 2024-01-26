@@ -12,7 +12,7 @@ namespace LegalTrace.DAL.Controllers.ClientControllers
             _context = _dbContext;
         }
 
-        public async Task<Client> GetClientByEmail(string email)
+        public async Task<Client?> GetClientByEmail(string email)
         {
             var client = await _context.Clients.Where(u => u.Email == email).FirstOrDefaultAsync();
             return client;

@@ -32,6 +32,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
                 Email = user.Email,
                 Password = hasher.HashPassword(user.Password),
                 Phone = user.Phone,
+                Address = user.Address,
                 Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                 Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                 Vigency = true

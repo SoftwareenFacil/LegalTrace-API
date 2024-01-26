@@ -21,6 +21,7 @@ namespace LegalTrace.DAL.Controllers.UserControllers
                 response.Email = user.Email;
                 response.Password = user.Password;
                 response.Phone = user.Phone;
+                response.Address = user.Address;
                 response.Updated = user.Updated;
 
                 if (await _context.SaveChangesAsync() > 0)

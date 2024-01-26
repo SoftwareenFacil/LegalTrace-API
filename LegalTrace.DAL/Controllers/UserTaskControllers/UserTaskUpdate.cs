@@ -21,6 +21,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
                 response.Title = userTask.Title;
                 response.Description = userTask.Description;
                 response.Repeatable = userTask.Repeatable;
+                response.Type = userTask.Type;
                 response.Vigency = userTask.Vigency;
                 response.Finished = userTask.Finished;
                 response.FinishedDate = userTask.FinishedDate;

@@ -17,34 +17,31 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
             _context = _dbContext;
         }
 
-        public async Task<(bool, bool, bool, bool)> UpdateUserTask(UserTaskEditDTO userTaskEdited)
+        public async Task<int> UpdateUserTask(UserTaskEditDTO userTaskEdited)
         {
-            bool isUpdated = false;
-            bool isUserTask = false;
-            bool isUser = false;
-            bool isClient = false;
-            if (string.IsNullOrWhiteSpace(userTaskEdited.Title) && string.IsNullOrWhiteSpace(userTaskEdited.Description) && userTaskEdited.DueDate <= DateTime.Now)
-                return (isUpdated, isUserTask, isUser, isClient);
+
+            if (string.IsNullOrWhiteSpace(userTaskEdited.Title) && string.IsNullOrWhiteSpace(userTaskEdited.Description) && string.IsNullOrWhiteSpace(userTaskEdited.Type) && userTaskEdited.DueDate <= DateTime.Now && userTaskEdited.UserId == 0 && userTaskEdited.ClientId == 0 )
+
+                return 500;
 
             var userTaskValidator = new UserTaskGetById(_context);
             var userTask = await userTaskValidator.GetUserTaskById(userTaskEdited.Id);
             if (userTask != null)
             {
-                isUserTask = true;
-                var userTaskUpdater = new UserTaskUpdate(_context);
-
                 var userValidator = new UserGetById(_context);
-                var user = await userValidator.GetUserById(userTaskEdited.UserId);
-                if (user != null)
-                    isUser = true;
+                var user = await userValidator.GetUserById(userTask.UserId);
+                if (user == null)
+                    return 404;
+                    
 
                 var clientValidator = new ClientGetById(_context);
-                var client = await clientValidator.GetClientById(userTaskEdited.ClientId);
-                if (client != null)
+                var client = await clientValidator.GetClientById(userTask.ClientId);
+                if (client == null)
                 {
-                    isClient = true;
+                    return 404;
                 }
 
+                var userTaskUpdater = new UserTaskUpdate(_context);
                 userTask.Title = !string.IsNullOrEmpty(userTaskEdited.Title) ? userTaskEdited.Title : userTask.Title;
                 userTask.Description = !string.IsNullOrEmpty(userTaskEdited.Description) ? userTaskEdited.Description : userTask.Description;
                 userTask.DueDate = (userTaskEdited.DueDate > DateTime.Now) ? userTaskEdited.DueDate : userTask.DueDate;
@@ -53,9 +50,12 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 userTask.ClientId = client != null ? userTaskEdited.ClientId : userTask.ClientId;
                 DateTime utcNow = DateTime.UtcNow;
                 userTask.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
-                isUpdated = await userTaskUpdater.UpdateUserTask(userTask);
+                var isUpdated = await userTaskUpdater.UpdateUserTask(userTask);
+                if (!isUpdated)
+                    return 400;
+                return 200;
             }
-            return (isUpdated, isUserTask, isUser, isClient);
+            return 404;
         }
     }
 }

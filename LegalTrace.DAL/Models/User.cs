@@ -14,6 +14,7 @@ namespace LegalTrace.DAL.Models
         public string Email { get; set; } = string.Empty;
         [Required]
         public int Phone { get; set; }
+        public string Address { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
         [Required]

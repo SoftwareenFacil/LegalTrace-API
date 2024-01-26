@@ -2,32 +2,32 @@
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LegalTrace.DAL.Controllers.UserControllers
+namespace LegalTrace.DAL.Controllers.ClientControllers
 {
-    public class UserGetBy
+    public class ClientGetBy
     {
         private AppDbContext _context;
-        public UserGetBy(AppDbContext dbContext)
+        public ClientGetBy(AppDbContext _dbContext)
         {
-            _context = dbContext;
+            _context = _dbContext;
         }
 
-        public async Task<List<User>> GetUserBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
+        public async Task<List<Client>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
         {
             if (id.HasValue)
             {
                 if (id.Value == 0)
                 {
-                    return await _context.Users.Take(100).ToListAsync();
+                    return await _context.Clients.Take(100).ToListAsync();
                 }
                 else
                 {
-                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id.Value);
-                    return user == null ? new List<User>() : new List<User> { user };
+                    var client = await _context.Clients.FirstOrDefaultAsync(u => u.Id == id.Value);
+                    return client == null ? new List<Client>() : new List<Client> { client };
                 }
             }
 
-            var query = _context.Users.AsQueryable();
+            var query = _context.Clients.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -39,10 +39,15 @@ namespace LegalTrace.DAL.Controllers.UserControllers
                 query = query.Where(u => EF.Functions.Like(u.Email, $"%{email}%"));
             }
 
+            if (!string.IsNullOrWhiteSpace(taxId))
+            {
+                query = query.Where(u => EF.Functions.Like(u.TaxId, $"%{taxId}%"));
+            }
+
             if (created.HasValue)
             {
                 query = query.Where(u => u.Created > created.Value)
-                             .OrderBy(u => u.Created); 
+                             .OrderBy(u => u.Created);
             }
 
             if (vigency.HasValue)
@@ -50,7 +55,7 @@ namespace LegalTrace.DAL.Controllers.UserControllers
                 query = query.Where(u => u.Vigency == vigency.Value);
             }
 
-            return await query.Take(100).ToListAsync(); 
+            return await query.Take(100).ToListAsync();
         }
     }
 }

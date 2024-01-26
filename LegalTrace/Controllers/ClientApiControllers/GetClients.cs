@@ -3,6 +3,7 @@ using LegalTrace.BLL.Controllers.ClientControllers;
 using LegalTrace.Controllers.Services;
 using LegalTrace.DAL.Context;
 using LegalTrace.Models;
+using LegalTrace.BLL.Controllers.UserControllers;
 
 namespace LegalTrace.Controllers.ClientApiControllers
 {
@@ -15,17 +16,16 @@ namespace LegalTrace.Controllers.ClientApiControllers
             _context = context;
             _responseService = new ResponseService();
         }
-        public async Task<IActionResult> GetResponseClients(int id)
+
+        public async Task<IActionResult> GetBy(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
         {
             var clientGetter = new GetClientsController(_context);
-            var client = await clientGetter.GetClients(id);
-            if (client == null)
+            var clients = await clientGetter.GetClientBy(id, name, email, taxId, created, vigency);
+            if (clients.Count() > 0)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(
-                id == 0 ? "There are no clients." : $"Client with id {id} not found."));
-
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(clients, "Success when searching for clients"));
             }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(client, "Success when searching for clients"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no clients with these parameters"));
         }
     }
 }

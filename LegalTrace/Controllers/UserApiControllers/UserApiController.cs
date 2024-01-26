@@ -16,14 +16,7 @@ namespace LegalTrace.Controllers.UserApiControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers(int id)
-        {
-            var userGetter = new GetUsers(_context);
-            return await userGetter.GetResponseUsers(id);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetUsersBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
+        public async Task<IActionResult> GetUsers(int? id, string? name, string? email, DateTime? created, bool? vigency)
         {
             var userGetter = new GetUsers(_context);
             return await userGetter.GetBy(id,name,email,created,vigency);

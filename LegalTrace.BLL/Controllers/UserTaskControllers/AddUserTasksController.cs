@@ -4,6 +4,8 @@ using LegalTrace.BLL.Models.UserTaskDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.UserTaskControllers;
 using LegalTrace.DAL.Models;
+using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Controllers.ClientControllers;
 
 namespace LegalTrace.BLL.Controllers.UserTaskControllers
 {
@@ -17,11 +19,11 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<int> AddUserTask(UserTaskInsertDTO userTask)
         {
-            var userValidator = new GetUsersController(_context);
+            var userValidator = new UserGetById(_context);
             var user = await userValidator.GetUserById(userTask.UserId);
             if (user != null)
             {
-                var clientValidator = new GetClientsController(_context);
+                var clientValidator = new ClientGetById(_context);
                 var client = await clientValidator.GetClientById(userTask.ClientId);
                 if(client != null)
                 {
