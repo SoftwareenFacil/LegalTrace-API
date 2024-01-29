@@ -28,17 +28,20 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
             var userTask = await userTaskValidator.GetUserTaskById(userTaskEdited.Id);
             if (userTask != null)
             {
-                var userValidator = new UserGetById(_context);
-                var user = await userValidator.GetUserById(userTask.UserId);
-                if (user == null)
-                    return 404;
-                    
-
-                var clientValidator = new ClientGetById(_context);
-                var client = await clientValidator.GetClientById(userTask.ClientId);
-                if (client == null)
+                if(userTaskEdited.UserId > 0)
                 {
-                    return 404;
+                    var userValidator = new UserGetById(_context);
+                    var user = await userValidator.GetUserById(userTaskEdited.UserId);
+                    if (user == null)
+                        return -2;
+                }
+                
+                if(userTaskEdited.ClientId > 0)
+                {
+                    var clientValidator = new ClientGetById(_context);
+                    var client = await clientValidator.GetClientById(userTaskEdited.ClientId);
+                    if (client == null)
+                        return -3;
                 }
 
                 var userTaskUpdater = new UserTaskUpdate(_context);
@@ -46,16 +49,16 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 userTask.Description = !string.IsNullOrEmpty(userTaskEdited.Description) ? userTaskEdited.Description : userTask.Description;
                 userTask.DueDate = (userTaskEdited.DueDate > DateTime.Now) ? userTaskEdited.DueDate : userTask.DueDate;
                 userTask.Type = userTaskEdited.Type;
-                userTask.UserId = user != null ? userTaskEdited.UserId : userTask.UserId;
-                userTask.ClientId = client != null ? userTaskEdited.ClientId : userTask.ClientId;
+                userTask.UserId = userTaskEdited.UserId > 0 ? userTaskEdited.UserId : userTask.UserId;
+                userTask.ClientId = userTaskEdited.ClientId > 0 ? userTaskEdited.ClientId : userTask.ClientId;
                 DateTime utcNow = DateTime.UtcNow;
                 userTask.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
                 var isUpdated = await userTaskUpdater.UpdateUserTask(userTask);
                 if (!isUpdated)
-                    return 400;
-                return 200;
+                    return -4;
+                return 1;
             }
-            return 404;
+            return -1;
         }
     }
 }
