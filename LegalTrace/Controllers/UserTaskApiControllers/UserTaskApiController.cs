@@ -43,7 +43,7 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             var deleter = new DeleteUserTask(_context);
             return await deleter.Delete(id);
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CheckRepetitiveTasks()
         {
             var checker = new CheckRepetitiveTasks(_context);

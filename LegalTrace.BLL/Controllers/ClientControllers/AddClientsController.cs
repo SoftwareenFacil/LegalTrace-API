@@ -2,8 +2,6 @@
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientControllers;
 using LegalTrace.DAL.Models;
-using System.Numerics;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LegalTrace.BLL.Controllers.ClientControllers
 {

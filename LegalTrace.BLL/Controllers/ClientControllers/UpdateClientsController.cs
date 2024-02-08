@@ -15,7 +15,7 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
         public async Task<int> UpdateClient(ClientEditDTO clientEdited)
         {
             if (string.IsNullOrWhiteSpace(clientEdited.Name) && string.IsNullOrWhiteSpace(clientEdited.Email) && clientEdited.Phone == 0 && string.IsNullOrWhiteSpace(clientEdited.Address) && string.IsNullOrWhiteSpace(clientEdited.TaxId))
-                return 500;
+                return 400;
 
             var clientVerify = new ClientGetById(_context);
             var clientUpdater = new ClientUpdate(_context);
@@ -33,7 +33,7 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
 
                 var isUpdated = await clientUpdater.UpdateClient(client);
                 if (!isUpdated) 
-                    return 500;
+                    return 400;
                 return 200;
             }
             return 404;

@@ -29,7 +29,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
                 case 404:
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client with ID {clientEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update Client"));
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(null,"Error trying to update Client"));
             }
         }
     }
