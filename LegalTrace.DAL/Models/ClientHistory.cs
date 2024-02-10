@@ -11,6 +11,8 @@ namespace LegalTrace.DAL.Models
         [Required]
         public int ClientId { get; set; }
         [Required]
+        public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
         [Required]
         public DateTime EventDate { get; set; }
