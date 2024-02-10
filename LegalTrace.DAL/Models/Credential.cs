@@ -11,15 +11,18 @@ namespace LegalTrace.DAL.Models
         [Required]
         public int ClientId { get; set; }
         [Required]
+        public bool Vigency { get; set; }
+        [Required]
         public string Title { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string Username { get; set; }
         [Required]
         public string KeyValue { get; set; }
         [Required]
         public DateTime Created { get; set; }
         [Required]
         public DateTime Updated { get; set; }
+
         public Client Client { get; set; }
 
     }
