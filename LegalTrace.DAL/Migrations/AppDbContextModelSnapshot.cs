@@ -112,10 +112,6 @@ namespace LegalTrace.DAL.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("KeyValue")
                         .IsRequired()
                         .HasColumnType("text");
@@ -126,6 +122,13 @@ namespace LegalTrace.DAL.Migrations
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Vigency")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -182,13 +185,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 2, 10, 1, 17, 37, 433, DateTimeKind.Utc).AddTicks(9262),
+                            Created = new DateTime(2024, 2, 10, 9, 29, 6, 974, DateTimeKind.Utc).AddTicks(7005),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "tp2Be4Q2ne39zm4ftEPuI4xOPL+QOj0pcMZdBFTExz9KfdBE",
+                            Password = "sm3zSas1zQTRWYK5Tv18oFTVDDaDa8JtkE6AcuQ/xegqmTkr",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 2, 10, 1, 17, 37, 433, DateTimeKind.Utc).AddTicks(9266),
+                            Updated = new DateTime(2024, 2, 10, 9, 29, 6, 974, DateTimeKind.Utc).AddTicks(7012),
                             Vigency = true
                         });
                 });

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LegalTrace.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240126164954_add-user-address")]
-    partial class adduseraddress
+    [Migration("20240210092907_add-username-to-credential")]
+    partial class addusernametocredential
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,6 +87,10 @@ namespace LegalTrace.DAL.Migrations
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
@@ -111,10 +115,6 @@ namespace LegalTrace.DAL.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("KeyValue")
                         .IsRequired()
                         .HasColumnType("text");
@@ -126,47 +126,18 @@ namespace LegalTrace.DAL.Migrations
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Vigency")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
                     b.ToTable("credentials");
-                });
-
-            modelBuilder.Entity("LegalTrace.DAL.Models.StandardTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DaysToFinish")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("Repeatable")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("standardTask");
                 });
 
             modelBuilder.Entity("LegalTrace.DAL.Models.User", b =>
@@ -217,13 +188,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 1, 26, 16, 49, 53, 882, DateTimeKind.Utc).AddTicks(8329),
+                            Created = new DateTime(2024, 2, 10, 9, 29, 6, 974, DateTimeKind.Utc).AddTicks(7005),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "Tztnm+1zvLnaIVIPK/YQEsVWlqI0gMCTZ2rn8OIagJcVAIVi",
+                            Password = "sm3zSas1zQTRWYK5Tv18oFTVDDaDa8JtkE6AcuQ/xegqmTkr",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 1, 26, 16, 49, 53, 882, DateTimeKind.Utc).AddTicks(8331),
+                            Updated = new DateTime(2024, 2, 10, 9, 29, 6, 974, DateTimeKind.Utc).AddTicks(7012),
                             Vigency = true
                         });
                 });
