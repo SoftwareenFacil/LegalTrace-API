@@ -15,7 +15,6 @@ namespace LegalTrace.DAL.Context
         public DbSet<ClientHistory> ClientHistory { get; set; }
         public DbSet<Credential> Credentials { get; set; }
         public DbSet<UserTask> UserTasks { get; set; }
-        public DbSet<StandardTask> StandardTasks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

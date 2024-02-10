@@ -18,11 +18,10 @@ namespace LegalTrace.BLL.Controllers.UserControllers
             var users = await userGetter.GetUserBy(id, name, email, created, vigency);
             if (users.Count() > 0)
             {
-                TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
                 List<UserDTO> result = new List<UserDTO>();
                 foreach (var row in users)
                 {
-                    DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(row.Created, chileTimeZone);
+                    
                     result.Add(new UserDTO()
                     {
                         Id = row.Id,
@@ -31,7 +30,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
                         Phone = row.Phone,
                         Address = row.Address,
                         SuperAdmin = row.SuperAdmin,
-                        Created = chileTime,
+                        Created = row.Created,
                         Vigency = row.Vigency
                     });
                 }

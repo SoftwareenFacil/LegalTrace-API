@@ -1,6 +1,8 @@
 ﻿using LegalTrace.BLL.Models.ClientDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientControllers;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Xml.Linq;
 
 namespace LegalTrace.BLL.Controllers.ClientControllers
 {
@@ -15,8 +17,8 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
         public async Task<List<ClientDTO>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
         {
             var clientGetter = new ClientGetBy(_context);
-            var clients = await clientGetter.GetClientBy(id,name,email,taxId,created,vigency);
-            if(clients.Count() > 0)
+            var clients = await clientGetter.GetClientBy(id, name, email, taxId, created, vigency);
+            if (clients.Count() > 0)
             {
                 List<ClientDTO> result = new List<ClientDTO>();
                 clients.ForEach(row => result.Add(new ClientDTO()
@@ -26,13 +28,35 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                     Email = row.Email,
                     TaxId = row.TaxId,
                     Phone = row.Phone,
-                    Address = row.Address
+                    Address = row.Address,
+                    Created = row.Created,
+                    Vigency = row.Vigency
                 }));
                 return result;
             }
-            
+
             return new List<ClientDTO>();
         }
 
+        public async Task<ClientDTO?> GetClientById(int id)
+        {
+            var clientGetter = new ClientGetById(_context);
+            var client = await clientGetter.GetClientById(id);
+            if (client != null)
+            {
+                return new ClientDTO()
+                {
+                    Id = client.Id,
+                    Name = client.Name,
+                    Email = client.Email,
+                    TaxId = client.TaxId,
+                    Phone = client.Phone,
+                    Address = client.Address,
+                    Created = client.Created,
+                    Vigency = client.Vigency
+                };
+            }
+            return null;
+        }
     }
 }

@@ -29,7 +29,8 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 TaxId = client.TaxId,
                 Address = client.Address,
                 Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
-                Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc)
+                Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                Vigency = true
             };
             return await clientCreator.InsertClient(clientCreate);
         }

@@ -14,5 +14,7 @@ namespace LegalTrace.BLL.Models.ClientDTO
         public int Phone { get; set; }
         public string TaxId { get; set; }
         public string Address { get; set; } = string.Empty;
+        public DateTime Created { get; set; }
+        public bool Vigency { get; set; }
     }
 }
