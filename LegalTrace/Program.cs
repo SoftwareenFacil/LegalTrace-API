@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using LegalTrace.BLL.Controllers.JwtControllers;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 namespace LegalTrace
 {
@@ -49,6 +51,7 @@ namespace LegalTrace
                     };
                 });
             builder.Services.AddScoped<IManejoJwt, ManejoJwt>();
+            builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             var app = builder.Build();
 
