@@ -16,7 +16,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
         public async Task<int> AddClientHistory(ClientHistoryInsertDTO clientHistory)
         {
             DateTime utcNow = DateTime.UtcNow;
-            var clientHistoryCreator = new ClientHistoryController(_context);
+            var clientHistoryController = new ClientHistoryController(_context);
             var clientHistoryCreate = new ClientHistory()
             {
                 ClientId = clientHistory.ClientId,
@@ -26,7 +26,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                 Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                 Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
             };
-            return await clientHistoryCreator.InsertClientHistory(clientHistoryCreate);
+            return await clientHistoryController.InsertClientHistory(clientHistoryCreate);
         }
     }
 }

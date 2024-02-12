@@ -1,8 +1,6 @@
 ﻿using LegalTrace.BLL.Models.ClientDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientControllers;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Xml.Linq;
 
 namespace LegalTrace.BLL.Controllers.ClientControllers
 {
@@ -16,8 +14,8 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
 
         public async Task<List<ClientDTO>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
         {
-            var clientGetter = new ClientGetBy(_context);
-            var clients = await clientGetter.GetClientBy(id, name, email, taxId, created, vigency);
+            var clientController = new ClientController(_context);
+            var clients = await clientController.GetClientBy(id, name, email, taxId, created, vigency);
             if (clients.Count() > 0)
             {
                 List<ClientDTO> result = new List<ClientDTO>();
@@ -40,8 +38,8 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
 
         public async Task<ClientDTO?> GetClientById(int id)
         {
-            var clientGetter = new ClientGetById(_context);
-            var client = await clientGetter.GetClientById(id);
+            var clientController = new ClientController(_context);
+            var client = await clientController.GetClientById(id);
             if (client != null)
             {
                 return new ClientDTO()

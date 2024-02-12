@@ -15,8 +15,8 @@ namespace LegalTrace.BLL.Controllers.LoginControllers
 
         public async Task<string?> Authenticate(IManejoJwt manejoJwt,UserCredentials credentials)
         {
-            var userGetter = new UserGetByEmail(_context);
-            var user = await userGetter.GetUserByEmail(credentials.Email);
+            var userController = new UserController(_context);
+            var user = await userController.GetUserByEmail(credentials.Email);
             var hasher = new Hasher();
             if (user != null && hasher.VerifyPassword(credentials.Password, user.Password))
             {

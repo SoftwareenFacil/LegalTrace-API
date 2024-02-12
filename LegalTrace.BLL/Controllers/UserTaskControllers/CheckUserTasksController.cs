@@ -16,19 +16,16 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<bool> CheckRepetitiveUserTasks()
         {
-            var userTaskGetter = new UserTaskGetRepeatable(_context);
-            var userTasks = await userTaskGetter.GetRepeatableUserTasks();
+            var userTaskController = new UserTaskController(_context);
+            var userTasks = await userTaskController.GetRepeatableUserTasks();
             if (userTasks.Any())
             {
-                var userTaskUpdater = new UserTaskUpdate(_context);
-                var userTaskCreator = new UserTaskPost(_context);
                 DateTime utcNow = DateTime.UtcNow;
-
                 foreach (var userTask in userTasks)
                 {
                     userTask.Vigency = false;
                     userTask.Repeatable = false;
-                    await userTaskUpdater.UpdateUserTask(userTask);
+                    await userTaskController.UpdateUserTask(userTask);
                     var userTaskCreate = new UserTask()
                     {
                         UserId = userTask.UserId,
@@ -44,7 +41,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                         DueDate = userTask.DueDate.AddDays(7)
                     };
 
-                    await userTaskCreator.InsertUserTask(userTaskCreate);
+                    await userTaskController.InsertUserTask(userTaskCreate);
                 }
                 return true;
             }

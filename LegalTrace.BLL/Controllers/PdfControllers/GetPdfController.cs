@@ -1,7 +1,7 @@
 ﻿using LegalTrace.PDF.Models;
 using DinkToPdf.Contracts;
 using LegalTrace.PDF.Controllers;
-using LegalTrace.BLL.Controllers.UserControllers;
+using LegalTrace.DAL.Controllers.UserControllers;
 using LegalTrace.DAL.Context;
 
 namespace LegalTrace.BLL.Controllers.PdfControllers
@@ -18,8 +18,8 @@ namespace LegalTrace.BLL.Controllers.PdfControllers
         }
         public async Task<string?> GetUserPdfPath(int? id, string? name, string? email, DateTime? created, bool? vigency)
         {
-            var userGetter = new GetUsersController(_context);
-            var users = await userGetter.GetUsersBy(id, name, email, created, vigency);
+            var userController = new UserController(_context);
+            var users = await userController.GetUserBy(id, name, email, created, vigency);
             if (users.Count() > 0)
             {
                 List<UserDTO> pdfUsers = new List<UserDTO>();

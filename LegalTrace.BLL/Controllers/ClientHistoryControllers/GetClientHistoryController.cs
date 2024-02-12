@@ -1,11 +1,6 @@
 ﻿using LegalTrace.BLL.Models.ClientHistoryDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientHistoryControllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
 {

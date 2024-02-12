@@ -13,15 +13,14 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
 
         public async Task<bool> DeleteClientById(int id)
         {
-            var clientVerify = new ClientGetById(_context);
-            var exist = await clientVerify.GetClientById(id);
+            var clientController = new ClientController(_context);
+            var exist = await clientController.GetClientById(id);
             if (exist == null)
             {
                 return false;
             }
 
-            var clientDeleter = new ClientDelete(_context);
-            return await clientDeleter.DeleteClient(id);
+            return await clientController.DeleteClient(id);
         }
     }
 }

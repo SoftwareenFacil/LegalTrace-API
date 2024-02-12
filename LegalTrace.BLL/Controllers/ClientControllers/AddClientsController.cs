@@ -15,12 +15,11 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
 
         public async Task<int> AddClient(ClientInsertDTO client)
         {
-            var clientGetter = new ClientGetByEmail(_context);
-            if (await clientGetter.GetClientByEmail(client.Email) != null)
+            var clientController = new ClientController(_context);
+            if (await clientController.GetClientByEmail(client.Email) != null)
                 return -1;
 
             DateTime utcNow = DateTime.UtcNow;
-            var clientCreator = new ClientPost(_context);
             var clientCreate = new Client()
             {
                 Name = client.Name,
@@ -32,7 +31,7 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                 Vigency = true
             };
-            return await clientCreator.InsertClient(clientCreate);
+            return await clientController.InsertClient(clientCreate);
         }
     }
 }

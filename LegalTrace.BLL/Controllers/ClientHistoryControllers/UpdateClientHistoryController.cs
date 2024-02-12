@@ -2,7 +2,6 @@
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientHistoryControllers;
 
-
 namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
 {
     public class UpdateClientHistoryController

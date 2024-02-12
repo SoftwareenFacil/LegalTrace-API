@@ -19,15 +19,13 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<List<UserTaskDTO>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency)
         {
-            var userTaskGetter = new UserTaskGetBy(_context);
-            var userTasks = await userTaskGetter.GetUserTaskBy(id, userId,clientId,dueDate,repeatable,vigency);
+            var userTaskController = new UserTaskController(_context);
+            var userTasks = await userTaskController.GetUserTaskBy(id, userId,clientId,dueDate,repeatable,vigency);
             if (userTasks.Count() > 0)
             {
-                TimeZoneInfo chileTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
                 List<UserTaskDTO> result = new List<UserTaskDTO>();
                 foreach (var userTask in userTasks)
                 {
-                    DateTime chileTime = TimeZoneInfo.ConvertTimeFromUtc(userTask.DueDate, chileTimeZone);
                     result.Add(new UserTaskDTO()
                     {
                         Id = userTask.Id,
@@ -37,7 +35,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                         Description = userTask.Description,
                         Type = userTask.Type,
                         Finished = userTask.Finished,
-                        DueDate = DateTime.SpecifyKind(chileTime, DateTimeKind.Utc)
+                        DueDate = userTask.DueDate
                     });
                 }
                 

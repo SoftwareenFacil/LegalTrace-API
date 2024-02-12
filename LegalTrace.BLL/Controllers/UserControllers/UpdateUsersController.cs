@@ -1,8 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
-using LegalTrace.BLL.Models;
 using LegalTrace.BLL.Models.UserDTO;
 using LegalTrace.DAL.Controllers.UserControllers;
-using LegalTrace.DAL.Models;
 
 namespace LegalTrace.BLL.Controllers.UserControllers
 {
@@ -18,9 +16,8 @@ namespace LegalTrace.BLL.Controllers.UserControllers
             if (string.IsNullOrWhiteSpace(userEdited.Name) && string.IsNullOrWhiteSpace(userEdited.Email) && string.IsNullOrWhiteSpace(userEdited.Password) && string.IsNullOrWhiteSpace(userEdited.Address) &&  userEdited.Phone == 0)
                 return 500;
 
-            var userVerify = new UserGetById(_context);
-            var userUpdater = new UserUpdate(_context);
-            var user = await userVerify.GetUserById(userEdited.Id);
+            var userController = new UserController(_context);
+            var user = await userController.GetUserById(userEdited.Id);
             if (user != null)
             {
                 user.Name = !string.IsNullOrEmpty(userEdited.Name) ? userEdited.Name : user.Name;
@@ -30,7 +27,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
                 user.Phone = userEdited.Phone > 0 ? userEdited.Phone : user.Phone;
                 DateTime utcNow = DateTime.UtcNow;
                 user.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
-                var isUpdated = await userUpdater.UpdateUser(user);
+                var isUpdated = await userController.UpdateUser(user);
                 if (!isUpdated)
                     return 500;
                 return 200;

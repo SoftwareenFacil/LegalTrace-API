@@ -17,9 +17,8 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
             if (string.IsNullOrWhiteSpace(clientEdited.Name) && string.IsNullOrWhiteSpace(clientEdited.Email) && clientEdited.Phone == 0 && string.IsNullOrWhiteSpace(clientEdited.Address) && string.IsNullOrWhiteSpace(clientEdited.TaxId))
                 return 400;
 
-            var clientVerify = new ClientGetById(_context);
-            var clientUpdater = new ClientUpdate(_context);
-            var client = await clientVerify.GetClientById(clientEdited.Id);
+            var clientController = new ClientController(_context);
+            var client = await clientController.GetClientById(clientEdited.Id);
             if (client != null)
             {
                 client.Name = !string.IsNullOrEmpty(clientEdited.Name) ? clientEdited.Name : client.Name;
@@ -31,7 +30,7 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                 DateTime utcNow = DateTime.UtcNow;
                 client.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
 
-                var isUpdated = await clientUpdater.UpdateClient(client);
+                var isUpdated = await clientController.UpdateClient(client);
                 if (!isUpdated) 
                     return 400;
                 return 200;

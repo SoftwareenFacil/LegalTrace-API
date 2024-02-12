@@ -15,7 +15,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
         public async Task<int> AddCredential(CredentialInsertDTO credential)
         {
             DateTime utcNow = DateTime.UtcNow;
-            var credentialCreator = new CredentialController(_context);
+            var credentialController = new CredentialController(_context);
             var credentialCreate = new Credential()
             {
                 ClientId = credential.ClientId,
@@ -26,7 +26,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
                 Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                 Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
             };
-            return await credentialCreator.InsertCredential(credentialCreate);
+            return await credentialController.InsertCredential(credentialCreate);
         }
     }
 }

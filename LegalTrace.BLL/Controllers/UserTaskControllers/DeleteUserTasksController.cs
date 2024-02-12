@@ -13,15 +13,13 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<bool> DeleteUserTaskById(int id)
         {
-            var userTaskVerify = new UserTaskGetById(_context);
-            var exist = await userTaskVerify.GetUserTaskById(id);
+            var userTaskController = new UserTaskController(_context);
+            var exist = await userTaskController.GetUserTaskById(id);
             if (exist == null)
             {
                 return false;
             }
-
-            var userTaskDeleter = new UserTaskDelete(_context);
-            return await userTaskDeleter.DeleteUserTask(id);
+            return await userTaskController.DeleteUserTask(id);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using LegalTrace.BLL.Controllers.UserControllers;
-using LegalTrace.BLL.Controllers.ClientControllers;
-using LegalTrace.BLL.Models.UserTaskDTO;
+﻿using LegalTrace.BLL.Models.UserTaskDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.UserTaskControllers;
 using LegalTrace.DAL.Models;
@@ -19,19 +17,19 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<int> AddUserTask(UserTaskInsertDTO userTask)
         {
-            var userValidator = new UserGetById(_context);
-            var user = await userValidator.GetUserById(userTask.UserId);
+            var userController = new UserController(_context);
+            var user = await userController.GetUserById(userTask.UserId);
             if (user != null)
             {
-                var clientValidator = new ClientGetById(_context);
-                var client = await clientValidator.GetClientById(userTask.ClientId);
+                var clientController = new ClientController(_context);
+                var client = await clientController.GetClientById(userTask.ClientId);
                 if(client != null)
                 {
                     if(userTask.DueDate > DateTime.Now && !string.IsNullOrEmpty(userTask.Title) && !string.IsNullOrEmpty(userTask.Description))
                     {
 
                         DateTime utcNow = DateTime.UtcNow;
-                        var userTaskCreator = new UserTaskPost(_context);
+                        var userTaskController = new UserTaskController(_context);
                         var userTaskCreate = new UserTask()
                         {
                             UserId = userTask.UserId,
@@ -46,7 +44,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                             Finished = false,
                             DueDate = userTask.DueDate
                         };
-                        return await userTaskCreator.InsertUserTask(userTaskCreate);
+                        return await userTaskController.InsertUserTask(userTaskCreate);
                     } 
                 }
             }
