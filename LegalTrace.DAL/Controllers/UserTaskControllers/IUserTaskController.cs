@@ -15,5 +15,6 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
         Task<bool> DeleteUserTask(int id);
         Task<int> InsertUserTask(UserTask userTask);
         Task<bool> UpdateUserTask(UserTask userTask);
+        Task<bool> CheckRepeatableUserTasks(List<UserTask> oldUserTasks, List<UserTask> newUserTasks);
     }
 }

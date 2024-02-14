@@ -113,5 +113,36 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             }
             return false;
         }
+
+        public async Task<bool> CheckRepeatableUserTasks(List<UserTask> oldUserTasks, List<UserTask> newUserTasks)
+        {
+            foreach (var oldTask in oldUserTasks)
+            {
+                var taskToUpdate = await _context.UserTasks.FirstOrDefaultAsync(t => t.Id == oldTask.Id);
+                if (taskToUpdate != null)
+                {
+                    taskToUpdate.UserId = oldTask.UserId;
+                    taskToUpdate.ClientId = oldTask.ClientId;
+                    taskToUpdate.Title = oldTask.Title;
+                    taskToUpdate.Description = oldTask.Description;
+                    taskToUpdate.Repeatable = oldTask.Repeatable;
+                    taskToUpdate.Type = oldTask.Type;
+                    taskToUpdate.Vigency = oldTask.Vigency;
+                    taskToUpdate.Finished = oldTask.Finished;
+                    taskToUpdate.FinishedDate = oldTask.FinishedDate;
+                    taskToUpdate.DueDate = oldTask.DueDate;
+                    taskToUpdate.Updated = oldTask.Updated; 
+                                                        
+                }
+            }
+
+            foreach (var newUserTask in newUserTasks)
+            {
+                await _context.UserTasks.AddAsync(newUserTask);
+            }
+
+            var saved = await _context.SaveChangesAsync();
+            return saved > 0;
+        }
     }
 }

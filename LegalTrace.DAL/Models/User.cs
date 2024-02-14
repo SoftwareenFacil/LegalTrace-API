@@ -16,7 +16,7 @@ namespace LegalTrace.DAL.Models
         public int Phone { get; set; }
         public string Address { get; set; } = string.Empty;
         [Required]
-        public string Password { get; set; } = string.Empty;
+        public string Password { get; set; }
         [Required]
         public DateTime Created { get; set; }
         [Required]

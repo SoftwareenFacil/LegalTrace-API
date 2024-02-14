@@ -20,12 +20,13 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
             var userTasks = await userTaskController.GetRepeatableUserTasks();
             if (userTasks.Any())
             {
+                List<UserTask> newUserTaskList = new List<UserTask>();
                 DateTime utcNow = DateTime.UtcNow;
                 foreach (var userTask in userTasks)
                 {
                     userTask.Vigency = false;
                     userTask.Repeatable = false;
-                    await userTaskController.UpdateUserTask(userTask);
+                    
                     var userTaskCreate = new UserTask()
                     {
                         UserId = userTask.UserId,
@@ -40,10 +41,11 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                         Finished = false,
                         DueDate = userTask.DueDate.AddDays(7)
                     };
-
-                    await userTaskController.InsertUserTask(userTaskCreate);
+                    newUserTaskList.Add(userTaskCreate);
                 }
-                return true;
+                var isChecked = await userTaskController.CheckRepeatableUserTasks(userTasks, newUserTaskList);
+                
+                return isChecked? true : false;
             }
             return false;
         }
