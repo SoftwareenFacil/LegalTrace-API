@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       IMAGE_NAME: backend-app
-      FOLDER_NAME: LegalTrace-API
+      FOLDER_NAME: LegalTrace
       DB_NAME: legalcont
     steps:
       - name: Checkout Repository
