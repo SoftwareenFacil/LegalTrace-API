@@ -3,6 +3,8 @@ ARG repositoryfolder=Stock-Back
 # Official .NET SDK base image for the build stage
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
+ARG repositoryfolder
+
 WORKDIR /app
 
 COPY . .
@@ -23,6 +25,9 @@ RUN dotnet publish -c Release -r linux-x64 -o out
 
 # Build a runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
+
+ARG repositoryfolder
+
 WORKDIR /app
 
 COPY --from=build /app/out/ ./
