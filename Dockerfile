@@ -1,9 +1,5 @@
-ARG repositoryfolder=Stock-Back
-
 # Official .NET SDK base image for the build stage
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-
-ARG repositoryfolder
 
 WORKDIR /app
 
@@ -13,7 +9,7 @@ RUN dotnet tool install --global dotnet-ef --version 7.0.11
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 # Generate migration script
-RUN dotnet ef --project ./$repositoryfolder.DAL --startup-project ./$repositoryfolder \
+RUN dotnet ef --project ./LegalTrace.DAL --startup-project ./LegalTrace \
 dbcontext script -o ./script.sql
 
 
@@ -38,4 +34,4 @@ ENV ASPNETCORE_URLS=http://+:5108;
 # Expose port
 EXPOSE 5108
 
-CMD ["dotnet", "./$repositoryfolder.dll"]
+CMD ["dotnet", "./LegalTrace.dll"]
