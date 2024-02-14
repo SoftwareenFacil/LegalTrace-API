@@ -19,6 +19,7 @@ mono_crash.*
 # Build results
 */.vs/*
 */bin/*
+*/Exports/*
 */obj/*
 [Dd]ebug/
 [Dd]ebugPublic/
