@@ -1,3 +1,5 @@
+ARG repositoryfolder=Stock-Back
+
 # Official .NET SDK base image for the build stage
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
@@ -9,7 +11,7 @@ RUN dotnet tool install --global dotnet-ef --version 7.0.11
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 # Generate migration script
-RUN dotnet ef --project ./Stock-Back.DAL --startup-project ./Stock-Back \
+RUN dotnet ef --project ./$repositoryfolder.DAL --startup-project ./$repositoryfolder \
 dbcontext script -o ./script.sql
 
 
@@ -31,4 +33,4 @@ ENV ASPNETCORE_URLS=http://+:5108;
 # Expose port
 EXPOSE 5108
 
-CMD ["dotnet", "./Stock-Back.dll"]
+CMD ["dotnet", "./$repositoryfolder.dll"]
