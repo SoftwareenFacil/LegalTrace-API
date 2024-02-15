@@ -27,7 +27,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cat '${{ env.FOLDER_NAME }}/appsettings.json'
-          docker build -t ${{env.IMAGE_NAME}} --build-arg repositoryname=${{ env.FOLDER_NAME }} .
+          docker build --build-arg APP_NAME=${{ env.FOLDER_NAME }} -t ${{env.IMAGE_NAME}} .
         
       - name: Push Docker Image to Registry
         run: |
