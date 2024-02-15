@@ -24,17 +24,17 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             switch (code)
             {
                 case 1:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"User Task with ID {userTaskEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"User Task with ID {userTaskEdited.Id} updated", "Update completed"));
                 case -1:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"User Task with ID {userTaskEdited.Id} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User Task with ID {userTaskEdited.Id} not found."));
                 case -2:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"User with ID {userTaskEdited.UserId} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User with ID {userTaskEdited.UserId} not found."));
                 case -3:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client with ID {userTaskEdited.ClientId} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client with ID {userTaskEdited.ClientId} not found."));
                 case -4:
-                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest("Error trying to update User Task", "Update rejected"));
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Error trying to update User Task", "Update rejected"));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update User Task"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update User Task"));
             }
         }
     }

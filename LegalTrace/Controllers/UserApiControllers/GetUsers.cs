@@ -27,9 +27,9 @@ namespace LegalTrace.Controllers.UserApiControllers
             var users = await userGetter.GetUsersBy(id,name,email,created,vigency);
             if(users.Count() > 0)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(users, "Success when searching for users"));
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, users, "Success when searching for users"));
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no users with these parameters"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no users with these parameters"));
         }
     }
 }

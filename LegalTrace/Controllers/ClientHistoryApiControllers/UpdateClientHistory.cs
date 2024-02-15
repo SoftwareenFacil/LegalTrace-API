@@ -24,11 +24,11 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client History with ID {clientHistoryEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client History with ID {clientHistoryEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client History with ID {clientHistoryEdited.Id} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client History with ID {clientHistoryEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update Client History"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update Client History"));
             }
         }
     }

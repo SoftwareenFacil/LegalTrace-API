@@ -25,11 +25,11 @@ namespace LegalTrace.Controllers.UserApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"User with ID {userEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"User with ID {userEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"User with ID {userEdited.Id} not found"));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User with ID {userEdited.Id} not found"));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update User"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update User"));
             }
         }
     }

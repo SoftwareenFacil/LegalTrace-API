@@ -22,10 +22,10 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
             var isDeleted = await deleter.DeleteClientHistoryById(id);
             if (!isDeleted)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client History with id {id} not found"));
+                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client History with id {id} not found"));
 
             }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client History with ID {id} deleted successfully", "Delete completed"));
+            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client History with ID {id} deleted successfully", "Delete completed"));
 
         }
     }

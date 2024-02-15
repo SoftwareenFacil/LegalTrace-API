@@ -25,11 +25,11 @@ namespace LegalTrace.Controllers.ClientApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client with ID {clientEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client with ID {clientEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client with ID {clientEdited.Id} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client with ID {clientEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(null,"Error trying to update Client"));
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null,"Error trying to update Client"));
             }
         }
     }

@@ -22,10 +22,10 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             var isChecked = await checker.CheckRepetitiveUserTasks();
             if (!isChecked)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse($"User Tasks cannot be checked"));
+                return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, $"User Tasks cannot be checked"));
 
             }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(null,$"User Tasks checked"));
+            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, null,$"User Tasks checked"));
 
         }
     }

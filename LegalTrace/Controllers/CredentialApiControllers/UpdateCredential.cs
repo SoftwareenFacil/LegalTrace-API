@@ -24,11 +24,11 @@ namespace LegalTrace.Controllers.CredentialApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client Credential with ID {credentialEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client Credential with ID {credentialEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client Credential with ID {credentialEdited.Id} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client Credential with ID {credentialEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update Client Credential"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update Client Credential"));
             }
         }
     }
