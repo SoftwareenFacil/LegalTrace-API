@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env: 
-      IMAGE_NAME: backend-app
+      IMAGE_NAME: backend
       FOLDER_NAME: LegalTrace
       DB_NAME: legalcont
     steps:
