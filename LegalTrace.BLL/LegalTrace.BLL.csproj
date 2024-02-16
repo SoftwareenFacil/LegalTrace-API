@@ -16,4 +16,8 @@
     <ProjectReference Include="..\LegalTrace.PDF\LegalTrace.PDF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
 </Project>
