@@ -21,7 +21,7 @@ jobs:
         with:
           files: '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
-          ConnectionStrings.WebApiDatabase: ${{ secrets.CONNECTION_STRING }}/
+          ConnectionStrings.WebApiDatabase: ${{ secrets.CONNECTION_STRING }}
 
       - name: Build Docker Image
         run: |
