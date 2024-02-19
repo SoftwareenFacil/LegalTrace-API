@@ -31,10 +31,9 @@ namespace LegalTrace
                 options.AddPolicy("MyAllowSpecificOrigins",
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000")
-                           .AllowAnyHeader()
+                    builder.AllowAnyHeader()
                            .AllowAnyMethod()
-                           .AllowCredentials();
+                           .AllowAnyOrigin();
                 });
             });
 
