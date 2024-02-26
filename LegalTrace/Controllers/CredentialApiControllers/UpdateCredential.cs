@@ -24,11 +24,27 @@ namespace LegalTrace.Controllers.CredentialApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client Credential with ID {credentialEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client Credential with ID {credentialEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client Credential with ID {credentialEdited.Id} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client Credential with ID {credentialEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update Client Credential"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update Client Credential"));
+            }
+        }
+
+        public async Task<IActionResult> UpdateVigency(int id)
+        {
+            var credentialUpdater = new UpdateCredentialController(_context);
+            var code = await credentialUpdater.UpdateCredentialVigency(id);
+
+            switch (code)
+            {
+                case 200:
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client Credential Vigency with ID {id} updated", "Update completed"));
+                case 404:
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client Credential Vigency with ID {id} not found."));
+                default:
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null, "Error trying to update the Client Credential Vigency"));
             }
         }
     }

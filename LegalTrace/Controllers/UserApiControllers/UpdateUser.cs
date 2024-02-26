@@ -25,11 +25,27 @@ namespace LegalTrace.Controllers.UserApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"User with ID {userEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"User with ID {userEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"User with ID {userEdited.Id} not found"));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User with ID {userEdited.Id} not found"));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update User"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update User"));
+            }
+        }
+
+        public async Task<IActionResult> UpdateVigency(int id)
+        {
+            var userUpdater = new UpdateUsersController(_context);
+            var code = await userUpdater.UpdateUserVigency(id);
+
+            switch (code)
+            {
+                case 200:
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"User Vigency with ID {id} updated", "Update completed"));
+                case 404:
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User Vigency with ID {id} not found."));
+                default:
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null, "Error trying to update User Vigency"));
             }
         }
     }

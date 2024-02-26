@@ -21,9 +21,9 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
             var clientHistories = await clientHistoryGetter.GetClientHistoryById(id);
             if (clientHistories.Count() > 0)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(clientHistories, "Success when searching for client histories"));
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200,clientHistories, "Success when searching for client histories"));
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no client histories with these parameters"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no client histories with these parameters"));
         }
     }
 }

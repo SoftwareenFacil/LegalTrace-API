@@ -24,11 +24,27 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
             switch (code)
             {
                 case 200:
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client History with ID {clientHistoryEdited.Id} updated", "Update completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client History with ID {clientHistoryEdited.Id} updated", "Update completed"));
                 case 404:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client History with ID {clientHistoryEdited.Id} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client History with ID {clientHistoryEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to update Client History"));
+                    return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update Client History"));
+            }
+        }
+
+        public async Task<IActionResult> UpdateVigency(int id)
+        {
+            var clientHistoryUpdater = new UpdateClientHistoryController(_context);
+            var code = await clientHistoryUpdater.UpdateClientHistoryVigency(id);
+
+            switch (code)
+            {
+                case 200:
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client History Vigency with ID {id} updated", "Update completed"));
+                case 404:
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client History Vigency with ID {id} not found."));
+                default:
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null, "Error trying to update the Client History Vigency"));
             }
         }
     }

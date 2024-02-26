@@ -54,12 +54,20 @@ namespace LegalTrace
             builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             var app = builder.Build();
+            app.UseCors("MyAllowSpecificOrigins");
+
+            app.Use((context, next) =>
+            {
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                return next.Invoke();
+            });
 
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseCors("MyAllowSpecificOrigins");
+                
             }
             app.UseExceptionHandler("/Error");
             app.UseHttpsRedirection();

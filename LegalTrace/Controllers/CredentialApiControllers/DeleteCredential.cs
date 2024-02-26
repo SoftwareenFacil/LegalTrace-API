@@ -22,10 +22,10 @@ namespace LegalTrace.Controllers.CredentialApiControllers
             var isDeleted = await deleter.DeleteCredentialById(id);
             if (!isDeleted)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client Credential with id {id} not found"));
+                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client Credential with id {id} not found"));
 
             }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client Credential with ID {id} deleted successfully", "Delete completed"));
+            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client Credential with ID {id} deleted successfully", "Delete completed"));
 
         }
     }

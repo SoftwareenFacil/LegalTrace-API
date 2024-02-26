@@ -26,10 +26,10 @@ namespace LegalTrace.Controllers.UserApiControllers
             var dataModified = await userCreator.AddUser(user);
 
             if (dataModified > 0)
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"User created succesfully", "Create completed"));
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(201, $"User created succesfully", "Create completed"));
             else if (dataModified < 0)
-                return _responseService.CreateResponse(ApiResponse<object>.BadRequest(user, $"User with Email {user.Email} already exists"));
-            return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to Insert User"));
+                return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, user, $"User with Email {user.Email} already exists"));
+            return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to Insert User"));
 
         }
     }

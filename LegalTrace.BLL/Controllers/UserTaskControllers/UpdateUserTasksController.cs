@@ -1,6 +1,4 @@
-﻿using LegalTrace.BLL.Controllers.ClientControllers;
-using LegalTrace.BLL.Controllers.UserControllers;
-using LegalTrace.BLL.Models.UserTaskDTO;
+﻿using LegalTrace.BLL.Models.UserTaskDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.UserControllers;
 using LegalTrace.DAL.Controllers.ClientControllers;
@@ -58,6 +56,26 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 return 1;
             }
             return -1;
+        }
+
+        public async Task<int> UpdateUserTaskVigency(int id)
+        {
+            var userTaskController = new UserTaskController(_context);
+            var userTask = await userTaskController.GetUserTaskById(id);
+            if (userTask != null)
+            {
+                if (userTask.Vigency)
+                {
+                    userTask.Vigency = false;
+                }
+                else { userTask.Vigency = true; }
+
+                var isUpdated = await userTaskController.UpdateUserTask(userTask);
+                if (isUpdated)
+                    return 200;
+                return 500;
+            }
+            return 404;
         }
     }
 }

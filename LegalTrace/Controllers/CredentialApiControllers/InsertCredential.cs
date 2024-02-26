@@ -27,11 +27,11 @@ namespace LegalTrace.Controllers.CredentialApiControllers
                 var dataModified = await credentialCreator.AddCredential(credential);
 
                 if (dataModified > 0)
-                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"Client Credential created succesfully", "Create completed"));
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(201, $"Client Credential created succesfully", "Create completed"));
 
-                return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse("Error trying to create a Client Credential"));
+                return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to create a Client Credential"));
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"Client with ID {credential.ClientId} not found."));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client with ID {credential.ClientId} not found."));
         }
     }
 }

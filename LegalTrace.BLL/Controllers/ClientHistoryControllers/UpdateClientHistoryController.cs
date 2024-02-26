@@ -38,5 +38,25 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
             }
             return 400;
         }
+
+        public async Task<int> UpdateClientHistoryVigency(int id)
+        {
+            var clientHistoryController = new ClientHistoryController(_context);
+            var clientHistory = await clientHistoryController.GetClientHistoryById(id);
+            if (clientHistory != null)
+            {
+                if (clientHistory.Vigency)
+                {
+                    clientHistory.Vigency = false;
+                }
+                else { clientHistory.Vigency = true; }
+
+                var isUpdated = await clientHistoryController.UpdateClientHistory(clientHistory);
+                if (isUpdated)
+                    return 200;
+                return 500;
+            }
+            return 404;
+        }
     }
 }
