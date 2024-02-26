@@ -37,5 +37,25 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
             }
             return 400;
         }
+
+        public async Task<int> UpdateCredentialVigency(int id)
+        {
+            var credentialController = new CredentialController(_context);
+            var credential = await credentialController.GetCredentialById(id);
+            if (credential != null)
+            {
+                if (credential.Vigency)
+                {
+                    credential.Vigency = false;
+                }
+                else { credential.Vigency = true; }
+
+                var isUpdated = await credentialController.UpdateCredential(credential);
+                if (isUpdated)
+                    return 200;
+                return 500;
+            }
+            return 404;
+        }
     }
 }

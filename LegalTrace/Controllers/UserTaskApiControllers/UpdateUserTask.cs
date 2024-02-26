@@ -37,5 +37,21 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
                     return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to update User Task"));
             }
         }
+
+        public async Task<IActionResult> UpdateVigency(int id)
+        {
+            var userTaskUpdater = new UpdateUserTasksController(_context);
+            var code = await userTaskUpdater.UpdateUserTaskVigency(id);
+
+            switch (code)
+            {
+                case 200:
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"User Task Vigency with ID {id} updated", "Update completed"));
+                case 404:
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User Task Vigency with ID {id} not found."));
+                default:
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null, "Error trying to update User Task Vigency"));
+            }
+        }
     }
 }

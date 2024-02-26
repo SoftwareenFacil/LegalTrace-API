@@ -29,7 +29,23 @@ namespace LegalTrace.Controllers.ClientApiControllers
                 case 404:
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client with ID {clientEdited.Id} not found."));
                 default:
-                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null,"Error trying to update Client"));
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null, "Error trying to update Client"));
+            }
+        }
+
+        public async Task<IActionResult> UpdateVigency(int id)
+        {
+            var clientUpdater = new UpdateClientsController(_context);
+            var code = await clientUpdater.UpdateClientVigency(id);
+
+            switch (code)
+            {
+                case 200:
+                    return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Client Vigency with ID {id} updated", "Update completed"));
+                case 404:
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client Vigency with ID {id} not found."));
+                default:
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, null, "Error trying to update Client Vigency"));
             }
         }
     }

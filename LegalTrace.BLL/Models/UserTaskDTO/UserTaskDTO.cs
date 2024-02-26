@@ -12,6 +12,7 @@ namespace LegalTrace.BLL.Models.UserTaskDTO
         public string Description { get; set; }
         public string Type { get; set; }
         public bool Finished { get; set; }
+        public bool Vigency { get; set; }
         public DateTime DueDate { get; set; }
     }
 }

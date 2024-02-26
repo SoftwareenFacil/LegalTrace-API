@@ -30,7 +30,7 @@ namespace Controllers.JwtControllers
                 issuer: null,
                 audience: null,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(60),
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials
                 );
 

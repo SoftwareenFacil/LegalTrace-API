@@ -1,5 +1,4 @@
 ﻿using LegalTrace.BLL.Models.ClientHistoryDTO;
-using LegalTrace.Controllers.ClientApiControllers;
 using LegalTrace.DAL.Context;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +34,13 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
         {
             var updater = new UpdateClientHistory(_context);
             return await updater.Update(clientHistoryEdited);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateClientHistoryVigency(int id)
+        {
+            var updater = new UpdateClientHistory(_context);
+            return await updater.UpdateVigency(id);
         }
 
         [HttpDelete]

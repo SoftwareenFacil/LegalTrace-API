@@ -37,6 +37,13 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             return await updater.Update(userEdited);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateUserTaskVigency(int id)
+        {
+            var updater = new UpdateUserTask(_context);
+            return await updater.UpdateVigency(id);
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteUserTask(int id)
         {

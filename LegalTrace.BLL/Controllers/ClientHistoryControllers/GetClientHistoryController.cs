@@ -25,7 +25,8 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                     ClientId = row.ClientId,
                     Title = row.Title,
                     Description = row.Description,
-                    EventDate = row.EventDate
+                    EventDate = row.EventDate,
+                    Vigency = row.Vigency
                 }));
                 return result;
             }
