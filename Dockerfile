@@ -16,6 +16,8 @@ dbcontext script -o ./script.sql
 WORKDIR /app
 RUN dotnet restore
 
+ENV DOCKER_BUILD=true
+
 # Build the application
 RUN dotnet publish -c Release -r linux-x64 -o out
 
