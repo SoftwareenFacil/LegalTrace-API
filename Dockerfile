@@ -36,8 +36,8 @@ WORKDIR /app
 COPY --from=build /app/out/ ./
 COPY --from=build /app/script.sql /app/script/
 
+RUN apt-get install -yq gnupg
 RUN apt-get update
-
 
 RUN apt-get install wget libgdiplus -y
 
