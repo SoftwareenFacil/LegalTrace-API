@@ -25,7 +25,9 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             if (dataModified > 0)
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(201, $"User Task created succesfully", "Create completed"));
             
-            return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to Insert User Task"));
+            if(dataModified == -1)
+                return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Error trying to insert an User Task", "Insert rejected"));
+            return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to Insert an User Task"));
 
          }
     }

@@ -1,6 +1,7 @@
 ﻿using LegalTrace.BLL.Models.ClientHistoryDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientHistoryControllers;
+using System.Data;
 
 namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
 {
@@ -26,6 +27,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                     Title = row.Title,
                     Description = row.Description,
                     EventDate = row.EventDate,
+                    Created = row.Created,
                     Vigency = row.Vigency
                 }));
                 return result;

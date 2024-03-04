@@ -45,7 +45,9 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                             DueDate = userTask.DueDate
                         };
                         return await userTaskController.InsertUserTask(userTaskCreate);
-                    } 
+                    }
+
+                    return -1;
                 }
             }
             return 0;
