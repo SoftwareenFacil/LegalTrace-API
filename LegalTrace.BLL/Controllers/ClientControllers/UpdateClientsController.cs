@@ -37,5 +37,25 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
             }
             return 404;
         }
+
+        public async Task<int> UpdateClientVigency(int id)
+        {
+            var clientController = new ClientController(_context);
+            var client = await clientController.GetClientById(id);
+            if (client != null)
+            {
+                if (client.Vigency)
+                {
+                    client.Vigency = false;
+                }
+                else { client.Vigency = true; }
+
+                var isUpdated = await clientController.UpdateClient(client);
+                if (isUpdated)
+                    return 200;
+                return 500;
+            }
+            return 404;
+        }
     }
 }

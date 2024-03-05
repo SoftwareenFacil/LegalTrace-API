@@ -25,6 +25,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                 EventDate = clientHistory.EventDate,
                 Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                 Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                Vigency = true
             };
             return await clientHistoryController.InsertClientHistory(clientHistoryCreate);
         }

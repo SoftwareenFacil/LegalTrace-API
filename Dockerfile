@@ -20,6 +20,8 @@ dbcontext script -o ./script.sql
 WORKDIR /app
 RUN dotnet restore
 
+ENV DOCKER_BUILD=true
+
 # Build the application
 RUN dotnet publish -c Release -r linux-x64 -o out
 
@@ -52,3 +54,7 @@ ENV ASPNETCORE_URLS=http://+:5108;
 EXPOSE 5108
 
 CMD dotnet "./$ENV_APP_NAME.dll"
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev

@@ -21,9 +21,9 @@ namespace LegalTrace.Controllers.CredentialApiControllers
             var credentials = await credentialsGetter.GetCredentialById(id);
             if (credentials.Count() > 0)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(credentials, "Success when searching for client credentials"));
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, credentials, "Success when searching for client credentials"));
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no client credentials with these parameters"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no client credentials with these parameters"));
         }
     }
 }

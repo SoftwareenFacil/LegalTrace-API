@@ -28,12 +28,12 @@ namespace LegalTrace.Controllers.PdfApiControllers
             {
                 if (!System.IO.File.Exists(usersPdf))
                 {
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("The Pdf File is not found")); 
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "The Pdf File is not found")); 
                 }
                 var fileBytes = await System.IO.File.ReadAllBytesAsync(usersPdf);
                 return File(fileBytes, "application/pdf", "Users.pdf");
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no users with these parameters"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no users with these parameters"));
         }
     }
 }

@@ -91,6 +91,9 @@ namespace LegalTrace.DAL.Migrations
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("Vigency")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
@@ -185,13 +188,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 2, 10, 9, 29, 6, 974, DateTimeKind.Utc).AddTicks(7005),
+                            Created = new DateTime(2024, 2, 26, 14, 46, 34, 614, DateTimeKind.Utc).AddTicks(9527),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "sm3zSas1zQTRWYK5Tv18oFTVDDaDa8JtkE6AcuQ/xegqmTkr",
+                            Password = "fQOYLTD6xbVSvc8oc5dOctuDVxZNUjHPArc41YTWWw++dxcD",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 2, 10, 9, 29, 6, 974, DateTimeKind.Utc).AddTicks(7012),
+                            Updated = new DateTime(2024, 2, 26, 14, 46, 34, 614, DateTimeKind.Utc).AddTicks(9533),
                             Vigency = true
                         });
                 });

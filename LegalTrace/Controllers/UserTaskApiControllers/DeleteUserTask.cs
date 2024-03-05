@@ -22,10 +22,10 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
             var isDeleted = await deleter.DeleteUserTaskById(id);
             if (!isDeleted)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse($"User Task with id {id} not found"));
+                return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User Task with id {id} not found"));
 
             }
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse($"User Task with ID {id} deleted successfully", "Delete completed"));
+            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"User Task with ID {id} deleted successfully", "Delete completed"));
 
         }
     }

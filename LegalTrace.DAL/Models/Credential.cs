@@ -22,7 +22,6 @@ namespace LegalTrace.DAL.Models
         public DateTime Created { get; set; }
         [Required]
         public DateTime Updated { get; set; }
-
         public Client Client { get; set; }
 
     }

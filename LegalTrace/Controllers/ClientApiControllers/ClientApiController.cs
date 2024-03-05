@@ -36,6 +36,13 @@ namespace LegalTrace.Controllers.ClientApiControllers
             return await updater.Update(clientEdited);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateClientVigency(int id)
+        {
+            var updater = new UpdateClient(_context);
+            return await updater.UpdateVigency(id);
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteClient(int id)
         {

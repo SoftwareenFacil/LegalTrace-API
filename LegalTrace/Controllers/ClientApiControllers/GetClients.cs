@@ -23,9 +23,9 @@ namespace LegalTrace.Controllers.ClientApiControllers
             var clients = await clientGetter.GetClientBy(id, name, email, taxId, created, vigency);
             if (clients.Count() > 0)
             {
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(clients, "Success when searching for clients"));
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, clients, "Success when searching for clients"));
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse("There are no clients with these parameters"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404,"There are no clients with these parameters"));
         }
     }
 }

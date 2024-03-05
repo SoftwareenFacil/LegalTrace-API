@@ -1,5 +1,4 @@
 ﻿using LegalTrace.BLL.Models.CredentialDTO;
-using LegalTrace.Controllers.CredentialApiControllers;
 using LegalTrace.DAL.Context;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +34,13 @@ namespace LegalTrace.Controllers.CredentialApiControllers
         {
             var updater = new UpdateCredential(_context);
             return await updater.Update(credentialEdited);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCredentialVigency(int id)
+        {
+            var updater = new UpdateCredential(_context);
+            return await updater.UpdateVigency(id);
         }
 
         [HttpDelete]

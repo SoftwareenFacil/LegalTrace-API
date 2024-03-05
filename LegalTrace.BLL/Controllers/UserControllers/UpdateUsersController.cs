@@ -35,6 +35,26 @@ namespace LegalTrace.BLL.Controllers.UserControllers
             return 404;
         }
 
+        public async Task<int> UpdateUserVigency(int id)
+        {
+            var userController = new UserController(_context);
+            var user = await userController.GetUserById(id);
+            if (user != null)
+            {
+                if (user.Vigency)
+                {
+                    user.Vigency = false;
+                }
+                else { user.Vigency = true; }
+
+                var isUpdated = await userController.UpdateUser(user);
+                if (isUpdated)
+                    return 200;
+                return 500;
+            }
+            return 404;
+        }
+
         private string CheckifNewPassword(string password, string userpassword)
         {
             if (!string.IsNullOrEmpty(password))

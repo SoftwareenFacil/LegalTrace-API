@@ -24,7 +24,7 @@
     <ProjectReference Include="..\LegalTrace.DAL\LegalTrace.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+   <ItemGroup Condition="'$(DOCKER_BUILD)' == 'true'">
     <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" PrivateAssets="all" />
   </ItemGroup>
 
