@@ -22,6 +22,46 @@ namespace LegalTrace.DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("LegalTrace.DAL.Models.Charge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("charges");
+                });
+
             modelBuilder.Entity("LegalTrace.DAL.Models.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -188,13 +228,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 2, 26, 14, 46, 34, 614, DateTimeKind.Utc).AddTicks(9527),
+                            Created = new DateTime(2024, 3, 4, 16, 5, 42, 60, DateTimeKind.Utc).AddTicks(8690),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "fQOYLTD6xbVSvc8oc5dOctuDVxZNUjHPArc41YTWWw++dxcD",
+                            Password = "/Mba4Bk1SEIPU5uzGtoTDchZ1w2rnXfSiAMGeG+f5BPImGOB",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 2, 26, 14, 46, 34, 614, DateTimeKind.Utc).AddTicks(9533),
+                            Updated = new DateTime(2024, 3, 4, 16, 5, 42, 60, DateTimeKind.Utc).AddTicks(8692),
                             Vigency = true
                         });
                 });

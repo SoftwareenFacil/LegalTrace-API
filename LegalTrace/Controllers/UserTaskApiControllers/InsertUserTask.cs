@@ -29,6 +29,6 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
                 return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Error trying to insert an User Task", "Insert rejected"));
             return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to Insert an User Task"));
 
-         }
+        }
     }
 }
