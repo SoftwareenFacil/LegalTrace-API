@@ -1,11 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegalTrace.DAL.Controllers.UserTaskControllers
 {
@@ -51,7 +46,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             if (dueDate.HasValue)
             {
                 var dueDateOnly = dueDate.Value.Date;
-                query = query.Where(userTask => userTask.DueDate.Date == dueDateOnly);
+                query = query.Where(userTask => userTask.DueDate.Date >= dueDateOnly);
             }
 
             if (repeatable.HasValue)

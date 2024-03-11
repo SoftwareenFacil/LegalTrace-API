@@ -29,7 +29,7 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
                 if (dataModified > 0)
                     return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(201, $"Client history created succesfully", "Create completed"));
 
-                return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to create a Client History"));
+                return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Error trying to Insert a Client History", "Insert rejected"));
             }
             return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404,$"Client with ID {clientHistory.ClientId} not found."));
         }

@@ -1,11 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegalTrace.DAL.Controllers.UserControllers
 {
@@ -55,7 +50,7 @@ namespace LegalTrace.DAL.Controllers.UserControllers
 
             if (created.HasValue)
             {
-                query = query.Where(u => u.Created > created.Value)
+                query = query.Where(u => u.Created >= created.Value)
                              .OrderBy(u => u.Created);
             }
 
