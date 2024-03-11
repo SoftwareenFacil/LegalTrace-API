@@ -50,7 +50,7 @@ namespace LegalTrace.DAL.Controllers.UserControllers
 
             if (created.HasValue)
             {
-                query = query.Where(u => u.Created > created.Value)
+                query = query.Where(u => u.Created >= created.Value)
                              .OrderBy(u => u.Created);
             }
 

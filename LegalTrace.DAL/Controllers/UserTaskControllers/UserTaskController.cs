@@ -46,7 +46,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             if (dueDate.HasValue)
             {
                 var dueDateOnly = dueDate.Value.Date;
-                query = query.Where(userTask => userTask.DueDate.Date == dueDateOnly);
+                query = query.Where(userTask => userTask.DueDate.Date >= dueDateOnly);
             }
 
             if (repeatable.HasValue)
