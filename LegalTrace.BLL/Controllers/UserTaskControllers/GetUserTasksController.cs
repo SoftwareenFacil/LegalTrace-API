@@ -17,10 +17,10 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
             _context = _dbContext;
         }
 
-        public async Task<List<UserTaskDTO>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency)
+        public async Task<List<UserTaskDTO>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency, DateTime? createdFrom, DateTime? createdTo)
         {
             var userTaskController = new UserTaskController(_context);
-            var userTasks = await userTaskController.GetUserTaskBy(id, userId,clientId,dueDate,repeatable,vigency);
+            var userTasks = await userTaskController.GetUserTaskBy(id, userId,clientId,dueDate,repeatable,vigency, createdFrom, createdTo);
             if (userTasks.Count() > 0)
             {
                 List<UserTaskDTO> result = new List<UserTaskDTO>();
