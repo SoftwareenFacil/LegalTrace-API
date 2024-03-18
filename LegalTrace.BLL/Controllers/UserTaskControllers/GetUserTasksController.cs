@@ -36,6 +36,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                         Type = userTask.Type,
                         Finished = userTask.Finished,
                         DueDate = userTask.DueDate,
+                        Created = userTask.Created,
                         Vigency = userTask.Vigency
                     });
                 }

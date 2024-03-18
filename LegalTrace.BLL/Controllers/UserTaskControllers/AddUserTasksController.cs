@@ -42,7 +42,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                             Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                             Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                             Finished = false,
-                            DueDate = userTask.DueDate
+                            DueDate = DateTime.SpecifyKind(userTask.DueDate, DateTimeKind.Utc)
                         };
                         return await userTaskController.InsertUserTask(userTaskCreate);
                     }

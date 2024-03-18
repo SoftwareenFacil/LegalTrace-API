@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LegalTrace.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304160542_Add-Charge-Model")]
-    partial class AddChargeModel
+    [Migration("20240318124430_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,13 +231,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 3, 4, 16, 5, 42, 60, DateTimeKind.Utc).AddTicks(8690),
+                            Created = new DateTime(2024, 3, 18, 12, 44, 30, 929, DateTimeKind.Utc).AddTicks(4921),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "/Mba4Bk1SEIPU5uzGtoTDchZ1w2rnXfSiAMGeG+f5BPImGOB",
+                            Password = "e0KaCk2s6ZFpw7pI1Nlf1gZuZWBI3okdn1NzF+hqMNlVvUkJ",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 3, 4, 16, 5, 42, 60, DateTimeKind.Utc).AddTicks(8692),
+                            Updated = new DateTime(2024, 3, 18, 12, 44, 30, 929, DateTimeKind.Utc).AddTicks(4922),
                             Vigency = true
                         });
                 });
