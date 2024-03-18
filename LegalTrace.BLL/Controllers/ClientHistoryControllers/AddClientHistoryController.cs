@@ -25,7 +25,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                     ClientId = clientHistory.ClientId,
                     Title = clientHistory.Title,
                     Description = clientHistory.Description,
-                    EventDate = clientHistory.EventDate,
+                    EventDate = DateTime.SpecifyKind(clientHistory.EventDate, DateTimeKind.Utc),
                     Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                     Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                     Vigency = true
