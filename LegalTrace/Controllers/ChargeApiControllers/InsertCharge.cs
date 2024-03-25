@@ -11,14 +11,19 @@ namespace LegalTrace.Controllers.ChargeApiControllers
     {
         private readonly AppDbContext _context;
         private readonly ResponseService _responseService;
-        public InsertCharge(AppDbContext context)
+        private readonly string _gdrivefileLoc;
+        private readonly string _googleAppName;
+        public InsertCharge(AppDbContext context, string gdrivefileLoc, string GoogleAppName)
         {
             _context = context;
             _responseService = new ResponseService();
+            _gdrivefileLoc = gdrivefileLoc;
+            _googleAppName = GoogleAppName;
         }
         public async Task<IActionResult> Insert(ChargeInsertDTO charge)
         {
-            var chargeCreator = new AddChargesController(_context);
+
+            var chargeCreator = new AddChargesController(_context, _gdrivefileLoc, _googleAppName);
             var dataModified = await chargeCreator.AddCharge(charge);
 
             if (dataModified > 0)

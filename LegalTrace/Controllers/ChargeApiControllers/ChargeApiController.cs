@@ -11,9 +11,13 @@ namespace LegalTrace.Controllers.ChargeApiControllers
     public class ChargeApiController : ControllerBase
     {
         private AppDbContext _context;
-        public ChargeApiController(AppDbContext dbContext)
+        private readonly string _gdrivefileLoc;
+        private readonly string _googleAppName;
+        public ChargeApiController(AppDbContext dbContext, IConfiguration configuration)
         {
             _context = dbContext;
+            _gdrivefileLoc = configuration["GoogleDriveSecurityLocation"];
+            _googleAppName = configuration["GoogleAppName"];
         }
 
         [HttpGet]
@@ -26,7 +30,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         [HttpPost]
         public async Task<IActionResult> InsertCharge([FromBody] ChargeInsertDTO charge)
         {
-            var add = new InsertCharge(_context);
+            var add = new InsertCharge(_context, _gdrivefileLoc, _googleAppName);           
             return await add.Insert(charge);
         }
 
