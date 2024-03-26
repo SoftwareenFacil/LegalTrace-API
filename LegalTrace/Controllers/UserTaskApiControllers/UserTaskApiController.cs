@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LegalTrace.Controllers.UserTaskApiControllers
 {
-
-    [SuperAdminRequired]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class UserTaskApiController : ControllerBase

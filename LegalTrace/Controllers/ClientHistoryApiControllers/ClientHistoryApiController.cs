@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LegalTrace.Controllers.ClientHistoryApiControllers
 {
-    [SuperAdminRequired]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class ClientHistoryApiController : ControllerBase
