@@ -17,5 +17,9 @@ namespace LegalTrace.GoogleDrive
         Task<bool> EditFile(string fileId, string newName, MemoryStream streamContent, string extension);
 
         Task<bool> CheckConnection();
+
+        MemoryStream TransformStringToMemoryStream(string filestring);
+        string TransformMemoryStreamToString(MemoryStream stream);
+
     }
 }

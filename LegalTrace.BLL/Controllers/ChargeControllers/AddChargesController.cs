@@ -22,7 +22,7 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
         {
             string FileLink = "";
             if (charge.fileString != null)                
-                FileLink = await _library.CreateFile(charge.fileName, TransformStringToMemoryStream(charge.fileString), charge.fileType);
+                FileLink = await _library.CreateFile(charge.fileName, _library.TransformStringToMemoryStream(charge.fileString), charge.fileType);
 
             if (!string.IsNullOrEmpty(charge.Title) && !string.IsNullOrEmpty(charge.Description) && !string.IsNullOrEmpty(FileLink) && charge.Amount > 0)
             {
@@ -43,13 +43,6 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                 return await chargeController.InsertCharge(chargeCreate);
             }
             return 0;
-        }
-
-        private MemoryStream TransformStringToMemoryStream(string filestring)
-        {
-            byte[] byteArray = Encoding.UTF8.GetBytes(filestring);
-            MemoryStream stream = new MemoryStream(byteArray);
-            return stream;
         }
     }
 }

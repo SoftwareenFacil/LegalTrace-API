@@ -5,7 +5,7 @@ using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System.Net.Http;
 using System.Net.Mime;
-
+using System.Text;
 
 namespace LegalTrace.GoogleDrive
 {
@@ -80,6 +80,16 @@ namespace LegalTrace.GoogleDrive
             if (response.Status == Google.Apis.Upload.UploadStatus.Completed)
                 return request.ResponseBody.Id;
             return "";
+        }
+        public MemoryStream TransformStringToMemoryStream(string filestring)
+        {
+            byte[] byteArray = Encoding.UTF8.GetBytes(filestring);
+            MemoryStream stream = new MemoryStream(byteArray);
+            return stream;
+        }
+        public string TransformMemoryStreamToString(MemoryStream stream)
+        {
+            return Encoding.UTF8.GetString(stream.ToArray());
         }
 
 
