@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using LegalTrace.DAL.Models;
+using System.Runtime.CompilerServices;
 
 namespace LegalTrace.BLL.Models.ChargeDTO
 {
@@ -14,6 +15,8 @@ namespace LegalTrace.BLL.Models.ChargeDTO
         public string fileName { get; set; }
 
         public string fileType { get; set; }
+
+        public ChargeType chargeType { get; set; }  
 
     }
 }

@@ -36,6 +36,7 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                     Date = DateTime.SpecifyKind(charge.Date, DateTimeKind.Utc),
                     Amount = charge.Amount,
                     FileLink = FileLink,
+                    ChargeType = ((int)charge.chargeType >= 3) ? 0 : charge.chargeType,
                     Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                     Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc)
                 };

@@ -24,5 +24,14 @@ namespace LegalTrace.DAL.Models
         public DateTime Updated { get; set; }
         [Required]
         public string FileLink { get; set; }
+        [Required]
+        public ChargeType ChargeType { get; set; }
+    }
+    public enum ChargeType
+    {
+        Pesos,
+        UF,
+        UTM,
+        USD
     }
 }

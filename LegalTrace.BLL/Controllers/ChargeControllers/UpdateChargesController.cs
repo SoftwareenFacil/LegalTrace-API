@@ -31,6 +31,11 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                     charge.ClientId = chargeEdited.ClientId;
                 }
 
+                if(chargeEdited.chargeType != null)
+                {
+                    charge.ChargeType = (ChargeType)((int)chargeEdited.chargeType >= 3 ? 0 : chargeEdited.chargeType);
+                }
+
                 charge.Title = !string.IsNullOrEmpty(chargeEdited.Title) ? chargeEdited.Title : charge.Title;
                 charge.Description = !string.IsNullOrEmpty(chargeEdited.Description) ? chargeEdited.Description : charge.Description;
                 charge.Amount = chargeEdited.Amount > 0 ? chargeEdited.Amount : charge.Amount;

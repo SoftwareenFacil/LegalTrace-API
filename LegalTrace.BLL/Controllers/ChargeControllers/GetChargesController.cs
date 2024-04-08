@@ -26,6 +26,7 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                     Description = row.Description,
                     Date = row.Date,
                     Amount = row.Amount,
+                    Type = row.ChargeType.ToString(),
                     Created = row.Created,
                     FileLink = row.FileLink
                 }));

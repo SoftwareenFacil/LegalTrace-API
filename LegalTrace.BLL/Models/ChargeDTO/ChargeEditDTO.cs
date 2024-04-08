@@ -1,4 +1,6 @@
-﻿namespace LegalTrace.BLL.Models.ChargeDTO
+﻿using LegalTrace.DAL.Models;
+
+namespace LegalTrace.BLL.Models.ChargeDTO
 {
     public class ChargeEditDTO
     {
@@ -9,5 +11,6 @@
         public DateTime Date { get; set; }
         public int Amount { get; set; }
         public string FileLink { get; set; } = string.Empty;
+        public ChargeType? chargeType { get; set; } 
     }
 }
