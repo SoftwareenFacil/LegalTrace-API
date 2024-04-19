@@ -49,8 +49,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 userTask.UserId = userTaskEdited.UserId > 0 ? userTaskEdited.UserId : userTask.UserId;
                 userTask.ClientId = userTaskEdited.ClientId > 0 ? userTaskEdited.ClientId : userTask.ClientId;
                 userTask.Finished = (userTaskEdited.Finished != null) ? (bool)userTaskEdited.Finished : userTask.Finished;
-                DateTime utcNow = DateTime.UtcNow;
-                userTask.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
+                userTask.Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
                 var isUpdated = await userTaskController.UpdateUserTask(userTask);
                 if (!isUpdated)
                     return -4;

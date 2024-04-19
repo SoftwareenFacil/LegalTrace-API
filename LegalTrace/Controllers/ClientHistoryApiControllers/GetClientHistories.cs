@@ -15,10 +15,10 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
             _context = dbContext;
             _responseService = new ResponseService();
         }
-        public async Task<IActionResult> GetBy(int id)
+        public async Task<IActionResult> GetBy(int id, DateTime? createdFrom, DateTime? createdTo)
         {
             var clientHistoryGetter = new GetClientHistoryController(_context);
-            var clientHistories = await clientHistoryGetter.GetClientHistoryById(id);
+            var clientHistories = await clientHistoryGetter.GetClientHistory(id, createdFrom, createdTo);
             if (clientHistories.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200,clientHistories, "Success when searching for client histories"));

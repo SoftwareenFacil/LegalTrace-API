@@ -16,7 +16,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             var response = await _context.UserTasks.Where(userTaskAux => userTaskAux.Id.Equals(id)).FirstOrDefaultAsync();
             return response;
         }
-        public async Task<List<UserTask>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency, DateTime? createdFrom, DateTime? createdTo)
+        public async Task<List<UserTask>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency,bool? finished, DateTime? createdFrom, DateTime? createdTo)
         {
             if (id.HasValue)
             {
@@ -50,6 +50,9 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
 
             if (vigency.HasValue)
                 query = query.Where(userTask => userTask.Vigency == vigency.Value);
+
+            if (finished.HasValue)
+                query = query.Where(userTask => userTask.Finished == finished.Value);
 
             if (createdFrom.HasValue)
                 query = query.Where(userTask => userTask.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc));

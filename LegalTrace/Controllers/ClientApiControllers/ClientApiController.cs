@@ -15,10 +15,10 @@ namespace LegalTrace.Controllers.ClientApiControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClients(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
+        public async Task<IActionResult> GetClients(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             var userGetter = new GetClients(_context);
-            return await userGetter.GetBy(id, name, email, taxId, created, vigency);
+            return await userGetter.GetBy(id, name, email, taxId, createdFrom, createdTo, vigency);
         }
         [SuperAdminRequired]
 

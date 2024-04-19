@@ -13,10 +13,10 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
             _context = _dbContext;
         }
 
-        public async Task<List<ClientHistoryDTO>> GetClientHistoryById(int id)
+        public async Task<List<ClientHistoryDTO>> GetClientHistory(int id, DateTime? createdFrom, DateTime? createdTo)
         {
             var clientHistoryController = new ClientHistoryController(_context);
-            var clientHistories = await clientHistoryController.GetClientHistoryBy(id);
+            var clientHistories = await clientHistoryController.GetClientHistoryBy(id, createdFrom, createdTo);
             if (clientHistories.Count() > 0)
             {
                 List<ClientHistoryDTO> result = new List<ClientHistoryDTO>();

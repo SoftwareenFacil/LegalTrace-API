@@ -19,7 +19,7 @@ namespace LegalTrace.BLL.Controllers.PdfControllers
         public async Task<string?> GetUserPdfPath(int? id, string? name, string? email, DateTime? created, bool? vigency)
         {
             var userController = new UserController(_context);
-            var users = await userController.GetUserBy(id, name, email, created, vigency);
+            var users = await userController.GetUserBy(id, name, email, created, null, vigency);
             if (users.Count() > 0)
             {
                 List<UserDTO> pdfUsers = new List<UserDTO>();

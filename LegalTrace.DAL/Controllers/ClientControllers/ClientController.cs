@@ -24,7 +24,7 @@ namespace LegalTrace.DAL.Controllers.ClientControllers
             return client;
         }
 
-        public async Task<List<Client>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
+        public async Task<List<Client>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             if (id.HasValue)
             {
@@ -42,30 +42,23 @@ namespace LegalTrace.DAL.Controllers.ClientControllers
             var query = _context.Clients.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
-            {
                 query = query.Where(u => EF.Functions.Like(u.Name, $"%{name}%"));
-            }
 
             if (!string.IsNullOrWhiteSpace(email))
-            {
                 query = query.Where(u => EF.Functions.Like(u.Email, $"%{email}%"));
-            }
 
             if (!string.IsNullOrWhiteSpace(taxId))
-            {
                 query = query.Where(u => EF.Functions.Like(u.TaxId, $"%{taxId}%"));
-            }
 
-            if (created.HasValue)
-            {
-                query = query.Where(u => u.Created >= created.Value)
+            if (createdFrom.HasValue)
+                query = query.Where(u => u.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc))
                              .OrderBy(u => u.Created);
-            }
+            if (createdTo.HasValue)
+                query = query.Where(u => u.Created <= DateTime.SpecifyKind(createdTo.Value, DateTimeKind.Utc))
+                             .OrderBy(u => u.Created);
 
             if (vigency.HasValue)
-            {
                 query = query.Where(u => u.Vigency == vigency.Value);
-            }
 
             return await query.Take(100).ToListAsync();
         }
