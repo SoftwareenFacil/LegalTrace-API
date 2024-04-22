@@ -52,6 +52,8 @@ jobs:
             echo "Container deployed"
   migration:
     runs-on: ubuntu-latest
+    env:
+      DB_NAME: legalcont
     needs: deploy
     steps:
       - name: Migrate to Postgres
