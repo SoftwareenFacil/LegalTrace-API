@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LegalTrace.DAL\LegalTrace.DAL.csproj" />
+    <ProjectReference Include="..\LegalTrace.Drive\LegalTrace.GoogleDrive.csproj" />
     <ProjectReference Include="..\LegalTrace.PDF\LegalTrace.PDF.csproj" />
   </ItemGroup>
 

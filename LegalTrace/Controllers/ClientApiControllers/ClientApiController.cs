@@ -4,7 +4,6 @@ using LegalTrace.BLL.Models.ClientDTO;
 
 namespace LegalTrace.Controllers.ClientApiControllers
 {
-    [SuperAdminRequired]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class ClientApiController : ControllerBase
@@ -16,11 +15,12 @@ namespace LegalTrace.Controllers.ClientApiControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClients(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
+        public async Task<IActionResult> GetClients(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             var userGetter = new GetClients(_context);
-            return await userGetter.GetBy(id, name, email, taxId, created, vigency);
+            return await userGetter.GetBy(id, name, email, taxId, createdFrom, createdTo, vigency);
         }
+        [SuperAdminRequired]
 
         [HttpPost]
         public async Task<IActionResult> InsertClient([FromBody] ClientInsertDTO client)
@@ -28,6 +28,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
             var add = new InsertClient(_context);
             return await add.Insert(client);
         }
+        [SuperAdminRequired]
 
         [HttpPut]
         public async Task<IActionResult> UpdateClient([FromBody] ClientEditDTO clientEdited)
@@ -35,6 +36,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
             var updater = new UpdateClient(_context);
             return await updater.Update(clientEdited);
         }
+        [SuperAdminRequired]
 
         [HttpPut]
         public async Task<IActionResult> UpdateClientVigency(int id)
@@ -42,6 +44,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
             var updater = new UpdateClient(_context);
             return await updater.UpdateVigency(id);
         }
+        [SuperAdminRequired]
 
         [HttpDelete]
         public async Task<IActionResult> DeleteClient(int id)

@@ -25,7 +25,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                 {
                     clientHistory.Title = !string.IsNullOrEmpty(clientHistoryEdited.Title) ? clientHistoryEdited.Title : clientHistory.Title;
                     clientHistory.Description = !string.IsNullOrEmpty(clientHistoryEdited.Description) ? clientHistoryEdited.Description : clientHistory.Description;
-                    clientHistory.EventDate = (clientHistoryEdited.EventDate > DateTime.Now) ? clientHistoryEdited.EventDate : clientHistory.EventDate;
+                    clientHistory.EventDate = clientHistoryEdited.EventDate != null ? DateTime.SpecifyKind(clientHistoryEdited.EventDate, DateTimeKind.Utc) : clientHistory.EventDate;
                     DateTime utcNow = DateTime.UtcNow;
                     clientHistory.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
 

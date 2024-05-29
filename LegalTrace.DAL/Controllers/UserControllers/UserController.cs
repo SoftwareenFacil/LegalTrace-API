@@ -1,11 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegalTrace.DAL.Controllers.UserControllers
 {
@@ -26,7 +21,7 @@ namespace LegalTrace.DAL.Controllers.UserControllers
             var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
             return user;
         }
-        public async Task<List<User>> GetUserBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
+        public async Task<List<User>> GetUserBy(int? id, string? name, string? email, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             if (id.HasValue)
             {
@@ -44,25 +39,20 @@ namespace LegalTrace.DAL.Controllers.UserControllers
             var query = _context.Users.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
-            {
                 query = query.Where(u => EF.Functions.Like(u.Name, $"%{name}%"));
-            }
 
             if (!string.IsNullOrWhiteSpace(email))
-            {
                 query = query.Where(u => EF.Functions.Like(u.Email, $"%{email}%"));
-            }
 
-            if (created.HasValue)
-            {
-                query = query.Where(u => u.Created > created.Value)
+            if (createdFrom.HasValue)
+                query = query.Where(u => u.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc))
                              .OrderBy(u => u.Created);
-            }
+            if (createdTo.HasValue)
+                query = query.Where(u => u.Created <= DateTime.SpecifyKind(createdTo.Value, DateTimeKind.Utc))
+             .OrderBy(u => u.Created);
 
             if (vigency.HasValue)
-            {
                 query = query.Where(u => u.Vigency == vigency.Value);
-            }
 
             return await query.Take(100).ToListAsync();
         }

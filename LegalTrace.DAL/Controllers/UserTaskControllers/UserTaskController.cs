@@ -1,11 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegalTrace.DAL.Controllers.UserTaskControllers
 {
@@ -21,7 +16,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             var response = await _context.UserTasks.Where(userTaskAux => userTaskAux.Id.Equals(id)).FirstOrDefaultAsync();
             return response;
         }
-        public async Task<List<UserTask>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency)
+        public async Task<List<UserTask>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency,bool? finished, DateTime? createdFrom, DateTime? createdTo)
         {
             if (id.HasValue)
             {
@@ -39,33 +34,41 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             var query = _context.UserTasks.AsQueryable();
 
             if (userId.HasValue)
-            {
                 query = query.Where(userTask => userTask.UserId == userId.Value);
-            }
 
             if (clientId.HasValue)
-            {
                 query = query.Where(userTask => userTask.ClientId == clientId.Value);
-            }
 
             if (dueDate.HasValue)
             {
                 var dueDateOnly = dueDate.Value.Date;
-                query = query.Where(userTask => userTask.DueDate.Date == dueDateOnly);
+                query = query.Where(userTask => userTask.DueDate.Date >= dueDateOnly);
             }
 
             if (repeatable.HasValue)
-            {
                 query = query.Where(userTask => userTask.Repeatable == repeatable.Value);
-            }
 
             if (vigency.HasValue)
-            {
                 query = query.Where(userTask => userTask.Vigency == vigency.Value);
-            }
 
-            var userTasks = await query.ToListAsync();
-            return userTasks;
+            if (finished.HasValue)
+                query = query.Where(userTask => userTask.Finished == finished.Value);
+
+            if (createdFrom.HasValue)
+                query = query.Where(userTask => userTask.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc));
+            if (createdTo.HasValue)
+                query = query.Where(userTask => userTask.Created <= DateTime.SpecifyKind(createdTo.Value, DateTimeKind.Utc));
+
+            try
+            {
+                var userTasks = await query.ToListAsync();
+                return userTasks;
+            }
+            catch(Exception ex)
+            {
+                return new List<UserTask>();
+            }
+            
         }
         public async Task<List<UserTask>> GetRepeatableUserTasks()
         {

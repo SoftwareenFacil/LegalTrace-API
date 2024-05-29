@@ -26,7 +26,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 {
                     userTask.Vigency = false;
                     userTask.Repeatable = false;
-                    
+                    userTask.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
                     var userTaskCreate = new UserTask()
                     {
                         UserId = userTask.UserId,

@@ -12,10 +12,10 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
             _context = _dbContext;
         }
 
-        public async Task<List<ClientDTO>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? created, bool? vigency)
+        public async Task<List<ClientDTO>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             var clientController = new ClientController(_context);
-            var clients = await clientController.GetClientBy(id, name, email, taxId, created, vigency);
+            var clients = await clientController.GetClientBy(id, name, email, taxId, createdFrom, createdTo, vigency);
             if (clients.Count() > 0)
             {
                 List<ClientDTO> result = new List<ClientDTO>();

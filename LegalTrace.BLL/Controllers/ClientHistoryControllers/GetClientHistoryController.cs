@@ -1,6 +1,7 @@
 ﻿using LegalTrace.BLL.Models.ClientHistoryDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientHistoryControllers;
+using System.Data;
 
 namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
 {
@@ -12,10 +13,10 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
             _context = _dbContext;
         }
 
-        public async Task<List<ClientHistoryDTO>> GetClientHistoryById(int id)
+        public async Task<List<ClientHistoryDTO>> GetClientHistory(int id, DateTime? createdFrom, DateTime? createdTo)
         {
             var clientHistoryController = new ClientHistoryController(_context);
-            var clientHistories = await clientHistoryController.GetClientHistoryBy(id);
+            var clientHistories = await clientHistoryController.GetClientHistoryBy(id, createdFrom, createdTo);
             if (clientHistories.Count() > 0)
             {
                 List<ClientHistoryDTO> result = new List<ClientHistoryDTO>();
@@ -26,6 +27,7 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
                     Title = row.Title,
                     Description = row.Description,
                     EventDate = row.EventDate,
+                    Created = row.Created,
                     Vigency = row.Vigency
                 }));
                 return result;

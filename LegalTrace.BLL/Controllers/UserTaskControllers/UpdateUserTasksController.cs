@@ -18,7 +18,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
         public async Task<int> UpdateUserTask(UserTaskEditDTO userTaskEdited)
         {
 
-            if (string.IsNullOrWhiteSpace(userTaskEdited.Title) && string.IsNullOrWhiteSpace(userTaskEdited.Description) && string.IsNullOrWhiteSpace(userTaskEdited.Type) && userTaskEdited.DueDate <= DateTime.Now && userTaskEdited.UserId == 0 && userTaskEdited.ClientId == 0 )
+            if (string.IsNullOrWhiteSpace(userTaskEdited.Title) && string.IsNullOrWhiteSpace(userTaskEdited.Description) && string.IsNullOrWhiteSpace(userTaskEdited.Type) && userTaskEdited.DueDate == null && userTaskEdited.UserId == 0 && userTaskEdited.ClientId == 0 )
 
                 return 500;
 
@@ -44,12 +44,12 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
                 userTask.Title = !string.IsNullOrEmpty(userTaskEdited.Title) ? userTaskEdited.Title : userTask.Title;
                 userTask.Description = !string.IsNullOrEmpty(userTaskEdited.Description) ? userTaskEdited.Description : userTask.Description;
-                userTask.DueDate = (userTaskEdited.DueDate > DateTime.Now) ? userTaskEdited.DueDate : userTask.DueDate;
+                userTask.DueDate = (((DateTime)userTaskEdited.DueDate) > DateTime.Now) ? DateTime.SpecifyKind((DateTime)userTaskEdited.DueDate, DateTimeKind.Utc) : userTask.DueDate;
                 userTask.Type = userTaskEdited.Type;
                 userTask.UserId = userTaskEdited.UserId > 0 ? userTaskEdited.UserId : userTask.UserId;
                 userTask.ClientId = userTaskEdited.ClientId > 0 ? userTaskEdited.ClientId : userTask.ClientId;
-                DateTime utcNow = DateTime.UtcNow;
-                userTask.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
+                userTask.Finished = (userTaskEdited.Finished != null) ? (bool)userTaskEdited.Finished : userTask.Finished;
+                userTask.Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
                 var isUpdated = await userTaskController.UpdateUserTask(userTask);
                 if (!isUpdated)
                     return -4;

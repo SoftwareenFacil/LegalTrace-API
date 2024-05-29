@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LegalTrace.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240226144634_Add-object-vigency")]
-    partial class Addobjectvigency
+    [Migration("20240408135407_addchargeType")]
+    partial class addchargeType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,49 @@ namespace LegalTrace.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("LegalTrace.DAL.Models.Charge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ChargeType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("charges");
+                });
 
             modelBuilder.Entity("LegalTrace.DAL.Models.Client", b =>
                 {
@@ -191,13 +234,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 2, 26, 14, 46, 34, 614, DateTimeKind.Utc).AddTicks(9527),
+                            Created = new DateTime(2024, 4, 8, 13, 54, 7, 791, DateTimeKind.Utc).AddTicks(5020),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "fQOYLTD6xbVSvc8oc5dOctuDVxZNUjHPArc41YTWWw++dxcD",
+                            Password = "jd+zH6H8nuEWQkio/Xd4kNNdKyYKpuNR6PwNXzYQGFdCXNo7",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 2, 26, 14, 46, 34, 614, DateTimeKind.Utc).AddTicks(9533),
+                            Updated = new DateTime(2024, 4, 8, 13, 54, 7, 791, DateTimeKind.Utc).AddTicks(5022),
                             Vigency = true
                         });
                 });

@@ -21,10 +21,10 @@ namespace LegalTrace.Controllers.UserApiControllers
 
         }
 
-        public async Task<IActionResult> GetBy(int? id, string? name, string? email, DateTime? created, bool? vigency)
+        public async Task<IActionResult> GetBy(int? id, string? name, string? email, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             var userGetter = new GetUsersController(_context);
-            var users = await userGetter.GetUsersBy(id,name,email,created,vigency);
+            var users = await userGetter.GetUsersBy(id,name,email,createdFrom, createdTo,vigency);
             if(users.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, users, "Success when searching for users"));

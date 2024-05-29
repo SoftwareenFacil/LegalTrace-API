@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using LegalTrace.BLL.Controllers.JwtControllers;
 using DinkToPdf.Contracts;
 using DinkToPdf;
+using Microsoft.Extensions.Configuration;
 
 namespace LegalTrace
 {
@@ -51,32 +52,26 @@ namespace LegalTrace
                         )
                     };
                 });
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
             builder.Services.AddScoped<IManejoJwt, ManejoJwt>();
             builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             var app = builder.Build();
-            app.UseCors("MyAllowSpecificOrigins");
 
-            app.Use((context, next) =>
-            {
-                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                return next.Invoke();
-            });
-
+            
+            app.UseExceptionHandler("/Error");
+            app.UseHttpsRedirection();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 
             }
-            app.UseExceptionHandler("/Error");
-            app.UseHttpsRedirection();
-
+            app.UseRouting();
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+            app.UseCors("MyAllowSpecificOrigins");
             app.MapControllers();
 
             app.Run();

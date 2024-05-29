@@ -15,19 +15,25 @@ namespace LegalTrace.BLL.Controllers.ClientHistoryControllers
 
         public async Task<int> AddClientHistory(ClientHistoryInsertDTO clientHistory)
         {
-            DateTime utcNow = DateTime.UtcNow;
-            var clientHistoryController = new ClientHistoryController(_context);
-            var clientHistoryCreate = new ClientHistory()
+            if (clientHistory.EventDate <= DateTime.Now && !string.IsNullOrEmpty(clientHistory.Title) && !string.IsNullOrEmpty(clientHistory.Description))
             {
-                ClientId = clientHistory.ClientId,
-                Title = clientHistory.Title,
-                Description = clientHistory.Description,
-                EventDate = clientHistory.EventDate,
-                Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
-                Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
-                Vigency = true
-            };
-            return await clientHistoryController.InsertClientHistory(clientHistoryCreate);
+
+                DateTime utcNow = DateTime.UtcNow;
+                var clientHistoryController = new ClientHistoryController(_context);
+                var clientHistoryCreate = new ClientHistory()
+                {
+                    ClientId = clientHistory.ClientId,
+                    Title = clientHistory.Title,
+                    Description = clientHistory.Description,
+                    EventDate = DateTime.SpecifyKind(clientHistory.EventDate, DateTimeKind.Utc),
+                    Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                    Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
+                    Vigency = true
+                };
+                return await clientHistoryController.InsertClientHistory(clientHistoryCreate);
+            }
+
+            return 0;
         }
     }
 }

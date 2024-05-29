@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LegalTrace.Controllers.ClientHistoryApiControllers
 {
-    [SuperAdminRequired]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class ClientHistoryApiController : ControllerBase
@@ -16,10 +15,10 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClientHistories(int id)
+        public async Task<IActionResult> GetClientHistories(int id, DateTime? createdFrom, DateTime? createdTo)
         {
             var clientHistoryGetter = new GetClientHistories(_context);
-            return await clientHistoryGetter.GetBy(id);
+            return await clientHistoryGetter.GetBy(id, createdFrom, createdTo);
         }
 
         [HttpPost]
