@@ -54,4 +54,3 @@ ENV ASPNETCORE_URLS=http://+:5108;
 EXPOSE 5108
 
 CMD dotnet "./$ENV_APP_NAME.dll"
-
