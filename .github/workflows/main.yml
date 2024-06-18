@@ -20,7 +20,6 @@ jobs:
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
       
       - name: Editing connectionString
-        uses: microsoft/variable-substitution@v1 
         run: |
           sed -i 's|"WebApiDatabase": "***"|"WebApiDatabase": "'${{ secrets.CONNECTION_STRING }}'"|g' '${{ env.FOLDER_NAME }}/appsettings.json'
           
