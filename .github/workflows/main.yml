@@ -12,7 +12,7 @@ jobs:
     env: 
       IMAGE_NAME: backend
       FOLDER_NAME: LegalTrace
-      DB_NAME: legalcont
+      DB_NAME: Legal-Cont
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
         run: sudo apt-get install -y jq
 
       - name: Debug Environment Variables
-        run: echo "CONNECTION_STRING=${{ secrets.CONNECTION_STRING }}"
+        run: echo "CONNECTION_STRING=${{ vars.CONNECTION_STRING }}"
 
       - name: Output appsettings.json before substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
@@ -30,7 +30,7 @@ jobs:
         run: |
           jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' && mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
-          CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+          CONNECTION_STRING: ${{ vars.CONNECTION_STRING }}
 
 
 
