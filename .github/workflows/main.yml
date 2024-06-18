@@ -16,14 +16,20 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Output appsettings.json before substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
       
-      - name: Editing connectionString       
+      - name: Substitute connection string
         run: |
-          export WEB_API_DATABASE="${{ secrets.CONNECTION_STRING }}"
-          envsubst < '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.subst.json'
-          mv '${{ env.FOLDER_NAME }}/appsettings.subst.json' '${{ env.FOLDER_NAME }}/appsettings.json'
+          jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' 
+          mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
+        env:
+          CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+
 
       - name: Output appsettings.json after substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
