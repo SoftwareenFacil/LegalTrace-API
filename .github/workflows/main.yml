@@ -21,7 +21,9 @@ jobs:
       
       - name: Editing connectionString       
         run: |
-          sed -i 's|"WebApiDatabase": "***"|"WebApiDatabase": "'"${{ secrets.CONNECTION_STRING }}"'"|g' '${{ env.FOLDER_NAME }}/appsettings.json'
+          export WEB_API_DATABASE=${{ secrets.CONNECTION_STRING }}
+          envsubst < '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.subst.json'
+          mv '${{ env.FOLDER_NAME }}/appsettings.subst.json' '${{ env.FOLDER_NAME }}/appsettings.json'
 
       - name: Output appsettings.json after substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
