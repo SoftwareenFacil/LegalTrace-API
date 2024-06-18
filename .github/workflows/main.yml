@@ -20,15 +20,18 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
+      - name: Debug Environment Variables
+        run: echo "CONNECTION_STRING=${{ secrets.CONNECTION_STRING }}"
+
       - name: Output appsettings.json before substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
       
       - name: Substitute connection string
         run: |
-          jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' 
-          mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
+          jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' && mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
           CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+
 
 
       - name: Output appsettings.json after substitution
