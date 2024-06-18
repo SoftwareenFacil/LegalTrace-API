@@ -26,7 +26,7 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
             return response;
         }
 
-        public async Task<List<Charge>> GetChargeBy(int? id, int? clientId, DateTime? date, string? title, int? amount)
+        public async Task<List<Charge>> GetChargeBy(int? id, int? clientId, DateTime? date, string? title, int? amount, int? type)
         {
             if (id.HasValue)
             {
@@ -44,14 +44,10 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
             var query = _context.Charges.AsQueryable();
 
             if (clientId.HasValue)
-            {
                 query = query.Where(charge => charge.ClientId == clientId.Value);
-            }
 
             if (!string.IsNullOrWhiteSpace(title))
-            {
                 query = query.Where(u => EF.Functions.Like(u.Title, $"%{title}%"));
-            }
 
             if (date.HasValue)
             {
@@ -66,6 +62,8 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
                 var upperBound = amount.Value + 10;
                 query = query.Where(charge => charge.Amount >= lowerBound && charge.Amount <= upperBound);
             }
+            if (type.HasValue)
+                query = query.Where(charge => charge.ChargeType == (ChargeType)type);
 
 
             return await query.Take(100).ToListAsync();

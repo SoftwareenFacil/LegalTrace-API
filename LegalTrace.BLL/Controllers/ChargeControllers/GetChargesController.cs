@@ -11,10 +11,10 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
         {
             _context = _dbContext;
         }
-        public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, string? title, int? amount)
+        public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, string? title, int? amount, int? type)
         {
             var chargeController = new ChargeController(_context);
-            var charges = await chargeController.GetChargeBy(id, clientId,date,title,amount);
+            var charges = await chargeController.GetChargeBy(id, clientId,date,title,amount,type);
             if (charges.Count() > 0)
             {
                 List<ChargeDTO> result = new List<ChargeDTO>();
