@@ -25,10 +25,6 @@ jobs:
           jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' && mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
           CONNECTION_STRING: ${{ vars.CONNECTION_STRING }}
-
-      - name: Output appsettings.json after substitution
-        run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
-
       - name: Build Docker Image
         run: |
           cat '${{ env.FOLDER_NAME }}/appsettings.json'
@@ -36,7 +32,7 @@ jobs:
         
       - name: Push Docker Image to Registry
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker login -u ${{ secrets.DOCKER_USERNAME }} --password ${{secrets.DOCKER_PASSWORD}}
           docker tag ${{env.IMAGE_NAME}} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
 
