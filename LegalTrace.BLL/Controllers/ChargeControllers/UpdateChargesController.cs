@@ -19,7 +19,8 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
         }
         public async Task<int> UpdateCharge(ChargeEditDTO chargeEdited)
         {
-            if (chargeEdited.Amount <= 0 && string.IsNullOrWhiteSpace(chargeEdited.Title) && string.IsNullOrWhiteSpace(chargeEdited.Description) && chargeEdited.Date > DateTime.Now && chargeEdited.Amount == 0 && chargeEdited.ClientId == 0)
+            if (chargeEdited.Amount <= 0 && string.IsNullOrWhiteSpace(chargeEdited.Title) && string.IsNullOrWhiteSpace(chargeEdited.Description)
+                && chargeEdited.Amount == 0 && chargeEdited.ClientId == 0)
                 return 400;
 
             var chargeController = new ChargeController(_context);
@@ -50,9 +51,7 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                 charge.Title = !string.IsNullOrEmpty(chargeEdited.Title) ? chargeEdited.Title : charge.Title;
                 charge.Description = !string.IsNullOrEmpty(chargeEdited.Description) ? chargeEdited.Description : charge.Description;
                 charge.Amount = chargeEdited.Amount > 0 ? chargeEdited.Amount : charge.Amount;
-                DateTime utcNow = DateTime.UtcNow;
-                charge.Date = (DateTime)(chargeEdited.Date != null ? chargeEdited.Date : charge.Date);
-                charge.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
+                charge.Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
 
                 var isUpdated = await chargeController.UpdateCharge(charge);
                 if (!isUpdated)

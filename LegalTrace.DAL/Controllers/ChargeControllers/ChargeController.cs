@@ -57,7 +57,7 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
             {
                 var dateOnlyStart = date.Value.Date;
                 var dateOnlyEnd = date.Value.Date.AddDays(1); 
-                query = query.Where(charge => charge.Date >= dateOnlyStart && charge.Date < dateOnlyEnd);
+                query = query.Where(charge => charge.Created >= dateOnlyStart && charge.Created < dateOnlyEnd);
             }
 
             if (amount.HasValue)
@@ -100,7 +100,7 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
                 response.ClientId = charge.ClientId;
                 response.Title = charge.Title;
                 response.Description = charge.Description;
-                response.Date = charge.Date;
+                response.Created = charge.Created;
                 response.Amount = charge.Amount;
                 response.FileLink = charge.FileLink;
                 response.Updated = charge.Updated;

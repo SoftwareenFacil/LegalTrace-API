@@ -27,18 +27,16 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
             if (!string.IsNullOrEmpty(charge.Title) && !string.IsNullOrEmpty(charge.Description) && !string.IsNullOrEmpty(FileLink) && charge.Amount > 0)
             {
                 var chargeController = new ChargeController(_context);
-                DateTime utcNow = DateTime.UtcNow;
                 var chargeCreate = new Charge()
                 {
                     ClientId = charge.ClientId,
                     Title = charge.Title,
                     Description = charge.Description,
-                    Date = DateTime.SpecifyKind(charge.Date, DateTimeKind.Utc),
                     Amount = charge.Amount,
                     FileLink = FileLink,
                     ChargeType = ((int)charge.chargeType >= 3) ? 0 : charge.chargeType,
-                    Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
-                    Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc)
+                    Created = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+                    Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc)
                 };
                 return await chargeController.InsertCharge(chargeCreate);
             }

@@ -42,9 +42,17 @@ namespace LegalTrace.Controllers.ChargeApiControllers
                 return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "String is empty or not found", "Insert rejected"));
             var library = new GoogleDriveLibrary(_gdrivefileLoc, _googleAppName);
             var file = await library.DownloadFile(id);
-            var fileString = library.TransformMemoryStreamToString(file);
-            if(!string.IsNullOrEmpty(fileString))
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, fileString, "Success"));
+            var fileString = library.TransformMemoryStreamToString(file.Item3);
+            if (!string.IsNullOrEmpty(fileString))
+            {
+                var FileInfo = new GoogleDrive.Models.GoogleFileDTO()
+                {
+                    Name = file.Item1,
+                    Type = file.Item2,
+                    FileString = fileString
+                };
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, FileInfo, "Success"));
+            }
             return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to retrieve file"));
         }
         public async Task<IActionResult> GetBy(int? id, int? clientId, DateTime? date, string? title, int? amount)

@@ -231,13 +231,13 @@ namespace LegalTrace.DAL.Migrations
                         {
                             Id = 1,
                             Address = "",
-                            Created = new DateTime(2024, 4, 8, 13, 54, 7, 791, DateTimeKind.Utc).AddTicks(5020),
+                            Created = new DateTime(2024, 6, 18, 12, 8, 59, 339, DateTimeKind.Utc).AddTicks(9141),
                             Email = "admin@admin.cl",
                             Name = "admin",
-                            Password = "jd+zH6H8nuEWQkio/Xd4kNNdKyYKpuNR6PwNXzYQGFdCXNo7",
+                            Password = "UzNLj3IXA35IMy1EL36TgsXvZsz0r5d1UtY4sAkDc5x+21PF",
                             Phone = 0,
                             SuperAdmin = true,
-                            Updated = new DateTime(2024, 4, 8, 13, 54, 7, 791, DateTimeKind.Utc).AddTicks(5022),
+                            Updated = new DateTime(2024, 6, 18, 12, 8, 59, 339, DateTimeKind.Utc).AddTicks(9143),
                             Vigency = true
                         });
                 });

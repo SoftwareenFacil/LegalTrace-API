@@ -57,23 +57,6 @@ namespace LegalTrace.GoogleDrive
             {
                 fileMetadata.Parents = new List<string> { parentFolderID };
             }
-            //else
-            //{
-            //    string folderName = "Archivos Generales";
-
-            //    // Define the request for searching the folder
-            //    var folderRequest = service.Files.List();
-            //    folderRequest.Q = $"mimeType='application/vnd.google-apps.folder' and name='{folderName}' and trashed=false";
-            //    folderRequest.Fields = "files(id, name)";
-
-            //    // Execute the request
-            //    var folderResult = await folderRequest.ExecuteAsync();
-
-            //    // Get the ID of the folder
-            //    parentFolderID = folderResult.Files[0].Id;
-            //    fileMetadata.Parents = new List<string> { parentFolderID };
-
-            //}
             streamContent.Position = 0;
             var request = service.Files.Create(fileMetadata, streamContent, contentType);
             var response = await request.UploadAsync();
@@ -174,12 +157,13 @@ namespace LegalTrace.GoogleDrive
         }
 
 
-        public async Task<MemoryStream> DownloadFile(string id)
+        public async Task<(string,string, MemoryStream)> DownloadFile(string id)
         {
             var request = service.Files.Get(id);
             var stream = new MemoryStream();
+            var metadata = request.Execute();
             var filestring = await request.DownloadAsync(stream);
-            return stream;
+            return ( metadata.Name, metadata.MimeType,stream);
         }
 
 

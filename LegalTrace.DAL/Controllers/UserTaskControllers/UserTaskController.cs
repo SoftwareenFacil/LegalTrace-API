@@ -66,7 +66,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             }
             catch(Exception ex)
             {
-                return new List<UserTask>();
+                throw ex;
             }
             
         }

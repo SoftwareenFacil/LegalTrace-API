@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LegalTrace.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,8 @@ namespace LegalTrace.DAL.Migrations
                     Amount = table.Column<int>(type: "integer", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FileLink = table.Column<string>(type: "text", nullable: false)
+                    FileLink = table.Column<string>(type: "text", nullable: false),
+                    ChargeType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,7 +163,7 @@ namespace LegalTrace.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "Id", "Address", "Created", "Email", "Name", "Password", "Phone", "SuperAdmin", "Updated", "Vigency" },
-                values: new object[] { 1, "", new DateTime(2024, 3, 18, 12, 44, 30, 929, DateTimeKind.Utc).AddTicks(4921), "admin@admin.cl", "admin", "e0KaCk2s6ZFpw7pI1Nlf1gZuZWBI3okdn1NzF+hqMNlVvUkJ", 0, true, new DateTime(2024, 3, 18, 12, 44, 30, 929, DateTimeKind.Utc).AddTicks(4922), true });
+                values: new object[] { 1, "", new DateTime(2024, 6, 18, 12, 8, 59, 339, DateTimeKind.Utc).AddTicks(9141), "admin@admin.cl", "admin", "UzNLj3IXA35IMy1EL36TgsXvZsz0r5d1UtY4sAkDc5x+21PF", 0, true, new DateTime(2024, 6, 18, 12, 8, 59, 339, DateTimeKind.Utc).AddTicks(9143), true });
 
             migrationBuilder.CreateIndex(
                 name: "IX_clientHistory_ClientId",

@@ -24,7 +24,6 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                     ClientId = row.ClientId,
                     Title = row.Title,
                     Description = row.Description,
-                    Date = row.Date,
                     Amount = row.Amount,
                     Type = row.ChargeType.ToString(),
                     Created = row.Created,
@@ -48,7 +47,6 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
                     ClientId = charge.ClientId,
                     Title = charge.Title,
                     Description = charge.Description,
-                    Date = charge.Date,
                     Amount = charge.Amount,
                     Created = charge.Created,
                     FileLink = charge.FileLink

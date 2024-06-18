@@ -10,7 +10,7 @@ namespace LegalTrace.GoogleDrive
         Task<string> CreateFolder(string folderName);
         Task<FileList> ListFiles();
 
-        Task<MemoryStream> DownloadFile(string id);
+        Task<(string, string, MemoryStream)> DownloadFile(string id);
 
         Task<string> GetFileIdByName(string fileName, string folderName);
         Task<string> GetFolderIdByName(string folderName);
