@@ -36,6 +36,9 @@ WORKDIR /app
 COPY --from=build /app/out/ ./
 COPY --from=build /app/script.sql /app/script/
 
+# Copy the substituted appsettings.json
+COPY $APP_NAME/appsettings.json /app/appsettings.json
+
 RUN apt-get update
 
 RUN apt-get install wget libgdiplus -y
