@@ -21,7 +21,7 @@ jobs:
       
       - name: Editing connectionString       
         run: |
-          export WEB_API_DATABASE=${{ secrets.CONNECTION_STRING }}
+          export WEB_API_DATABASE="${{ secrets.CONNECTION_STRING }}"
           envsubst < '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.subst.json'
           mv '${{ env.FOLDER_NAME }}/appsettings.subst.json' '${{ env.FOLDER_NAME }}/appsettings.json'
 
