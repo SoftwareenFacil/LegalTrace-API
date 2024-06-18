@@ -19,10 +19,10 @@ jobs:
       - name: Output appsettings.json before substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
       
-      - name: Editing connectionString
+      - name: Editing connectionString       
         run: |
-          sed -i "s|\"WebApiDatabase\": \"\*\*\*\"|\"WebApiDatabase\": \"${{ secrets.CONNECTION_STRING }}\"|g" '${{ env.FOLDER_NAME }}/appsettings.json'
-          
+          sed -i 's|"WebApiDatabase": "***"|"WebApiDatabase": "'"${{ secrets.CONNECTION_STRING }}"'"|g' '${{ env.FOLDER_NAME }}/appsettings.json'
+
       - name: Output appsettings.json after substitution
         run: cat '${{ env.FOLDER_NAME }}/appsettings.json'
 
