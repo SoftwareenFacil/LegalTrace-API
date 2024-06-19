@@ -16,7 +16,7 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             var response = await _context.UserTasks.Where(userTaskAux => userTaskAux.Id.Equals(id)).FirstOrDefaultAsync();
             return response;
         }
-        public async Task<List<UserTask>> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency,bool? finished, DateTime? createdFrom, DateTime? createdTo)
+        public async Task<List<UserTask>> GetUserTaskBy(int? id, string? title, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency,bool? finished, DateTime? createdFrom, DateTime? createdTo)
         {
             if (id.HasValue)
             {
@@ -34,30 +34,33 @@ namespace LegalTrace.DAL.Controllers.UserTaskControllers
             var query = _context.UserTasks.AsQueryable();
 
             if (userId.HasValue)
-                query = query.Where(userTask => userTask.UserId == userId.Value);
+                query = query.Where(x => x.UserId == userId.Value);
+
+            if(!String.IsNullOrEmpty(title))
+                query = query.Where(x => EF.Functions.Like(x.Title, $"%{title}%"));
 
             if (clientId.HasValue)
-                query = query.Where(userTask => userTask.ClientId == clientId.Value);
+                query = query.Where(x => x.ClientId == clientId.Value);
 
             if (dueDate.HasValue)
             {
                 var dueDateOnly = dueDate.Value.Date;
-                query = query.Where(userTask => userTask.DueDate.Date >= dueDateOnly);
+                query = query.Where(x => x.DueDate.Date >= dueDateOnly);
             }
 
             if (repeatable.HasValue)
-                query = query.Where(userTask => userTask.Repeatable == repeatable.Value);
+                query = query.Where(x => x.Repeatable == repeatable.Value);
 
             if (vigency.HasValue)
-                query = query.Where(userTask => userTask.Vigency == vigency.Value);
+                query = query.Where(x => x.Vigency == vigency.Value);
 
             if (finished.HasValue)
-                query = query.Where(userTask => userTask.Finished == finished.Value);
+                query = query.Where(x => x.Finished == finished.Value);
 
             if (createdFrom.HasValue)
-                query = query.Where(userTask => userTask.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc));
+                query = query.Where(x => x.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc));
             if (createdTo.HasValue)
-                query = query.Where(userTask => userTask.Created <= DateTime.SpecifyKind(createdTo.Value, DateTimeKind.Utc));
+                query = query.Where(x => x.Created <= DateTime.SpecifyKind(createdTo.Value, DateTimeKind.Utc));
 
             try
             {

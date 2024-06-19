@@ -9,6 +9,7 @@ namespace LegalTrace.BLL.Models.UserTaskDTO
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public int Repeatable { get; set; }
         public DateTime DueDate { get; set; }
     }
 }

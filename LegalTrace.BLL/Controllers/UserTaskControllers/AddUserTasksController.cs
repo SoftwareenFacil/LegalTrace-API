@@ -37,7 +37,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                             Title = userTask.Title,
                             Description = userTask.Description,
                             Type = userTask.Type,
-                            Repeatable = false,
+                            Repeatable = (userTask.Repeatable == 0 ? false : true),
                             Vigency = true,
                             Created = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),
                             Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc),

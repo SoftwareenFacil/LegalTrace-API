@@ -18,10 +18,10 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
 
         }
 
-        public async Task<IActionResult> GetUserTaskBy(int? id, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency, bool? finished, DateTime? createdFrom, DateTime? createdTo)
+        public async Task<IActionResult> GetUserTaskBy(int? id, string? title, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency, bool? finished, DateTime? createdFrom, DateTime? createdTo)
         {
             var userTasksGetter = new GetUserTasksController(_context);
-            var userTasks = await userTasksGetter.GetUserTaskBy(id, userId, clientId, dueDate, repeatable, vigency, finished, createdFrom, createdTo);
+            var userTasks = await userTasksGetter.GetUserTaskBy(id, title, userId, clientId, dueDate, repeatable, vigency, finished, createdFrom, createdTo);
             if(userTasks.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, userTasks, "Success when searching for user tasks"));
