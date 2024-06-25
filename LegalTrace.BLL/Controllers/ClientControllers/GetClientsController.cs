@@ -1,6 +1,7 @@
-﻿using LegalTrace.BLL.Models.ClientDTO;
-using LegalTrace.DAL.Context;
+﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ClientControllers;
+using LegalTrace.DAL.Models;
+using LegalTrace.PDF.Models;
 
 namespace LegalTrace.BLL.Controllers.ClientControllers
 {
@@ -11,7 +12,29 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
         {
             _context = _dbContext;
         }
+        public async Task<List<ClientDTO>> GetClientsWithNoMovements(DateTime from, DateTime to)
+        {
+            var clientController = new ClientController(_context);
+            var clients = await clientController.GetClientsWithNoMovements(from, to);
+            if (clients.Count() > 0)
+            {
+                List<ClientDTO> result = new List<ClientDTO>();
+                clients.ForEach(row => result.Add(new ClientDTO()
+                {
+                    Id = row.Id,
+                    Name = row.Name,
+                    Email = row.Email,
+                    TaxId = row.TaxId,
+                    Phone = row.Phone,
+                    Address = row.Address,
+                    Created = row.Created,
+                    Vigency = row.Vigency
+                }));
+                return result;
+            }
 
+            return new List<ClientDTO>();
+        }
         public async Task<List<ClientDTO>> GetClientBy(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
             var clientController = new ClientController(_context);

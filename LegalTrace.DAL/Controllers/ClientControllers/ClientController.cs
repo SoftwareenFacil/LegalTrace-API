@@ -11,7 +11,11 @@ namespace LegalTrace.DAL.Controllers.ClientControllers
         {
             _context = _dbContext;
         }
-
+        public async Task<List<Client>> GetClientsWithNoMovements(DateTime from, DateTime to)
+        {
+            var clients = await _context.Clients.Where(p => p.Charges.Any(c => c.Created >= DateTime.SpecifyKind(from, DateTimeKind.Utc) && c.Created <= DateTime.SpecifyKind(to, DateTimeKind.Utc))).ToListAsync();
+            return clients;
+        }
         public async Task<Client> GetClientById(int id)
         {
             var response = await _context.Clients.Where(clientAux => clientAux.Id.Equals(id)).FirstOrDefaultAsync();

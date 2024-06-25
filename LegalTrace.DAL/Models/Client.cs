@@ -26,5 +26,7 @@ namespace LegalTrace.DAL.Models
         public List<UserTask> UserTasks { get; set; }
         public List<Credential> Credentials { get; set; }
         public List<ClientHistory> History { get; set; }
+
+        public List<Charge> Charges { get; set; } 
     }
 }

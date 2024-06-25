@@ -1,6 +1,8 @@
 ﻿using DinkToPdf.Contracts;
 using LegalTrace.DAL.Context;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace LegalTrace.Controllers.PdfApiControllers
 {
@@ -8,19 +10,27 @@ namespace LegalTrace.Controllers.PdfApiControllers
     [ApiController]
     public class PdfApiController : ControllerBase
     {
-        private readonly IConverter _convert;
         private AppDbContext _context;
+        private readonly string _tempFilesLocation;
 
-        public PdfApiController(IConverter convert, AppDbContext dbContext)
+        public PdfApiController(AppDbContext dbContext, IConfiguration configuration)
         {
-            _convert = convert;
             _context = dbContext;
+            _tempFilesLocation = configuration["TemporalFilesLocation"];
         }
         [HttpGet]
-        public async Task<IActionResult> GeneratePdf(int? id, string? name, string? email, DateTime? created, bool? vigency)
+        [Route("MovementsFromClient")]
+        public async Task<IActionResult> GetMonthlyMovementsFromClient(DateTime month, int id)
         {
-            var userPdfGetter = new GetUserPdf(_convert, _context);
-            return await userPdfGetter.GetUserPdfBy(id, name, email, created, vigency);
+            var userPdfGetter = new PdfBLLController(_context, _tempFilesLocation);
+            return await userPdfGetter.GetMonthlyMovementsFromClient(id, month);
+        }
+        [HttpGet]
+        [Route("ClientWithNoMovements")]
+        public async Task<IActionResult> GetClientsWithNoMovementsInMonth(DateTime month)
+        {
+            var userPdfGetter = new PdfBLLController(_context, _tempFilesLocation);
+            return await userPdfGetter.GetClientsWithNoMovementsInMonth(month);
         }
     }
 }

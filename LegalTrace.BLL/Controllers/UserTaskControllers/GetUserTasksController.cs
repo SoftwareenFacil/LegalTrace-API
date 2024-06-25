@@ -4,6 +4,7 @@ using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.UserControllers;
 using LegalTrace.DAL.Controllers.UserTaskControllers;
 using LegalTrace.DAL.Models;
+using LegalTrace.PDF.Models;
 using Microsoft.VisualBasic;
 
 

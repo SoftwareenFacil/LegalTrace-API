@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-namespace LegalTrace.BLL.Models.UserTaskDTO
+﻿
+namespace LegalTrace.PDF.Models
 {
     public class UserTaskDTO
     {
@@ -15,7 +13,7 @@ namespace LegalTrace.BLL.Models.UserTaskDTO
         public bool Repeatable { get; set; }
         public bool Finished { get; set; }
         public bool Vigency { get; set; }
-        
+
         public DateTime Created { get; set; }
         public DateTime DueDate { get; set; }
     }

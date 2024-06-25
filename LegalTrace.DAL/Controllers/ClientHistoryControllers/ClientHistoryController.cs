@@ -1,6 +1,7 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Xml.Linq;
 
 
@@ -21,13 +22,21 @@ namespace LegalTrace.DAL.Controllers.ClientHistoryControllers
             return history;
         }
 
-        public async Task<List<ClientHistory>> GetClientHistoryBy(int id, DateTime? createdFrom, DateTime? createdTo)
+        public async Task<List<ClientHistory>> GetClientHistoryBy(int id,int clientId, DateTime? createdFrom, DateTime? createdTo)
         {
             if (id != 0)
             {
                 var history = await _context.ClientHistory.FirstOrDefaultAsync(u => u.Id == id);
                 return history == null ? new List<ClientHistory>() : new List<ClientHistory> { history };
                 
+            }
+            else if(clientId != 0 && createdFrom != null && createdTo != null)
+            {
+                var history = await _context.ClientHistory.Where(x => x.ClientId == clientId
+                && x.Created >= DateTime.SpecifyKind(createdFrom.Value, DateTimeKind.Utc) 
+                && x.Created <= DateTime.SpecifyKind(createdTo.Value, DateTimeKind.Utc))
+                    .Take(100).ToListAsync();
+                return history;
             }
             else
             {

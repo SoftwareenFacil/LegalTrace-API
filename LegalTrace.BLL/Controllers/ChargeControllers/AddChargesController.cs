@@ -3,9 +3,6 @@ using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ChargeControllers;
 using LegalTrace.GoogleDrive;
 using LegalTrace.DAL.Models;
-using LegalTrace.GoogleDrive;
-using Microsoft.VisualBasic;
-using System.Text;
 
 namespace LegalTrace.BLL.Controllers.ChargeControllers
 {

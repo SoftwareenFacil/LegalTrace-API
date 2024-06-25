@@ -26,7 +26,7 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
             return response;
         }
 
-        public async Task<List<Charge>> GetChargeBy(int? id, int? clientId, DateTime? date, string? title, int? amount, int? type)
+        public async Task<List<Charge>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
             if (id.HasValue)
             {
@@ -52,8 +52,11 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
             if (date.HasValue)
             {
                 var dateOnlyStart = date.Value.Date;
-                var dateOnlyEnd = date.Value.Date.AddDays(1); 
-                query = query.Where(charge => charge.Created >= dateOnlyStart && charge.Created < dateOnlyEnd);
+                query = query.Where(charge => charge.Created >= DateTime.SpecifyKind(dateOnlyStart, DateTimeKind.Utc));
+            }
+            if (dateTo.HasValue)
+            {
+                query = query.Where(charge => charge.Created < DateTime.SpecifyKind(dateTo.Value, DateTimeKind.Utc));
             }
 
             if (amount.HasValue)

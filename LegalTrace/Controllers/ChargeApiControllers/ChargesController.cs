@@ -55,10 +55,10 @@ namespace LegalTrace.Controllers.ChargeApiControllers
             }
             return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to retrieve file"));
         }
-        public async Task<IActionResult> GetBy(int? id, int? clientId, DateTime? date, string? title, int? amount, int? type)
+        public async Task<IActionResult> GetBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
             var chargesGetter = new GetChargesController(_context);
-            var charge = await chargesGetter.GetChargeBy(id, clientId, date, title, amount, type);
+            var charge = await chargesGetter.GetChargeBy(id, clientId, date, dateTo, title, amount, type);
             if (charge.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, charge, "Success when searching for charges"));

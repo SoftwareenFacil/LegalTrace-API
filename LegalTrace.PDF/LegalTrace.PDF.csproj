@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DinkToPdf" Version="1.0.8" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.63" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DOCKER_BUILD)' == 'true'">

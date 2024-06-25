@@ -21,9 +21,9 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCharges(int? id, int? clientId, DateTime? date, string? title, int? amount, int? type)
+        public async Task<IActionResult> GetCharges(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
-            return await _chargesController.GetBy(id, clientId, date, title, amount,type);
+            return await _chargesController.GetBy(id, clientId, date, dateTo, title, amount,type);
         }
 
         [HttpGet]

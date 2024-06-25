@@ -1,6 +1,7 @@
 ﻿using LegalTrace.BLL.Models.ChargeDTO;
 using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Controllers.ChargeControllers;
+using LegalTrace.PDF.Models;
 
 namespace LegalTrace.BLL.Controllers.ChargeControllers
 {
@@ -11,10 +12,10 @@ namespace LegalTrace.BLL.Controllers.ChargeControllers
         {
             _context = _dbContext;
         }
-        public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, string? title, int? amount, int? type)
+        public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
             var chargeController = new ChargeController(_context);
-            var charges = await chargeController.GetChargeBy(id, clientId,date,title,amount,type);
+            var charges = await chargeController.GetChargeBy(id, clientId,date, dateTo, title,amount,type);
             if (charges.Count() > 0)
             {
                 List<ChargeDTO> result = new List<ChargeDTO>();

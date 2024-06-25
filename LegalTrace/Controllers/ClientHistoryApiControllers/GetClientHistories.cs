@@ -18,7 +18,7 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
         public async Task<IActionResult> GetBy(int id, DateTime? createdFrom, DateTime? createdTo)
         {
             var clientHistoryGetter = new GetClientHistoryController(_context);
-            var clientHistories = await clientHistoryGetter.GetClientHistory(id, createdFrom, createdTo);
+            var clientHistories = await clientHistoryGetter.GetClientHistory(id, 0, createdFrom, createdTo);
             if (clientHistories.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200,clientHistories, "Success when searching for client histories"));
