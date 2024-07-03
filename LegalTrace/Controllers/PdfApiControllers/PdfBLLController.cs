@@ -35,10 +35,10 @@ namespace LegalTrace.Controllers.PdfApiControllers
             var clientTasks = await TasksGet.GetUserTaskBy(null, null, null, clientid, null, null, null, null, month, month.AddMonths(1));
             var chargeGet = new GetChargesController(_context);
             var clientCharges = await chargeGet.GetChargeBy(null, clientid, month, month.AddMonths(1), null, null, null);
-            if (clientHistory != null)
+            if (clientHistory.Count > 0 || clientTasks.Count() > 0 || clientCharges.Count() > 0)
             {
                 var PDFer = new PDFReportsController();
-                var fileLocation = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, _TempFolder);
+                var fileLocation = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, _TempFolder);
 
                 if (!System.IO.File.Exists(fileLocation))
                 {
@@ -47,7 +47,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
                 var fileBytes = await System.IO.File.ReadAllBytesAsync(fileLocation);
                 return File(fileBytes, "application/pdf", "Reporte_" + DateTime.Now.ToShortDateString() + ".pdf");
             }
-            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no users with these parameters"));
+            return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no movements for this client"));
         }
         public async Task<IActionResult> GetClientsWithNoMovementsInMonth(DateTime month)
         {

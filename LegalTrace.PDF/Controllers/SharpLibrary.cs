@@ -15,7 +15,7 @@ namespace LegalTrace.PDF.Controllers
             // Create an empty page
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            var FileName = "Clientes_Sin_Movimientos_" + DateTime.Now.ToShortDateString() + ".pdf";
+            var FileName = "Clientes_Sin_Movimientos_" + DateTime.Now.ToString("dd-MM-yyyy") + ".pdf";
             XFont font = new XFont("Verdana", 11, XFontStyle.Regular);
             XFont titleFont = new XFont("Verdana", 16, XFontStyle.Bold);
             XFont columnTitleFont = new XFont("Verdana", 12, XFontStyle.Bold);
@@ -30,7 +30,7 @@ namespace LegalTrace.PDF.Controllers
             yPoint += 30;
             foreach (var client in Clients)
             {
-                string clientLine = $"{client.Id.ToString("00")} - {TrimOrPad(client.Name, 10)} - {TrimOrPad(client.Phone.ToString(), 10)} - {TrimOrPad(client.TaxId, 10):C}";
+                string clientLine = $"{client.Id.ToString("000")} - {TrimOrPad(client.Name, 10)} - {TrimOrPad(client.Phone.ToString(), 10)} - {TrimOrPad(client.TaxId, 10):C}";
                 gfx.DrawString(clientLine, font, XBrushes.Black, new XRect(20, yPoint, page.Width, page.Height), XStringFormats.TopLeft);
                 yPoint += 20;
             }
@@ -40,7 +40,7 @@ namespace LegalTrace.PDF.Controllers
             document.Save(FilePath);
             return FilePath;
         }
-        public string GeneratePdfClientReport(List<ClientHistoryDTO> clienthistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges, string TemporalFolder)
+        public string GeneratePdfClientReport(List<ClientHistoryDTO> clienthistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges,int clientid, string TemporalFolder)
         {
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -49,7 +49,7 @@ namespace LegalTrace.PDF.Controllers
             // Create an empty page
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            var FileName = clienthistory[0].ClientId + "_" + clienthistory[0].Created.ToShortDateString() + "_History.pdf";
+            var FileName = "Cliente_" + clientid.ToString("000") + "_" + clienthistory[0].Created.ToString("dd-MM-yyyy") + "_Reporte.pdf";
             XFont font = new XFont("Verdana", 11, XFontStyle.Regular);
             XFont titleFont = new XFont("Verdana", 16, XFontStyle.Bold);
             XFont subTitleFont = new XFont("Verdana", 14, XFontStyle.Bold);

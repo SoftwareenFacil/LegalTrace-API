@@ -13,8 +13,9 @@ namespace LegalTrace.DAL.Controllers.ClientControllers
         }
         public async Task<List<Client>> GetClientsWithNoMovements(DateTime from, DateTime to)
         {
-            var clients = await _context.Clients.Where(p => p.Charges.Any(c => c.Created >= DateTime.SpecifyKind(from, DateTimeKind.Utc) && c.Created <= DateTime.SpecifyKind(to, DateTimeKind.Utc))).ToListAsync();
-            return clients;
+            var clientsnoCharges = await _context.Clients.Where(p => !p.Charges.Any(c => c.Created >= DateTime.SpecifyKind(from, DateTimeKind.Utc) && c.Created <= DateTime.SpecifyKind(to, DateTimeKind.Utc))).ToListAsync();
+            var clientsnoHistory = await _context.Clients.Where(p => !p.History.Any(c => c.Created >= DateTime.SpecifyKind(from, DateTimeKind.Utc) && c.Created <= DateTime.SpecifyKind(to, DateTimeKind.Utc))).Select(x => x.Id).ToListAsync();
+            return clientsnoCharges.IntersectBy(clientsnoHistory, x => x.Id).ToList();
         }
         public async Task<Client> GetClientById(int id)
         {
