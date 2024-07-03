@@ -40,7 +40,7 @@ namespace LegalTrace.PDF.Controllers
             document.Save(FilePath);
             return FilePath;
         }
-        public string GeneratePdfClientReport(List<ClientHistoryDTO> clienthistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges,int clientid, string TemporalFolder)
+        public string GeneratePdfClientReport(List<ClientHistoryDTO> clienthistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges,int clientid, DateTime month, string TemporalFolder)
         {
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -49,14 +49,14 @@ namespace LegalTrace.PDF.Controllers
             // Create an empty page
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            var FileName = "Cliente_" + clientid.ToString("000") + "_" + clienthistory[0].Created.ToString("dd-MM-yyyy") + "_Reporte.pdf";
+            var FileName = "Cliente_" + clientid.ToString("000") + "_" + month.ToString("dd-MM-yyyy") + "_Reporte.pdf";
             XFont font = new XFont("Verdana", 11, XFontStyle.Regular);
             XFont titleFont = new XFont("Verdana", 16, XFontStyle.Bold);
             XFont subTitleFont = new XFont("Verdana", 14, XFontStyle.Bold);
             XFont columnTitleFont = new XFont("Verdana", 12, XFontStyle.Bold);
             // Draw the Title
             int yPoint = 40;
-            string title = "Reporte Cliente ID: " + clienthistory[0].ClientId + " - Fecha: " + clienthistory[0].Created.Month + "-" + clienthistory[0].Created.Year;
+            string title = "Reporte Cliente ID: " + clientid + " - Fecha: " + month.ToString("MM-yyyy");
             gfx.DrawString(title, titleFont, XBrushes.Black, new XRect(20, yPoint, page.Width, page.Height), XStringFormats.TopLeft);
             yPoint += 40;
 

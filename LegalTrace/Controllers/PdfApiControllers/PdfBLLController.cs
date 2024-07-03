@@ -38,7 +38,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
             if (clientHistory.Count > 0 || clientTasks.Count() > 0 || clientCharges.Count() > 0)
             {
                 var PDFer = new PDFReportsController();
-                var fileLocation = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, _TempFolder);
+                var fileLocation = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, month, _TempFolder);
 
                 if (!System.IO.File.Exists(fileLocation))
                 {
