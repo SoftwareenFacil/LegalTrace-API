@@ -21,10 +21,12 @@ namespace LegalTrace.Controllers.PdfApiControllers
     {
         private readonly AppDbContext _context;
         private readonly ResponseService _responseService;
-        public PdfBLLController(AppDbContext dbContext)
+        private readonly string _logoLoc;
+        public PdfBLLController(AppDbContext dbContext, string logoLoc)
         {
             _context = dbContext;
             _responseService = new ResponseService();
+            _logoLoc = logoLoc;
         }
         public async Task<IActionResult> GetMonthlyMovementsFromClient(int clientid, DateTime month)
         {
@@ -36,7 +38,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
             var clientCharges = await chargeGet.GetChargeBy(null, clientid, month, month.AddMonths(1), null, null, null);
             if (clientHistory.Count > 0 || clientTasks.Count() > 0 || clientCharges.Count() > 0)
             {
-                var PDFer = new PDFReportsController();
+                var PDFer = new PDFReportsController(_logoLoc);
                 var stream = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, month);
 
                 if (!(stream.Length > 0))
@@ -53,7 +55,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
             var getter = await clientsWithNoMovements.GetClientsWithNoMovements(month, month.AddMonths(1));
             if (getter.Count > 0)
             {
-                var PDFer = new PDFReportsController();
+                var PDFer = new PDFReportsController(_logoLoc);
                 var stream = PDFer.drawClientswithNoMovementsReport(getter);
 
                 if (!(stream.Length > 0))
