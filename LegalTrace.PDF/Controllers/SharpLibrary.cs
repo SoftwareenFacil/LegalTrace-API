@@ -7,8 +7,10 @@ namespace LegalTrace.PDF.Controllers
 {
     public class SharpLibrary
     {
-        public string GeneratePdfNoMovementsReport(List<ClientDTO> Clients, string TemporalFolder)
+        public MemoryStream GeneratePdfNoMovementsReport(List<ClientDTO> Clients)
         {
+            var retStream = new MemoryStream();
+
             PdfDocument document = new PdfDocument();
             document.Info.Title = "Reporte Cliente";
 
@@ -35,13 +37,13 @@ namespace LegalTrace.PDF.Controllers
                 yPoint += 20;
             }
 
-            // Save the document
-            string FilePath = Path.Combine(TemporalFolder, FileName);
-            document.Save(FilePath);
-            return FilePath;
+            document.Save(retStream, false);
+            return retStream;
         }
-        public string GeneratePdfClientReport(List<ClientHistoryDTO> clienthistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges,int clientid, DateTime month, string TemporalFolder)
+        public MemoryStream GeneratePdfClientReport(List<ClientHistoryDTO> clienthistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges,int clientid, DateTime month)
         {
+            var retStream = new MemoryStream();
+
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
             document.Info.Title = "Reporte Cliente";
@@ -106,10 +108,8 @@ namespace LegalTrace.PDF.Controllers
                 yPoint += 20;
             }
 
-            // Save the document
-            string FilePath = Path.Combine(TemporalFolder, FileName);
-            document.Save(FilePath);
-            return FilePath;
+            document.Save(retStream, false);
+            return retStream;
         }
         private string TrimOrPad(string value, int length)
         {

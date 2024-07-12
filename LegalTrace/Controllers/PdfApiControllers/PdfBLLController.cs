@@ -13,6 +13,7 @@ using LegalTrace.BLL.Controllers.ChargeControllers;
 using LegalTrace.BLL.Controllers.UserTaskControllers;
 using LegalTrace.DAL.Models;
 using LegalTrace.BLL.Controllers.ClientControllers;
+using System.IO;
 
 namespace LegalTrace.Controllers.PdfApiControllers
 {
@@ -20,12 +21,10 @@ namespace LegalTrace.Controllers.PdfApiControllers
     {
         private readonly AppDbContext _context;
         private readonly ResponseService _responseService;
-        private readonly string _TempFolder;
-        public PdfBLLController(AppDbContext dbContext, string tempFolder)
+        public PdfBLLController(AppDbContext dbContext)
         {
             _context = dbContext;
             _responseService = new ResponseService();
-            _TempFolder = tempFolder;
         }
         public async Task<IActionResult> GetMonthlyMovementsFromClient(int clientid, DateTime month)
         {
@@ -38,14 +37,13 @@ namespace LegalTrace.Controllers.PdfApiControllers
             if (clientHistory.Count > 0 || clientTasks.Count() > 0 || clientCharges.Count() > 0)
             {
                 var PDFer = new PDFReportsController();
-                var fileLocation = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, month, _TempFolder);
+                var stream = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, month);
 
-                if (!System.IO.File.Exists(fileLocation))
+                if (!(stream.Length > 0))
                 {
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "The Pdf File is not found"));
                 }
-                var fileBytes = await System.IO.File.ReadAllBytesAsync(fileLocation);
-                return File(fileBytes, "application/pdf", "Reporte_" + DateTime.Now.ToShortDateString() + ".pdf");
+                return File(stream.ToArray(), "application/pdf", "Reporte_" + DateTime.Now.ToShortDateString() + ".pdf");
             }
             return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no movements for this client"));
         }
@@ -56,14 +54,13 @@ namespace LegalTrace.Controllers.PdfApiControllers
             if (getter.Count > 0)
             {
                 var PDFer = new PDFReportsController();
-                var fileLocation = PDFer.drawClientswithNoMovementsReport(getter, _TempFolder);
-                
-                if (!System.IO.File.Exists(fileLocation))
+                var stream = PDFer.drawClientswithNoMovementsReport(getter);
+
+                if (!(stream.Length > 0))
                 {
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "The Pdf File is not found"));
                 }
-                var fileBytes = await System.IO.File.ReadAllBytesAsync(fileLocation);
-                return File(fileBytes, "application/pdf", "Sin_Movimientos_" + DateTime.Now.ToShortDateString() + ".pdf");
+                return File(stream.ToArray(), "application/pdf", "Sin_Movimientos_" + DateTime.Now.ToShortDateString() + ".pdf");
             }
             return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "There are no users with these parameters"));
         }

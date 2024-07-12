@@ -25,6 +25,14 @@ jobs:
           jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' && mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
           CONNECTION_STRING: ${{ vars.CONNECTION_STRING }}
+
+      - name: Substitute Google Drive File Location
+        uses: microsoft/variable-substitution@v1 
+        with:
+          files: '${{ env.FOLDER_NAME }}/appsettings.json'
+        env:
+          GoogleDriveSecurityLocation : ${{ env.GOOGLE_DRIVE_FILE_LOCATION }}
+
       - name: Build Docker Image
         run: |
           cat '${{ env.FOLDER_NAME }}/appsettings.json'

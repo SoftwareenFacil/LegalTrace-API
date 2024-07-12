@@ -11,25 +11,23 @@ namespace LegalTrace.Controllers.PdfApiControllers
     public class PdfApiController : ControllerBase
     {
         private AppDbContext _context;
-        private readonly string _tempFilesLocation;
 
         public PdfApiController(AppDbContext dbContext, IConfiguration configuration)
         {
             _context = dbContext;
-            _tempFilesLocation = configuration["TemporalFilesLocation"];
         }
         [HttpGet]
         [Route("MovementsFromClient")]
         public async Task<IActionResult> GetMonthlyMovementsFromClient(DateTime month, int id)
         {
-            var userPdfGetter = new PdfBLLController(_context, _tempFilesLocation);
+            var userPdfGetter = new PdfBLLController(_context);
             return await userPdfGetter.GetMonthlyMovementsFromClient(id, month);
         }
         [HttpGet]
         [Route("ClientWithNoMovements")]
         public async Task<IActionResult> GetClientsWithNoMovementsInMonth(DateTime month)
         {
-            var userPdfGetter = new PdfBLLController(_context, _tempFilesLocation);
+            var userPdfGetter = new PdfBLLController(_context);
             return await userPdfGetter.GetClientsWithNoMovementsInMonth(month);
         }
     }
