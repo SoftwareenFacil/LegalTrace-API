@@ -1,4 +1,5 @@
-﻿namespace LegalTrace.PDF.Models
+﻿
+namespace LegalTrace.PDF.Models
 {
     public class ClientHistoryDTO
     {

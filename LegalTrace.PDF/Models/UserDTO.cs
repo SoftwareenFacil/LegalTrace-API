@@ -10,5 +10,7 @@
         public bool SuperAdmin { get; set; }
         public DateTime Created { get; set; }
         public bool Vigency { get; set; }
+
+        public string TaxID { get; set; }
     }
 }
