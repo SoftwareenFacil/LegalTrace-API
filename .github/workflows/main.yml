@@ -33,6 +33,13 @@ jobs:
         env:
           GoogleDriveSecurityLocation : ${{ vars.GOOGLE_DRIVE_FILE_LOCATION }}
 
+        - name: Substitute Logo File Location
+        uses: microsoft/variable-substitution@v1 
+        with:
+          files: '${{ env.FOLDER_NAME }}/appsettings.json'
+        env:
+          LogoLocation : ${{ vars.LOGO_LOCATION }}
+
       - name: Build Docker Image
         run: |
           cat '${{ env.FOLDER_NAME }}/appsettings.json'

@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="logo.png">
+    <Content Include="logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
 
 </Project>
