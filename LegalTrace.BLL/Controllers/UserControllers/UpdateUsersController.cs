@@ -25,8 +25,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
                 user.Address = !string.IsNullOrEmpty(userEdited.Address) ? userEdited.Address : user.Address;
                 user.Password = CheckifNewPassword(userEdited.Password, user.Password);
                 user.Phone = userEdited.Phone > 0 ? userEdited.Phone : user.Phone;
-                DateTime utcNow = DateTime.UtcNow;
-                user.Updated = DateTime.SpecifyKind(utcNow, DateTimeKind.Utc);
+                user.Updated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
                 var isUpdated = await userController.UpdateUser(user);
                 if (!isUpdated)
                     return 500;

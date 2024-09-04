@@ -28,9 +28,9 @@ namespace LegalTrace.Controllers.UserTaskApiControllers
                 case -1:
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User Task with ID {userTaskEdited.Id} not found."));
                 case -2:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User with ID {userTaskEdited.UserId} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"User with ID {userTaskEdited.UserId} not found or disabled."));
                 case -3:
-                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client with ID {userTaskEdited.ClientId} not found."));
+                    return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Client with ID {userTaskEdited.ClientId} not found or disabled."));
                 case -4:
                     return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Error trying to update User Task", "Update rejected"));
                 default:

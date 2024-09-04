@@ -25,6 +25,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 var client = await clientController.GetClientById(userTask.ClientId);
                 if(client != null)
                 {
+                    if (!client.Vigency || !user.Vigency)
+                        return -2;
                     if(userTask.DueDate > DateTime.Now && !string.IsNullOrEmpty(userTask.Title) && !string.IsNullOrEmpty(userTask.Description))
                     {
 
@@ -44,7 +46,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                             Finished = false,
                             DueDate = DateTime.SpecifyKind(userTask.DueDate, DateTimeKind.Utc)
                         };
-                        return await userTaskController.InsertUserTask(userTaskCreate);
+                        if(await userTaskController.InsertUserTask(userTaskCreate) > 0)
+                            return userTaskCreate.Id;
                     }
 
                     return -1;

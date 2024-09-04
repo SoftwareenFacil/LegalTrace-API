@@ -32,6 +32,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                     var user = await userController.GetUserById(userTaskEdited.UserId);
                     if (user == null)
                         return -2;
+                    if (!user.Vigency)
+                        return -2;
                 }
                 
                 if(userTaskEdited.ClientId > 0)
@@ -39,6 +41,8 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                     var clientController = new ClientController(_context);
                     var client = await clientController.GetClientById(userTaskEdited.ClientId);
                     if (client == null)
+                        return -3;
+                    if (!client.Vigency)
                         return -3;
                 }
 
