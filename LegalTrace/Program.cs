@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using LegalTrace.BLL.Controllers.JwtControllers;
 using DinkToPdf.Contracts;
 using DinkToPdf;
-using Microsoft.Extensions.Configuration;
+using LegalTrace.GoogleDrive.Models;
 
 namespace LegalTrace
 {
@@ -17,9 +17,12 @@ namespace LegalTrace
         private static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<AppDbContext>(
-                    o => o.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"))
-                );
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"))
+                       .EnableDetailedErrors() // Optional: enables detailed errors for debugging
+                       .EnableSensitiveDataLogging() // Optional: enables logging of sensitive data for debugging
+                       .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Warning))) // Set log level to Warning or higher
+            );
             builder.Services.AddControllers(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -52,20 +55,49 @@ namespace LegalTrace
                         )
                     };
                 });
+
+            builder.Services.AddSingleton<GoogleServiceAccountJson>(provider =>
+            {
+                if (builder.Environment.IsDevelopment())
+                {
+                    // Load JSON from file in development environment
+                    string jsonFilePath = "path/to/your/credentials.json"; // Replace with the actual path
+                    if (!File.Exists(jsonFilePath))
+                    {
+                        throw new InvalidOperationException("Service account JSON file not found.");
+                    }
+
+                    string jsonContent = File.ReadAllText(jsonFilePath);
+                    return new GoogleServiceAccountJson(jsonContent);
+                }
+                else
+                {
+                    // Load JSON from environment variable in production
+                    string jsonContent = Environment.GetEnvironmentVariable("GOOGLE_SERVICE_ACCOUNT_JSON");
+
+                    if (string.IsNullOrEmpty(jsonContent))
+                    {
+                        throw new InvalidOperationException("Google service account JSON is not configured in the environment variables.");
+                    }
+
+                    return new GoogleServiceAccountJson(jsonContent);
+                }
+            });
+
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
             builder.Services.AddScoped<IManejoJwt, ManejoJwt>();
             builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             var app = builder.Build();
 
-            
+
             app.UseExceptionHandler("/Error");
             app.UseHttpsRedirection();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                
+
             }
             app.UseRouting();
             app.UseAuthentication();

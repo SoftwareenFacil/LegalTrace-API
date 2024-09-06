@@ -1,19 +1,12 @@
-﻿using DinkToPdf.Contracts;
-using LegalTrace.BLL.Controllers.UserControllers;
-using LegalTrace.BLL.Controllers.PdfControllers;
+﻿using LegalTrace.BLL.Controllers.PdfControllers;
 using LegalTrace.Controllers.Services;
 using LegalTrace.DAL.Context;
 using LegalTrace.Models;
 using Microsoft.AspNetCore.Mvc;
 using LegalTrace.BLL.Controllers.ClientHistoryControllers;
-using LegalTrace.PDF.Controllers;
-using LegalTrace.Controllers.UserTaskApiControllers;
-using LegalTrace.DAL.Controllers.ChargeControllers;
-using LegalTrace.BLL.Controllers.ChargeControllers;
 using LegalTrace.BLL.Controllers.UserTaskControllers;
-using LegalTrace.DAL.Models;
 using LegalTrace.BLL.Controllers.ClientControllers;
-using System.IO;
+using LegalTrace.BLL.Controllers;
 
 namespace LegalTrace.Controllers.PdfApiControllers
 {
@@ -34,7 +27,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
             var clientHistory = await historyGet.GetClientHistory(0, clientid, month, month.AddMonths(1));
             var TasksGet = new GetUserTasksController(_context);
             var clientTasks = await TasksGet.GetUserTaskBy(null, null, null, clientid, null, null, null, null, month, month.AddMonths(1));
-            var chargeGet = new GetChargesController(_context);
+            var chargeGet = new ChargesController(_context, null, null);
             var clientCharges = await chargeGet.GetChargeBy(null, clientid, month, month.AddMonths(1), null, null, null);
             if (clientHistory.Count > 0 || clientTasks.Count() > 0 || clientCharges.Count() > 0)
             {

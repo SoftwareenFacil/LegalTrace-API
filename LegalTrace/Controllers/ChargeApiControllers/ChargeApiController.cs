@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LegalTrace.DAL.Context;
 using LegalTrace.BLL.Models.ChargeDTO;
+using LegalTrace.GoogleDrive.Models;
 
 namespace LegalTrace.Controllers.ChargeApiControllers
 {
@@ -9,15 +10,13 @@ namespace LegalTrace.Controllers.ChargeApiControllers
     public class ChargeApiController : ControllerBase
     {
         private AppDbContext _context;
-        private readonly string _gdrivefileLoc;
         private readonly string _googleAppName;
         private readonly ChargesController _chargesController;
-        public ChargeApiController(AppDbContext dbContext, IConfiguration configuration)
+        public ChargeApiController(AppDbContext dbContext, IConfiguration configuration, GoogleServiceAccountJson gdrivesecurity)
         {
             _context = dbContext;
-            _gdrivefileLoc = configuration["GoogleDriveSecurityLocation"];
             _googleAppName = configuration["GoogleAppName"];
-            _chargesController = new ChargesController(_context, _gdrivefileLoc, _googleAppName);
+            _chargesController = new ChargesController(_context, gdrivesecurity, _googleAppName);
         }
 
         [HttpGet]

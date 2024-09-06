@@ -26,12 +26,9 @@ jobs:
         env:
           CONNECTION_STRING: ${{ vars.CONNECTION_STRING }}
 
-      - name: Substitute Google Drive File Location
-        uses: microsoft/variable-substitution@v1 
-        with:
-          files: '${{ env.FOLDER_NAME }}/appsettings.json'
+      - name: Set up environment Google variable
         env:
-          GoogleDriveSecurityLocation : ${{ vars.GOOGLE_DRIVE_FILE_LOCATION }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
 
       - name: Substitute Logo File Location
         uses: microsoft/variable-substitution@v1 
