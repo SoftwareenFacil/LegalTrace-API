@@ -1,9 +1,8 @@
-﻿using LegalTrace.BLL.Controllers.ChargeControllers;
-using LegalTrace.BLL.Models.ChargeDTO;
+﻿using LegalTrace.BLL.Models.ChargeDTO;
 using LegalTrace.Controllers.Services;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Models;
 using LegalTrace.GoogleDrive;
+using LegalTrace.GoogleDrive.Models;
 using LegalTrace.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,19 +12,19 @@ namespace LegalTrace.Controllers.ChargeApiControllers
     {
         private readonly AppDbContext _context;
         private readonly ResponseService _responseService;
-        private readonly string _gdrivefileLoc;
+        private readonly GoogleServiceAccountJson _gdriveServiceAccount;
         private readonly string _googleAppName;
-        public ChargesController(AppDbContext context, string gdrivefileLoc, string GoogleAppName)
+        public ChargesController(AppDbContext context, GoogleServiceAccountJson _gdriveServiceAccount, string GoogleAppName)
         {
             _context = context;
             _responseService = new ResponseService();
-            _gdrivefileLoc = gdrivefileLoc;
+            _gdriveServiceAccount = _gdriveServiceAccount;
             _googleAppName = GoogleAppName;
         }
         public async Task<IActionResult> Insert(ChargeInsertDTO charge)
         {
 
-            var chargeCreator = new AddChargesController(_context, _gdrivefileLoc, _googleAppName);
+            var chargeCreator = new LegalTrace.BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
             var dataModified = await chargeCreator.AddCharge(charge);
 
             if (dataModified > 0)
@@ -40,12 +39,12 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         {
             if (string.IsNullOrEmpty(id))
                 return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "String is empty or not found", "Insert rejected"));
-            var library = new GoogleDriveLibrary(_gdrivefileLoc, _googleAppName);
+            var library = new GoogleDriveLibrary(_gdriveServiceAccount, _googleAppName);
             var file = await library.DownloadFile(id);
             var fileString = library.TransformMemoryStreamToString(file.Item3);
             if (!string.IsNullOrEmpty(fileString))
             {
-                var FileInfo = new GoogleDrive.Models.GoogleFileDTO()
+                var FileInfo = new GoogleFileDTO()
                 {
                     Name = file.Item1,
                     Type = file.Item2,
@@ -57,7 +56,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
         public async Task<IActionResult> GetBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
-            var chargesGetter = new GetChargesController(_context);
+            var chargesGetter = new BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
             var charge = await chargesGetter.GetChargeBy(id, clientId, date, dateTo, title, amount, type);
             if (charge.Count() > 0)
             {
@@ -67,7 +66,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
         public async Task<IActionResult> Update(ChargeEditDTO chargeEdited)
         {
-            var chargeUpdater = new UpdateChargesController(_context, _gdrivefileLoc, _googleAppName);
+            var chargeUpdater = new BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
             var code = await chargeUpdater.UpdateCharge(chargeEdited);
 
             switch (code)
@@ -84,7 +83,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
         public async Task<IActionResult> Delete(int id)
         {
-            var deleter = new DeleteChargesController(_context);
+            var deleter = new BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
             var isDeleted = await deleter.DeleteChargeById(id);
             if (!isDeleted)
             {

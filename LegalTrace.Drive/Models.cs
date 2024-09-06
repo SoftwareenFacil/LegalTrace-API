@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace LegalTrace.GoogleDrive.Models
 {
     public class GoogleFileDTO
@@ -12,5 +7,14 @@ namespace LegalTrace.GoogleDrive.Models
         public string Type { get; set; }
         public string FileString { get; set; }
 
+    }
+    public class GoogleServiceAccountJson
+    {
+        public string JsonContent { get; }
+
+        public GoogleServiceAccountJson(string jsonContent)
+        {
+            JsonContent = jsonContent;
+        }
     }
 }

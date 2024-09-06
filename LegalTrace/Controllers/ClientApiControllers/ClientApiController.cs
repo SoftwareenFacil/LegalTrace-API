@@ -17,6 +17,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
         [HttpGet]
         public async Task<IActionResult> GetClients(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
+            Console.WriteLine("calling getclients");
             var userGetter = new GetClients(_context);
             return await userGetter.GetBy(id, name, email, taxId, createdFrom, createdTo, vigency);
         }
@@ -25,6 +26,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
         [HttpPost]
         public async Task<IActionResult> InsertClient([FromBody] ClientInsertDTO client)
         {
+            Console.WriteLine("calling insertclients");
             var add = new InsertClient(_context);
             return await add.Insert(client);
         }

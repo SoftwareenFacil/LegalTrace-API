@@ -3,6 +3,7 @@ using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
+using LegalTrace.GoogleDrive.Models;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -12,30 +13,29 @@ namespace LegalTrace.GoogleDrive
     public class GoogleDriveLibrary : IGoogleDriveLibrary
     {
         private readonly DriveService service;
-        public GoogleDriveLibrary(string secret, string GoogleAppName)
+        public GoogleDriveLibrary(GoogleServiceAccountJson accountJson, string GoogleAppName)
         {
-            service = InitializeDriveService(secret, GoogleAppName);
+            service = InitializeDriveService(accountJson, GoogleAppName);
 
         }
 
-        private DriveService InitializeDriveService(string secret, string GoogleAppName)
+        private DriveService InitializeDriveService(GoogleServiceAccountJson secret, string GoogleAppName)
         {
             try
             {
-                using (var stream = new FileStream(secret, FileMode.Open, FileAccess.Read))
+                GoogleCredential credential;
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(secret.JsonContent)))
                 {
-                    var credential = GoogleCredential.FromStream(stream).CreateScoped(DriveService.Scope.Drive);
-
-
-                    // Create Drive API service
-                    var service = new DriveService(new BaseClientService.Initializer()
-                    {
-                        HttpClientInitializer = credential,
-                        ApplicationName = GoogleAppName,
-                    });
-
-                    return service;
+                    credential = GoogleCredential.FromStream(stream)
+                                                 .CreateScoped(DriveService.Scope.Drive);
                 }
+                // Create Drive API service
+                var service = new DriveService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = GoogleAppName,
+                });
+                return service;
             }
             catch (Exception ex)
             {
