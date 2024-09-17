@@ -13,11 +13,13 @@ namespace LegalTrace.BLL.Controllers
     public class ChargesController
     {
         private AppDbContext _context;
-        private IGoogleDriveLibrary _library;
+        private GoogleServiceAccountJson _googleServiceAccountJson;
+        private string _googleAppName;
         public ChargesController(AppDbContext _dbContext, GoogleServiceAccountJson serviceAccountJson, string GoogleAppName)
         {
             _context = _dbContext;
-            _library = new GoogleDriveLibrary(serviceAccountJson, GoogleAppName);
+            _googleServiceAccountJson = serviceAccountJson;
+            _googleAppName = GoogleAppName;
         }
         public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
@@ -89,8 +91,10 @@ namespace LegalTrace.BLL.Controllers
                 if (!string.IsNullOrEmpty(chargeEdited.fileString))
                 {
                     if (!string.IsNullOrWhiteSpace(chargeEdited.fileName) && !string.IsNullOrEmpty(chargeEdited.fileType))
-                        charge.FileLink = await _library.CreateFile(chargeEdited.fileName, _library.TransformStringToMemoryStream(chargeEdited.fileString), chargeEdited.fileType);
-
+                    {
+                        var library = new GoogleDriveLibrary(_googleServiceAccountJson, _googleAppName);
+                        charge.FileLink = await library.CreateFile(chargeEdited.fileName, library.TransformStringToMemoryStream(chargeEdited.fileString), chargeEdited.fileType);
+                    }
                 }
 
                 charge.Title = !string.IsNullOrEmpty(chargeEdited.Title) ? chargeEdited.Title : charge.Title;
@@ -115,13 +119,16 @@ namespace LegalTrace.BLL.Controllers
             }
 
             return await chargeController.DeleteCharge(id);
+            //TODO: remove file from google drive
         }
         public async Task<int> AddCharge(ChargeInsertDTO charge)
         {
             string FileLink = "";
             if (charge.fileString != null)
-                FileLink = await _library.CreateFile(charge.fileName, _library.TransformStringToMemoryStream(charge.fileString), charge.fileType);
-
+            {
+                var library = new GoogleDriveLibrary(_googleServiceAccountJson, _googleAppName);
+                FileLink = await library.CreateFile(charge.fileName, library.TransformStringToMemoryStream(charge.fileString), charge.fileType);
+            }
             if (!string.IsNullOrEmpty(charge.Title) && !string.IsNullOrEmpty(charge.Description) && !string.IsNullOrEmpty(FileLink) && charge.Amount > 0)
             {
                 var chargeController = new ChargeController(_context);
