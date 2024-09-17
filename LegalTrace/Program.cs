@@ -9,6 +9,7 @@ using LegalTrace.BLL.Controllers.JwtControllers;
 using DinkToPdf.Contracts;
 using DinkToPdf;
 using LegalTrace.GoogleDrive.Models;
+using System.Net;
 
 namespace LegalTrace
 {
@@ -30,17 +31,55 @@ namespace LegalTrace
             });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("MyAllowSpecificOrigins",
-                builder =>
+                try
                 {
-                    builder.WithOrigins("http://localhost:3000")
-                        .AllowAnyHeader()
+                    options.AddPolicy("SpecificOrigins", policyBuilder =>
+                    {
+                        policyBuilder.SetIsOriginAllowed(origin =>
+                        {
+                            // Get the host part from the origin
+                            var host = new Uri(origin).Host;
+
+                            // Check if it's an IP address or a domain name
+                            if (IPAddress.TryParse(host, out var ipAddress))
+                            {
+                                // List of allowed IPs
+                                var allowedIPs = new List<IPAddress>
+                                {
+                                IPAddress.Parse("172.18.0.9"), // Replace with your allowed IPs
+                                IPAddress.Parse("64.23.144.63")
+                                };
+                                if (builder.Environment.IsDevelopment())
+                                    allowedIPs.Add(IPAddress.Parse("127.0.0.1"));
+                                return allowedIPs.Contains(ipAddress);
+                            }
+                            else
+                            {
+                                // List of allowed domains
+                                var allowedDomains = new List<string>
+                                    {
+                                    "www.legalcont.com"
+                                    };
+                                if (builder.Environment.IsDevelopment())
+                                    allowedDomains.Add("localhost");
+
+                                return allowedDomains.Contains(host);
+                            }
+                        })
                         .AllowAnyMethod()
+                        .AllowAnyHeader()
                         .AllowCredentials();
-                });
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             });
+
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -61,7 +100,7 @@ namespace LegalTrace
                 if (builder.Environment.IsDevelopment())
                 {
                     // Load JSON from file in development environment
-                    string jsonFilePath = "path/to/your/credentials.json"; // Replace with the actual path
+                    string jsonFilePath = @"C:\Users\gvera\Downloads\teak-territory-418313-03c448d99067.json"; // Replace with the actual path
                     if (!File.Exists(jsonFilePath))
                     {
                         throw new InvalidOperationException("Service account JSON file not found.");
@@ -92,7 +131,9 @@ namespace LegalTrace
 
 
             app.UseExceptionHandler("/Error");
-            app.UseHttpsRedirection();
+
+            if(!app.Environment.IsDevelopment())
+                app.UseHttpsRedirection();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -100,10 +141,9 @@ namespace LegalTrace
 
             }
             app.UseRouting();
+            app.UseCors("SpecificOrigins");
             app.UseAuthentication();
-
             app.UseAuthorization();
-            app.UseCors("MyAllowSpecificOrigins");
             app.MapControllers();
 
             app.Run();

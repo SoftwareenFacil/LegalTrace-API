@@ -14,8 +14,15 @@ namespace LegalTrace.BLL.Controllers.PdfControllers
         }
         public MemoryStream drawClientHistoryReport(List<ClientHistoryDTO> ClientHistory, List<UserTaskDTO> clientTasks, List<ChargeDTO> clientCharges, int clientid, DateTime month)
         {
-            var library = new SharpLibrary(_logoLoc);
-            return library.GeneratePdfClientReport(ClientHistory, clientTasks, clientCharges, clientid, month);
+            try
+            {
+                var library = new SharpLibrary(_logoLoc);
+                return library.GeneratePdfClientReport(ClientHistory, clientTasks, clientCharges, clientid, month);
+            }
+            catch(Exception ex) 
+            {
+                throw ex;
+            }
         }
 
         public MemoryStream drawClientswithNoMovementsReport(List<ClientDTO> Clients)

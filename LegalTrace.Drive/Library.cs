@@ -16,7 +16,6 @@ namespace LegalTrace.GoogleDrive
         public GoogleDriveLibrary(GoogleServiceAccountJson accountJson, string GoogleAppName)
         {
             service = InitializeDriveService(accountJson, GoogleAppName);
-
         }
 
         private DriveService InitializeDriveService(GoogleServiceAccountJson secret, string GoogleAppName)

@@ -10,22 +10,19 @@ namespace LegalTrace.Controllers.ChargeApiControllers
 {
     public class ChargesController
     {
-        private readonly AppDbContext _context;
         private readonly ResponseService _responseService;
         private readonly GoogleServiceAccountJson _gdriveServiceAccount;
         private readonly string _googleAppName;
+        private readonly BLL.Controllers.ChargesController _BLL;
         public ChargesController(AppDbContext context, GoogleServiceAccountJson _gdriveServiceAccount, string GoogleAppName)
         {
-            _context = context;
             _responseService = new ResponseService();
-            _gdriveServiceAccount = _gdriveServiceAccount;
-            _googleAppName = GoogleAppName;
+            _BLL = new BLL.Controllers.ChargesController(context, _gdriveServiceAccount, GoogleAppName);
         }
         public async Task<IActionResult> Insert(ChargeInsertDTO charge)
         {
 
-            var chargeCreator = new LegalTrace.BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
-            var dataModified = await chargeCreator.AddCharge(charge);
+            var dataModified = await _BLL.AddCharge(charge);
 
             if (dataModified > 0)
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(201, $"Charge created succesfully", "Create completed"));
@@ -56,8 +53,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
         public async Task<IActionResult> GetBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
-            var chargesGetter = new BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
-            var charge = await chargesGetter.GetChargeBy(id, clientId, date, dateTo, title, amount, type);
+            var charge = await _BLL.GetChargeBy(id, clientId, date, dateTo, title, amount, type);
             if (charge.Count() > 0)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, charge, "Success when searching for charges"));
@@ -66,8 +62,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
         public async Task<IActionResult> Update(ChargeEditDTO chargeEdited)
         {
-            var chargeUpdater = new BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
-            var code = await chargeUpdater.UpdateCharge(chargeEdited);
+            var code = await _BLL.UpdateCharge(chargeEdited);
 
             switch (code)
             {
@@ -83,8 +78,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         }
         public async Task<IActionResult> Delete(int id)
         {
-            var deleter = new BLL.Controllers.ChargesController(_context, _gdriveServiceAccount, _googleAppName);
-            var isDeleted = await deleter.DeleteChargeById(id);
+            var isDeleted = await _BLL.DeleteChargeById(id);
             if (!isDeleted)
             {
                 return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Charge with id {id} not found"));
