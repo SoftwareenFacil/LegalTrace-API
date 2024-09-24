@@ -57,9 +57,10 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ~
+            echo "GOOGLE_SERVICE_ACCOUNT_JSON=${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}" >> .env
             docker-compose -f docker-compose.backend.yml down
             docker-compose -f docker-compose.backend.yml pull
-            GOOGLE_SERVICE_ACCOUNT_JSON="${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}" docker-compose -f docker-compose.backend.yml up -d
+            docker-compose -f docker-compose.backend.yml up -d
             echo "Container deployed"
   migration:
     runs-on: ubuntu-latest
