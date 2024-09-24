@@ -14,10 +14,12 @@ namespace LegalTrace.Controllers.ChargeApiControllers
         private readonly GoogleServiceAccountJson _gdriveServiceAccount;
         private readonly string _googleAppName;
         private readonly BLL.Controllers.ChargesController _BLL;
-        public ChargesController(AppDbContext context, GoogleServiceAccountJson _gdriveServiceAccount, string GoogleAppName)
+        public ChargesController(AppDbContext context, GoogleServiceAccountJson gdriveServiceAccount, string GoogleAppName)
         {
             _responseService = new ResponseService();
-            _BLL = new BLL.Controllers.ChargesController(context, _gdriveServiceAccount, GoogleAppName);
+            _gdriveServiceAccount = gdriveServiceAccount;
+            _googleAppName = GoogleAppName;
+            _BLL = new BLL.Controllers.ChargesController(context, gdriveServiceAccount, GoogleAppName);
         }
         public async Task<IActionResult> Insert(ChargeInsertDTO charge)
         {
