@@ -26,11 +26,6 @@ jobs:
         env:
           CONNECTION_STRING: ${{ vars.CONNECTION_STRING }}
 
-      - name: Set up environment Google variable
-        env:
-          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-        run: echo "Google Service Account JSON variable set"
-
       - name: Substitute Logo File Location
         uses: microsoft/variable-substitution@v1 
         with:
@@ -64,7 +59,7 @@ jobs:
             cd ~
             docker-compose -f docker-compose.backend.yml down
             docker-compose -f docker-compose.backend.yml pull
-            docker-compose -f docker-compose.backend.yml up -d
+            GOOGLE_SERVICE_ACCOUNT_JSON="${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}" docker-compose -f docker-compose.backend.yml up -d
             echo "Container deployed"
   migration:
     runs-on: ubuntu-latest
