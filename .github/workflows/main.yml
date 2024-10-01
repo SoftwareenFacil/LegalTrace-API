@@ -24,7 +24,7 @@ jobs:
         run: |
           jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' && mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
-          CONNECTION_STRING: ${{ vars.CONNECTION_STRING }}
+          CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
 
       - name: Substitute Logo File Location
         uses: microsoft/variable-substitution@v1 
