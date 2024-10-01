@@ -97,30 +97,14 @@ namespace LegalTrace
 
             builder.Services.AddSingleton<GoogleServiceAccountJson>(provider =>
             {
-                if (builder.Environment.IsDevelopment())
+                string jsonFilePath = builder.Configuration["GoogleDriveSecurityLocation"];
+                if (!File.Exists(jsonFilePath))
                 {
-                    // Load JSON from file in development environment
-                    string jsonFilePath = @"C:\Users\gvera\Downloads\teak-territory-418313-03c448d99067.json"; // Replace with the actual path
-                    if (!File.Exists(jsonFilePath))
-                    {
-                        throw new InvalidOperationException("Service account JSON file not found.");
-                    }
-
-                    string jsonContent = File.ReadAllText(jsonFilePath);
-                    return new GoogleServiceAccountJson(jsonContent);
+                    throw new InvalidOperationException("Service account JSON file not found.");
                 }
-                else
-                {
-                    // Load JSON from environment variable in production
-                    string jsonContent = Environment.GetEnvironmentVariable("GOOGLE_SERVICE_ACCOUNT_JSON");
 
-                    if (string.IsNullOrEmpty(jsonContent))
-                    {
-                        throw new InvalidOperationException("Google service account JSON is not configured in the environment variables.");
-                    }
-
-                    return new GoogleServiceAccountJson(jsonContent);
-                }
+                string jsonContent = File.ReadAllText(jsonFilePath);
+                return new GoogleServiceAccountJson(jsonContent);
             });
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
@@ -132,7 +116,7 @@ namespace LegalTrace
 
             app.UseExceptionHandler("/Error");
 
-            if(!app.Environment.IsDevelopment())
+            if (!app.Environment.IsDevelopment())
                 app.UseHttpsRedirection();
             if (app.Environment.IsDevelopment())
             {
