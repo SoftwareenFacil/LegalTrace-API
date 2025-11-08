@@ -17,9 +17,8 @@ jobs:
     
     # Environment variables used throughout this job
     env: 
-      IMAGE_NAME: backend                    # Name of the Docker image we'll create
+      IMAGE_NAME: legaltrace-backend         # Name of the Docker image we'll create
       FOLDER_NAME: LegalTrace                # Path to the project folder
-      DB_NAME: Legal-Cont                    # Database name
     
     steps:
       # STEP 1: Get the source code
