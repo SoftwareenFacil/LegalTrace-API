@@ -1,88 +1,111 @@
 name: CI/CD backend 
 
+# TRIGGER CONDITIONS
+# When does this pipeline run?
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]           # Run when code is pushed to main branch
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main" ]           # Run when a pull request is opened against main
 
 jobs:
+  # =============================================================================
+  # PRODUCTION BUILD JOB
+  # =============================================================================
   build:
     runs-on: ubuntu-latest
+    
+    # Environment variables used throughout this job
     env: 
-      IMAGE_NAME: backend
-      FOLDER_NAME: LegalTrace
-      DB_NAME: Legal-Cont
+      IMAGE_NAME: backend                    # Name of the Docker image we'll create
+      FOLDER_NAME: LegalTrace                # Path to the project folder
+      DB_NAME: Legal-Cont                    # Database name
+    
     steps:
-      - name: Checkout Repository
+      # STEP 1: Get the source code
+      - name: "📥 Checkout Repository"
         uses: actions/checkout@v3
-      
-      - name: Install jq
+        # Downloads the repository code to the GitHub runner
+
+      - name: "🆔 Get Commit Hash (VERSION_TAG)"
+        id: get_version
+        run: |
+            COMMIT_HASH=$(git rev-parse --short HEAD)
+            echo "VERSION_TAG=$COMMIT_HASH" >> $GITHUB_ENV
+            echo "Using Git Commit Hash: $COMMIT_HASH"
+
+      # STEP 2: Install .NET SDK
+      - name: "⚙️ Setup .NET Environment"
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+        # Installs .NET SDK needed to build the application
+
+      # STEP 3: Download project dependencies
+      - name: "📦 Restore NuGet Dependencies"
+        run: dotnet restore
+        # Downloads all the NuGet packages required by the project
+
+      # STEP 4: Install jq for JSON manipulation
+      - name: "🔧 Install jq"
         run: sudo apt-get install -y jq
 
-      - name: Substitute connection string
+      # STEP 5: Create/prepare configuration file
+      - name: "📄 Setup Configuration File"
+        run: |
+            echo "✅ Preparing appsettings.json for configuration"
+        # Ensures appsettings.json is ready for modifications
+
+      # STEP 6: Configure database connection
+      - name: "🔗 Configure Database Connection String"
         run: |
           jq '.ConnectionStrings.WebApiDatabase = env.CONNECTION_STRING' '${{ env.FOLDER_NAME }}/appsettings.json' > '${{ env.FOLDER_NAME }}/appsettings.tmp.json' && mv '${{ env.FOLDER_NAME }}/appsettings.tmp.json' '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
           CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+        # Replaces placeholder in config file with actual database connection string from secrets
 
-      - name: Substitute Logo File Location
+      # STEP 7: Configure Logo File Location
+      - name: "🖼️ Configure Logo File Location"
         uses: microsoft/variable-substitution@v1 
         with:
           files: '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
-          LogoLocation : ${{ vars.LOGO_LOCATION }}
-          
-      - name: Substitute Google Drive File Location
+          LogoLocation: ${{ vars.LOGO_LOCATION }}
+        # Sets the logo file location in the configuration
+
+      # STEP 8: Configure Google Drive settings
+      - name: "☁️ Configure Google Drive File Location"
         uses: microsoft/variable-substitution@v1 
         with:
           files: '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
-          GoogleDriveSecurityLocation : ${{ secrets.GoogleDriveSecurityLocation }}
+          GoogleDriveSecurityLocation: ${{ secrets.GoogleDriveSecurityLocation }}
+        # Sets up Google Drive integration configuration
 
-      - name: Build Docker Image
+      # STEP 9: Run automated tests
+      - name: "🧪 Run Unit Tests"
+        run: dotnet test
+        # Executes all unit tests in the project to ensure code quality
+
+      # STEP 10: Build Docker container image
+      - name: "🐳 Build Docker Image for Production"
         run: |
+          echo "🔨 Building Docker image: ${{env.IMAGE_NAME}}"
           cat '${{ env.FOLDER_NAME }}/appsettings.json'
-          docker build --build-arg APP_NAME=${{ env.FOLDER_NAME }} -t ${{env.IMAGE_NAME}} .
-        
-      - name: Push Docker Image to Registry
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} --password ${{secrets.DOCKER_PASSWORD}}
-          docker tag ${{env.IMAGE_NAME}} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
+          docker build --build-arg APP_NAME=${{ env.FOLDER_NAME }} --build-arg VERSION_TAG=${{ env.VERSION_TAG }} -t ${{env.IMAGE_NAME}} .
+          echo "✅ Docker image built successfully"
+        # Creates a Docker container image with the application configured for production
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to Production
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: root
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cd ~
-            docker-compose -f docker-compose.backend.yml down
-            docker-compose -f docker-compose.backend.yml pull
-            docker-compose -f docker-compose.backend.yml up -d
-            echo "Container deployed"
-  migration:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Migrate to Postgres
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: root
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cd ~
-            docker cp backend:/app/script/script.sql ./script/script.sql
-            dropdb -U postgres ${{ env.DB_NAME }}
-            createdb -U postgres ${{ env.DB_NAME }}
-            psql -U postgres -d ${{ env.DB_NAME }} -f ./script/script.sql 
-            systemctl restart postgresql
-            echo "DB restored"
-  
+      # STEP 11: Deploy to Docker registry
+      - name: "🚀 Deploy to Docker Registry (Production)"
+        run: |
+          echo "🔐 Logging into Docker registry..."
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          
+          echo "🏷️ Tagging image for registry..."
+          docker tag ${{env.IMAGE_NAME}} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
+          
+          echo "📤 Pushing image to registry..."
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
+          echo "✅ Production container deployed successfully!"
+        # Logs into Docker Hub and pushes the image tagged as 'latest' for production
