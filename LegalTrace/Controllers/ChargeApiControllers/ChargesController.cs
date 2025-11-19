@@ -26,9 +26,10 @@ namespace LegalTrace.Controllers.ChargeApiControllers
 
             var dataModified = await _BLL.AddCharge(charge);
 
+            if(dataModified == 401)
+                return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Error trying to upload charge File", "Insert rejected"));
             if (dataModified > 0)
                 return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(201, $"Charge created succesfully", "Create completed"));
-
             if (dataModified == 0)
                 return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Bad request trying to insert a Charge", "Insert rejected"));
             return _responseService.CreateResponse(ApiResponse<object>.ErrorResponse(500, "Error trying to Insert an Charge"));
@@ -70,6 +71,8 @@ namespace LegalTrace.Controllers.ChargeApiControllers
             {
                 case 200:
                     return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, $"Charge with ID {chargeEdited.Id} updated", "Update completed"));
+                case 400:
+                    return _responseService.CreateResponse(ApiResponse<object>.BadRequest(400, "Bad request trying to update Charge", "Update rejected"));
                 case 404:
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, $"Charge with ID {chargeEdited.Id} not found."));
                 case -1:

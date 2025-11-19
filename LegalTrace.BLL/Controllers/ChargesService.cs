@@ -69,7 +69,9 @@ namespace LegalTrace.BLL.Controllers
             if (chargeEdited.Amount <= 0 && string.IsNullOrWhiteSpace(chargeEdited.Title) && string.IsNullOrWhiteSpace(chargeEdited.Description)
                 && chargeEdited.Amount == 0 && chargeEdited.ClientId == 0)
                 return 400;
-
+            var (isFileBeingUploaded, isFileProperlyUploaded) = isFileBeingUploadedProperly(chargeEdited);
+            if (!isFileProperlyUploaded)
+                return 400;
             var chargeController = new ChargeController(_context);
             var charge = await chargeController.GetChargeById(chargeEdited.Id);
             if (charge != null)
@@ -87,15 +89,21 @@ namespace LegalTrace.BLL.Controllers
                 {
                     charge.ChargeType = (ChargeType)((int)chargeEdited.chargeType >= 3 ? 0 : chargeEdited.chargeType);
                 }
-
-                if (!string.IsNullOrEmpty(chargeEdited.fileString))
+                var isUploadSuccesful = true;
+                if (isFileBeingUploaded && !string.IsNullOrEmpty(charge.FileLink))
                 {
-                    if (!string.IsNullOrWhiteSpace(chargeEdited.fileName) && !string.IsNullOrEmpty(chargeEdited.fileType))
-                    {
-                        var library = new GoogleDriveLibrary(_googleServiceAccountJson, _googleAppName);
-                        charge.FileLink = await library.CreateFile(chargeEdited.fileName, library.TransformStringToMemoryStream(chargeEdited.fileString), chargeEdited.fileType);
-                    }
+                    var library = new GoogleDriveLibrary(_googleServiceAccountJson, _googleAppName);
+                    isUploadSuccesful = await library.EditFile(charge.FileLink, chargeEdited.fileName, library.TransformStringToMemoryStream(chargeEdited.fileString), chargeEdited.fileType);
                 }
+                else if(isFileBeingUploaded)
+                {
+                    var library = new GoogleDriveLibrary(_googleServiceAccountJson, _googleAppName);
+                    charge.FileLink = await library.CreateFile(chargeEdited.fileName, library.TransformStringToMemoryStream(chargeEdited.fileString), chargeEdited.fileType, _googleServiceAccountJson.FolderId);
+                    if (string.IsNullOrEmpty(charge.FileLink))
+                        isUploadSuccesful = false;
+                }
+                if (!isUploadSuccesful)
+                    return 500;
 
                 charge.Title = !string.IsNullOrEmpty(chargeEdited.Title) ? chargeEdited.Title : charge.Title;
                 charge.Description = !string.IsNullOrEmpty(chargeEdited.Description) ? chargeEdited.Description : charge.Description;
@@ -108,6 +116,15 @@ namespace LegalTrace.BLL.Controllers
                 return 200;
             }
             return 404;
+        }
+
+        private (bool, bool) isFileBeingUploadedProperly(ChargeEditDTO chargeEdited)
+        {
+            if (string.IsNullOrEmpty(chargeEdited.fileString) && (string.IsNullOrWhiteSpace(chargeEdited.fileName) && string.IsNullOrEmpty(chargeEdited.fileType)))
+                return (false, true);
+            if (string.IsNullOrWhiteSpace(chargeEdited.fileName) || string.IsNullOrEmpty(chargeEdited.fileType) || string.IsNullOrEmpty(chargeEdited.fileString))
+                return (true, false);
+            return (true, true);
         }
         public async Task<bool> DeleteChargeById(int id)
         {
@@ -127,9 +144,11 @@ namespace LegalTrace.BLL.Controllers
             if (charge.fileString != null)
             {
                 var library = new GoogleDriveLibrary(_googleServiceAccountJson, _googleAppName);
-                FileLink = await library.CreateFile(charge.fileName, library.TransformStringToMemoryStream(charge.fileString), charge.fileType);
+                FileLink = await library.CreateFile(charge.fileName, library.TransformStringToMemoryStream(charge.fileString), charge.fileType, _googleServiceAccountJson.FolderId);
             }
-            if (!string.IsNullOrEmpty(charge.Title) && !string.IsNullOrEmpty(charge.Description) && !string.IsNullOrEmpty(FileLink) && charge.Amount > 0)
+            if ((string.IsNullOrEmpty(FileLink) && charge.fileString != null))
+                return 401;
+            if (!string.IsNullOrEmpty(charge.Title) && !string.IsNullOrEmpty(charge.Description) &&  charge.Amount > 0)
             {
                 var chargeController = new ChargeController(_context);
                 var chargeCreate = new Charge()
