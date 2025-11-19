@@ -94,17 +94,12 @@ namespace LegalTrace
                         )
                     };
                 });
-
             builder.Services.AddSingleton<GoogleServiceAccountJson>(provider =>
             {
-                string jsonFilePath = builder.Configuration["GoogleDriveSecurityLocation"];
-                if (!File.Exists(jsonFilePath))
-                {
-                    throw new InvalidOperationException("Service account JSON file not found.");
-                }
+                var config = provider.GetRequiredService<IConfiguration>();
+                var (jsonContent, FolderId, isFromConfig) = ResolveGoogleServiceAccountJson(config);
 
-                string jsonContent = File.ReadAllText(jsonFilePath);
-                return new GoogleServiceAccountJson(jsonContent);
+                return new GoogleServiceAccountJson(jsonContent, FolderId, isFromConfig);
             });
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
@@ -131,6 +126,31 @@ namespace LegalTrace
             app.MapControllers();
 
             app.Run();
+        }
+        private static (string, string, bool) ResolveGoogleServiceAccountJson(IConfiguration config)
+        {
+            string FolderID = Environment.GetEnvironmentVariable("GOOGLE_FOLDER_ID");
+            // 1. Try configuration file path first
+            string jsonFilePath = config["GoogleDriveSecurityLocation"];
+
+            if (!string.IsNullOrWhiteSpace(jsonFilePath) && File.Exists(jsonFilePath))
+            {
+                return (File.ReadAllText(jsonFilePath), FolderID, true);
+            }
+
+            // 2. Fall back to environment variable
+            string envJson = Environment.GetEnvironmentVariable("GOOGLE_SERVICE_ACCOUNT_JSON");
+
+            if (!string.IsNullOrWhiteSpace(envJson))
+            {
+                return (envJson, FolderID, false);
+            }
+
+            // 3. Fail loudly and clearly
+            throw new InvalidOperationException(
+                "Google Service Account JSON not found. " +
+                "Provide a valid file path in 'GoogleDriveSecurityLocation' or set the 'GOOGLE_SERVICE_ACCOUNT_JSON' environment variable."
+            );
         }
     }
 }

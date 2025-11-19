@@ -14,7 +14,7 @@ namespace LegalTrace.BLL.Models.ChargeDTO
         public string fileName { get; set; }
 
         public string fileType { get; set; }
-        public string fileString { get; set; }
+        public string? fileString { get; set; }
 
 
 

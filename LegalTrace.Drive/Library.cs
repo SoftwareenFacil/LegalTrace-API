@@ -18,28 +18,33 @@ namespace LegalTrace.GoogleDrive
             service = InitializeDriveService(accountJson, GoogleAppName);
         }
 
-        private DriveService InitializeDriveService(GoogleServiceAccountJson secret, string GoogleAppName)
+        private DriveService InitializeDriveService(GoogleServiceAccountJson secret, string googleAppName)
         {
             try
             {
-                GoogleCredential credential;
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(secret.JsonContent)))
-                {
-                    credential = GoogleCredential.FromStream(stream)
-                                                 .CreateScoped(DriveService.Scope.Drive);
-                }
-                // Create Drive API service
-                var service = new DriveService(new BaseClientService.Initializer()
-                {
-                    HttpClientInitializer = credential,
-                    ApplicationName = GoogleAppName,
-                });
-                return service;
+                if (secret.IsFromConfig)
+                    Console.WriteLine("Creds from Config");
+                else
+                    Console.WriteLine("Creds from Env");
+                    // ---------------------------------------
+                    // SERVICE ACCOUNT FLOW (NO USER LOGIN)
+                    // ---------------------------------------
+                    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(secret.JsonContent));
+
+                    var credential = GoogleCredential.FromStream(stream)
+                                                     .CreateScoped(DriveService.Scope.Drive);
+
+                    return new DriveService(new BaseClientService.Initializer
+                    {
+                        HttpClientInitializer = credential,
+                        ApplicationName = googleAppName
+                    });
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return new DriveService();
+                throw ex;
             }
         }
 
@@ -58,11 +63,35 @@ namespace LegalTrace.GoogleDrive
             }
             streamContent.Position = 0;
             var request = service.Files.Create(fileMetadata, streamContent, contentType);
+            request.SupportsAllDrives = true;
             var response = await request.UploadAsync();
             if (response.Status == Google.Apis.Upload.UploadStatus.Completed)
                 return request.ResponseBody.Id;
             return "";
         }
+        public async Task<bool> VerifyFolderAccess(string folderId)
+        {
+            try
+            {
+                var request = service.Files.Get(folderId);
+                request.SupportsAllDrives = true;
+                request.Fields = "id, name, capabilities";
+
+                var folder = await request.ExecuteAsync();
+
+                Console.WriteLine($"Folder found: {folder.Name}");
+                Console.WriteLine($"Can add children: {folder.Capabilities?.CanAddChildren}");
+                Console.WriteLine($"Can edit: {folder.Capabilities?.CanEdit}");
+
+                return folder.Capabilities?.CanAddChildren == true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Cannot access folder: {ex.Message}");
+                return false;
+            }
+        }
+
         public MemoryStream TransformStringToMemoryStream(string filestring)
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(filestring);
@@ -99,7 +128,7 @@ namespace LegalTrace.GoogleDrive
 
             // Create the request to update the file.
             var request = service.Files.Update(newFile, fileId, streamContent, mimeType);
-
+            request.SupportsAllDrives = true;
             // Execute the request.
             await request.UploadAsync();
 
@@ -172,6 +201,7 @@ namespace LegalTrace.GoogleDrive
             {
                 // Define los parámetros de la solicitud
                 var request = service.Files.List();
+                request.SupportsAllDrives = true;
                 request.Q = $"name='{fileName}' and '{folderId}' in parents";
                 request.Fields = "files(id, name)";
 
