@@ -72,15 +72,6 @@ jobs:
           LogoLocation: ${{ vars.LOGO_LOCATION }}
         # Sets the logo file location in the configuration
 
-      # STEP 8: Configure Google Drive settings
-      - name: "☁️ Configure Google Drive File Location"
-        uses: microsoft/variable-substitution@v1 
-        with:
-          files: '${{ env.FOLDER_NAME }}/appsettings.json'
-        env:
-          GoogleDriveSecurityLocation: ${{ secrets.GoogleDriveSecurityLocation }}
-        # Sets up Google Drive integration configuration
-
       # STEP 9: Run automated tests
       - name: "🧪 Run Unit Tests"
         run: dotnet test
