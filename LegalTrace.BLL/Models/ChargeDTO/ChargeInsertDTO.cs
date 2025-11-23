@@ -8,6 +8,8 @@ namespace LegalTrace.BLL.Models.ChargeDTO
         public int ClientId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
+        public DateTime? PaymentDate { get; set; }
         public int Amount { get; set; }
 
         public ChargeType chargeType { get; set; }

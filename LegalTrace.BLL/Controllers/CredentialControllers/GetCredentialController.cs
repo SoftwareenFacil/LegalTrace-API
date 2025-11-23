@@ -1,6 +1,7 @@
 ﻿using LegalTrace.BLL.Models.CredentialDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.CredentialControllers;
+using LegalTrace.DAL.Repository;
+
 
 namespace LegalTrace.BLL.Controllers.CredentialControllers
 {
@@ -13,7 +14,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
         }
         public async Task<List<CredentialDTO>> GetCredentialById(int id)
         {
-            var credentialController = new CredentialController(_context);
+            var credentialController = new CredentialRepository(_context);
             var credentials = await credentialController.GetCredentialsBy(id);
             if (credentials.Count() > 0)
             {

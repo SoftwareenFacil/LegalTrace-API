@@ -1,5 +1,5 @@
 ﻿using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserTaskControllers;
+using LegalTrace.DAL.Repository;
 
 namespace LegalTrace.BLL.Controllers.UserTaskControllers
 {
@@ -13,7 +13,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<bool> DeleteUserTaskById(int id)
         {
-            var userTaskController = new UserTaskController(_context);
+            var userTaskController = new UserTaskRepository(_context);
             var exist = await userTaskController.GetUserTaskById(id);
             if (exist == null)
             {

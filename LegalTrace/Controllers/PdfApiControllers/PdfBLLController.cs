@@ -34,7 +34,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
                 var PDFer = new PDFReportsController(_logoLoc);
                 var stream = PDFer.drawClientHistoryReport(clientHistory, clientTasks, clientCharges, clientid, month);
 
-                if (!(stream.Length > 0))
+                if (stream.Length <= 0)
                 {
                     return _responseService.CreateResponse(ApiResponse<object>.NotFoundResponse(404, "The Pdf File is not found"));
                 }
@@ -44,7 +44,7 @@ namespace LegalTrace.Controllers.PdfApiControllers
         }
         public async Task<IActionResult> GetClientsWithNoMovementsInMonth(DateTime month)
         {
-            var clientsWithNoMovements = new GetClientsController(_context);
+            var clientsWithNoMovements = new ClientService(_context);
             var getter = await clientsWithNoMovements.GetClientsWithNoMovements(month, month.AddMonths(1));
             if (getter.Count > 0)
             {

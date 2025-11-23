@@ -2,12 +2,12 @@
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LegalTrace.DAL.Controllers.ClientControllers
+namespace LegalTrace.DAL.Repository
 {
-    public class ClientController : IClientController
+    public class ClientRepository : IClientRepository
     {
         private AppDbContext _context;
-        public ClientController(AppDbContext _dbContext)
+        public ClientRepository(AppDbContext _dbContext)
         {
             _context = _dbContext;
         }

@@ -1,22 +1,13 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace LegalTrace.DAL.Controllers.ChargeControllers
+namespace LegalTrace.DAL.Repository
 {
-    public class ChargeController : IChargeController
+    public class ChargeRepository : IChargeRepository
     {
-        private AppDbContext _context;
-        public ChargeController(AppDbContext _dbContext)
+        private readonly AppDbContext _context;
+        public ChargeRepository(AppDbContext _dbContext)
         {
             _context = _dbContext;
         }

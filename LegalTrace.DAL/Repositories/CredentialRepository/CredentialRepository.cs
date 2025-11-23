@@ -2,12 +2,12 @@
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LegalTrace.DAL.Controllers.CredentialControllers
-{
-    public class CredentialController : ICredentialController
+namespace LegalTrace.DAL.Repository
+{ 
+    public class CredentialRepository : ICredentialRepository
     {
         private AppDbContext _context;
-        public CredentialController(AppDbContext _dbContext)
+        public CredentialRepository(AppDbContext _dbContext)
         {
             _context = _dbContext;
         }

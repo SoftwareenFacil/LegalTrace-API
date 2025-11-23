@@ -1,8 +1,8 @@
 ﻿using LegalTrace.DAL.Models;
 
-namespace LegalTrace.DAL.Controllers.UserTaskControllers
+namespace LegalTrace.DAL.Repository
 {
-    public interface IUserTaskController
+    public interface IUserTaskRepository
     {
         Task<UserTask> GetUserTaskById(int id);
         Task<List<UserTask>> GetUserTaskBy(int? id, string? title, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency, bool? finished, DateTime? createdFrom, DateTime? createdTo);

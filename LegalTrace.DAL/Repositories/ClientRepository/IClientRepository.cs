@@ -1,8 +1,8 @@
 ﻿using LegalTrace.DAL.Models;
 
-namespace LegalTrace.DAL.Controllers.ClientControllers
+namespace LegalTrace.DAL.Repository
 {
-    public interface IClientController
+    public interface IClientRepository
     {
         Task<List<Client>> GetClientsWithNoMovements(DateTime from, DateTime to);
         Task<Client> GetClientById(int id);

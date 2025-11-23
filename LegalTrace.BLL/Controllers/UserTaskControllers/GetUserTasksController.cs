@@ -1,8 +1,8 @@
 ﻿using LegalTrace.BLL.Models.UserDTO;
 using LegalTrace.BLL.Models.UserTaskDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserControllers;
-using LegalTrace.DAL.Controllers.UserTaskControllers;
+using LegalTrace.DAL.Repository;
+using LegalTrace.DAL.Repository;
 using LegalTrace.DAL.Models;
 using LegalTrace.PDF.Models;
 using Microsoft.VisualBasic;
@@ -20,7 +20,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<List<UserTaskDTO>> GetUserTaskBy(int? id, string? title, int? userId, int? clientId, DateTime? dueDate, bool? repeatable, bool? vigency,bool? finished, DateTime? createdFrom, DateTime? createdTo)
         {
-            var userTaskController = new UserTaskController(_context);
+            var userTaskController = new UserTaskRepository(_context);
             var userTasks = await userTaskController.GetUserTaskBy(id, title, userId,clientId,dueDate,repeatable,vigency, finished, createdFrom, createdTo);
             if (userTasks.Count() > 0)
             {

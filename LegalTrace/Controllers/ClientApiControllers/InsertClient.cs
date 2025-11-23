@@ -19,7 +19,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
 
         public async Task<IActionResult> Insert(ClientInsertDTO client)
         {
-            var clientCreator = new AddClientsController(_context);
+            var clientCreator = new ClientService(_context);
             var dataModified = await clientCreator.AddClient(client);
 
             if (dataModified > 0)

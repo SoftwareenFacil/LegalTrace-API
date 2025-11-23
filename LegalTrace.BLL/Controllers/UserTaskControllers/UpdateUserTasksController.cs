@@ -1,8 +1,8 @@
 ﻿using LegalTrace.BLL.Models.UserTaskDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserControllers;
-using LegalTrace.DAL.Controllers.ClientControllers;
-using LegalTrace.DAL.Controllers.UserTaskControllers;
+using LegalTrace.DAL.Repository;
+using LegalTrace.DAL.Repository;
+using LegalTrace.DAL.Repository;
 using LegalTrace.DAL.Models;
 
 namespace LegalTrace.BLL.Controllers.UserTaskControllers
@@ -22,13 +22,13 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
                 return 500;
 
-            var userTaskController = new UserTaskController(_context);
+            var userTaskController = new UserTaskRepository(_context);
             var userTask = await userTaskController.GetUserTaskById(userTaskEdited.Id);
             if (userTask != null)
             {
                 if(userTaskEdited.UserId > 0)
                 {
-                    var userController = new UserController(_context);
+                    var userController = new UserRepository(_context);
                     var user = await userController.GetUserById(userTaskEdited.UserId);
                     if (user == null)
                         return -2;
@@ -38,7 +38,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                 
                 if(userTaskEdited.ClientId > 0)
                 {
-                    var clientController = new ClientController(_context);
+                    var clientController = new ClientRepository(_context);
                     var client = await clientController.GetClientById(userTaskEdited.ClientId);
                     if (client == null)
                         return -3;
@@ -64,7 +64,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<int> UpdateUserTaskVigency(int id)
         {
-            var userTaskController = new UserTaskController(_context);
+            var userTaskController = new UserTaskRepository(_context);
             var userTask = await userTaskController.GetUserTaskById(id);
             if (userTask != null)
             {

@@ -1,6 +1,6 @@
 ﻿using LegalTrace.BLL.Models.UserDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Repository;
 using LegalTrace.DAL.Models;
 
 namespace LegalTrace.BLL.Controllers.UserControllers
@@ -16,7 +16,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
         public async Task<int> AddUser(UserInsertDTO user)
         {
 
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             if (await userController.GetUserByEmail(user.Email) != null)
                 return -1;
 

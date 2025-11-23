@@ -1,9 +1,7 @@
 ﻿using LegalTrace.BLL.Models.UserTaskDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserTaskControllers;
+using LegalTrace.DAL.Repository;
 using LegalTrace.DAL.Models;
-using LegalTrace.DAL.Controllers.UserControllers;
-using LegalTrace.DAL.Controllers.ClientControllers;
 
 namespace LegalTrace.BLL.Controllers.UserTaskControllers
 {
@@ -17,11 +15,11 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<int> AddUserTask(UserTaskInsertDTO userTask)
         {
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             var user = await userController.GetUserById(userTask.UserId);
             if (user != null)
             {
-                var clientController = new ClientController(_context);
+                var clientController = new ClientRepository(_context);
                 var client = await clientController.GetClientById(userTask.ClientId);
                 if(client != null)
                 {
@@ -31,7 +29,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
                     {
 
                         DateTime utcNow = DateTime.UtcNow;
-                        var userTaskController = new UserTaskController(_context);
+                        var userTaskController = new UserTaskRepository(_context);
                         var userTaskCreate = new UserTask()
                         {
                             UserId = userTask.UserId,

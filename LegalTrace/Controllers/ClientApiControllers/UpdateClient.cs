@@ -19,7 +19,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
 
         public async Task<IActionResult> Update(ClientEditDTO clientEdited)
         {
-            var clientUpdater = new UpdateClientsController(_context);
+            var clientUpdater = new ClientService(_context);
             var code = await clientUpdater.UpdateClient(clientEdited);
 
             switch (code)
@@ -35,7 +35,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
 
         public async Task<IActionResult> UpdateVigency(int id)
         {
-            var clientUpdater = new UpdateClientsController(_context);
+            var clientUpdater = new ClientService(_context);
             var code = await clientUpdater.UpdateClientVigency(id);
 
             switch (code)
