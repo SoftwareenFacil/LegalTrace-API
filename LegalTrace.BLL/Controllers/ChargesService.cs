@@ -24,7 +24,14 @@ namespace LegalTrace.BLL.Controllers
         public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
             var chargeController = new ChargeController(_context);
-            var charges = await chargeController.GetChargeBy(id, clientId, date, dateTo, title, amount, type);
+            double? lowerLimit = null;
+            double? upperLimit = null;
+            if (amount.HasValue)
+            {
+                upperLimit = amount.Value + 1000;
+                lowerLimit = amount.Value - 1000;
+            }
+            var charges = await chargeController.GetChargeBy(id, clientId, date, dateTo, title, type, lowerLimit, upperLimit);
             if (charges.Count() > 0)
             {
                 List<ChargeDTO> result = new List<ChargeDTO>();
@@ -37,7 +44,8 @@ namespace LegalTrace.BLL.Controllers
                     Amount = row.Amount,
                     Type = row.ChargeType.ToString(),
                     Created = row.Created,
-                    FileLink = row.FileLink
+                    FileLink = row.FileLink,
+                    Date = row.PaymentDate
                 }));
                 return result;
             }
@@ -86,9 +94,9 @@ namespace LegalTrace.BLL.Controllers
                 }
 
                 if (chargeEdited.chargeType != null)
-                {
                     charge.ChargeType = (ChargeType)((int)chargeEdited.chargeType >= 3 ? 0 : chargeEdited.chargeType);
-                }
+
+                //validate Correct uploading of file when editing it
                 var isUploadSuccesful = true;
                 if (isFileBeingUploaded && !string.IsNullOrEmpty(charge.FileLink))
                 {
@@ -107,6 +115,7 @@ namespace LegalTrace.BLL.Controllers
 
                 charge.Title = !string.IsNullOrEmpty(chargeEdited.Title) ? chargeEdited.Title : charge.Title;
                 charge.Description = !string.IsNullOrEmpty(chargeEdited.Description) ? chargeEdited.Description : charge.Description;
+                charge.PaymentDate = chargeEdited.PaymentDate.HasValue ? chargeEdited.PaymentDate.Value : charge.PaymentDate;
                 charge.Amount = chargeEdited.Amount > 0 ? chargeEdited.Amount : charge.Amount;
                 charge.Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
 

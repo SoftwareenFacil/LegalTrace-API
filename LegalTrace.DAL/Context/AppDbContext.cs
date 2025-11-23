@@ -53,6 +53,8 @@ namespace LegalTrace.DAL.Context
             .HasMany(x => x.History)
             .WithOne(c => c.Client)
             .HasForeignKey(c => c.ClientId);
+
+
         }
         private string HashPassword(string password)
         {
