@@ -24,6 +24,8 @@ namespace LegalTrace.DAL.Models
         public string FileLink { get; set; }
         [Required]
         public ChargeType ChargeType { get; set; }
+
+        public DateTime? PaymentDate { get; set; }
     }
     public enum ChargeType
     {

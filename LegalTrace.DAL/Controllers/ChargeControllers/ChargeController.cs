@@ -1,6 +1,7 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.DAL.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
@@ -26,7 +27,7 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
             return response;
         }
 
-        public async Task<List<Charge>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
+        public async Task<List<Charge>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? type, double? lowerLimitAmount, double? upperLimitAmount)
         {
             if (id.HasValue)
             {
@@ -59,12 +60,11 @@ namespace LegalTrace.DAL.Controllers.ChargeControllers
                 query = query.Where(charge => charge.Created < DateTime.SpecifyKind(dateTo.Value, DateTimeKind.Utc));
             }
 
-            if (amount.HasValue)
-            {
-                var lowerBound = amount.Value - 10; 
-                var upperBound = amount.Value + 10;
-                query = query.Where(charge => charge.Amount >= lowerBound && charge.Amount <= upperBound);
-            }
+            if (lowerLimitAmount.HasValue)
+                query = query.Where(charge => charge.Amount >= lowerLimitAmount);
+            if (upperLimitAmount.HasValue)
+                query = query.Where(c => c.Amount <= upperLimitAmount);
+
             if (type.HasValue)
                 query = query.Where(charge => charge.ChargeType == (ChargeType)type);
 
