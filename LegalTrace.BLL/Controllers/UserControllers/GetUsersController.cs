@@ -1,6 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.BLL.Models.UserDTO;
-using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Repository;
 
 namespace LegalTrace.BLL.Controllers.UserControllers
 {
@@ -14,7 +14,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
 
         public async Task<List<UserDTO>> GetUsersBy(int? id, string? name, string? email, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             var users = await userController.GetUserBy(id, name, email, createdFrom, createdTo, vigency);
             if (users.Count() > 0)
             {

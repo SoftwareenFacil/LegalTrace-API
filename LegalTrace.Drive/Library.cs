@@ -26,20 +26,20 @@ namespace LegalTrace.GoogleDrive
                     Console.WriteLine("Creds from Config");
                 else
                     Console.WriteLine("Creds from Env");
-                    // ---------------------------------------
-                    // SERVICE ACCOUNT FLOW (NO USER LOGIN)
-                    // ---------------------------------------
-                    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(secret.JsonContent));
+                // ---------------------------------------
+                // SERVICE ACCOUNT FLOW (NO USER LOGIN)
+                // ---------------------------------------
+                using var stream = new MemoryStream(Encoding.UTF8.GetBytes(secret.JsonContent));
 
-                    var credential = GoogleCredential.FromStream(stream)
-                                                     .CreateScoped(DriveService.Scope.Drive);
+                var credential = GoogleCredential.FromStream(stream)
+                                                 .CreateScoped(DriveService.Scope.Drive);
 
-                    return new DriveService(new BaseClientService.Initializer
-                    {
-                        HttpClientInitializer = credential,
-                        ApplicationName = googleAppName
-                    });
-                
+                return new DriveService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = googleAppName
+                });
+
             }
             catch (Exception ex)
             {
@@ -110,21 +110,10 @@ namespace LegalTrace.GoogleDrive
             var newFile = new Google.Apis.Drive.v3.Data.File();
             newFile.Name = newName;
 
-            // Create a dictionary to map extensions to MIME types.
-            var mimeTypes = new Dictionary<string, string>
-    {
-        { ".pdf", "application/pdf" },
-        { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-        { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-        { ".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
-        { ".txt", "text/plain" },
-        { ".png", "image/png" },
-        { ".PNG", "image/png" },
-        { ".jpeg", "image/jpeg" },
-    };
+
 
             // Get the MIME type corresponding to the file extension.
-            var mimeType = mimeTypes[extension];
+            var mimeType = GetMimeTypeByExtension(extension);
 
             // Create the request to update the file.
             var request = service.Files.Update(newFile, fileId, streamContent, mimeType);
@@ -185,13 +174,14 @@ namespace LegalTrace.GoogleDrive
         }
 
 
-        public async Task<(string,string, MemoryStream)> DownloadFile(string id)
+        public async Task<(string, string, MemoryStream)> DownloadFile(string id)
         {
             var request = service.Files.Get(id);
+            request.SupportsAllDrives = true;
             var stream = new MemoryStream();
             var metadata = request.Execute();
             var filestring = await request.DownloadAsync(stream);
-            return ( metadata.Name, metadata.MimeType,stream);
+            return (metadata.Name, metadata.MimeType, stream);
         }
 
 
@@ -216,14 +206,16 @@ namespace LegalTrace.GoogleDrive
 
                 // Si el archivo no se encuentra, devuelve null
                 return null;
-            
-            }catch (Exception ex){
+
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
 
                 // Devuelve null si ocurre una excepción.
                 return null;
             }
-            
+
         }
 
         public async Task<string> GetFolderIdByName(string folderName)
@@ -268,6 +260,25 @@ namespace LegalTrace.GoogleDrive
                 return false; // If an exception was thrown, the connection is not valid
             }
         }
+
+        private static string GetMimeTypeByExtension(string extension)
+        {
+            // Create a dictionary to map extensions to MIME types.
+            var mimeTypes = new Dictionary<string, string>
+            {
+                { ".pdf", "application/pdf" },
+                { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+                { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+                { ".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
+                { ".txt", "text/plain" },
+                { ".png", "image/png" },
+                { ".PNG", "image/png" },
+                { ".jpeg", "image/jpeg" },
+            };
+            return mimeTypes[extension];
+        }
+
+
 
 
 

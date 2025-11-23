@@ -2,12 +2,12 @@
 using LegalTrace.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LegalTrace.DAL.Controllers.UserTaskControllers
-{
-    public class UserTaskController : IUserTaskController
+namespace LegalTrace.DAL.Repository
+{ 
+    public class UserTaskRepository : IUserTaskRepository
     {
         private AppDbContext _context;
-        public UserTaskController(AppDbContext _dbContext)
+        public UserTaskRepository(AppDbContext _dbContext)
         {
             _context = _dbContext;
         }

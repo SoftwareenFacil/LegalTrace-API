@@ -1,6 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
 using LegalTrace.BLL.Models.UserDTO;
-using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Repository;
 
 namespace LegalTrace.BLL.Controllers.UserControllers
 {
@@ -16,7 +16,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
             if (string.IsNullOrWhiteSpace(userEdited.Name) && string.IsNullOrWhiteSpace(userEdited.Email) && string.IsNullOrWhiteSpace(userEdited.Password) && string.IsNullOrWhiteSpace(userEdited.Address) &&  userEdited.Phone == 0)
                 return 500;
 
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             var user = await userController.GetUserById(userEdited.Id);
             if (user != null)
             {
@@ -36,7 +36,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
 
         public async Task<int> UpdateUserVigency(int id)
         {
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             var user = await userController.GetUserById(id);
             if (user != null)
             {

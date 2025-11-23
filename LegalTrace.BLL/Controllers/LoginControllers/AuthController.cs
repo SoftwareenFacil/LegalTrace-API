@@ -1,7 +1,7 @@
 ﻿using LegalTrace.BLL.Models;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserControllers;
 using LegalTrace.BLL.Controllers.JwtControllers;
+using LegalTrace.DAL.Repository;
 
 namespace LegalTrace.BLL.Controllers.LoginControllers
 {
@@ -15,7 +15,7 @@ namespace LegalTrace.BLL.Controllers.LoginControllers
 
         public async Task<string?> Authenticate(IManejoJwt manejoJwt,UserCredentials credentials)
         {
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             var user = await userController.GetUserByEmail(credentials.Email);
             var hasher = new Hasher();
             if (user != null && hasher.VerifyPassword(credentials.Password, user.Password))

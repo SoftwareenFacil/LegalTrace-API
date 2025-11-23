@@ -1,5 +1,6 @@
 ﻿using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.CredentialControllers;
+using LegalTrace.DAL.Repository;
+
 
 namespace LegalTrace.BLL.Controllers.CredentialControllers
 {
@@ -12,7 +13,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
         }
         public async Task<bool> DeleteCredentialById(int id)
         {
-            var credentialController = new CredentialController(_context);
+            var credentialController = new CredentialRepository(_context);
             var exist = await credentialController.GetCredentialById(id);
             if (exist == null)
             {

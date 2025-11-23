@@ -1,8 +1,8 @@
 ﻿using LegalTrace.DAL.Models;
 
-namespace LegalTrace.DAL.Controllers.CredentialControllers
+namespace LegalTrace.DAL.Repository
 {
-    public interface ICredentialController
+    public interface ICredentialRepository
     {
         Task<Credential?> GetCredentialById(int id);
         Task<List<Credential>> GetCredentialsBy(int id);

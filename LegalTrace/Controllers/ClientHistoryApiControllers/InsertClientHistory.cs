@@ -19,7 +19,7 @@ namespace LegalTrace.Controllers.ClientHistoryApiControllers
         }
         public async Task<IActionResult> Insert(ClientHistoryInsertDTO clientHistory)
         {
-            var clientVerify = new GetClientsController(_context);
+            var clientVerify = new ClientService(_context);
             var client = await clientVerify.GetClientById(clientHistory.ClientId);
             if (client != null)
             {

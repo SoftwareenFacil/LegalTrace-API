@@ -1,9 +1,7 @@
-﻿using LegalTrace.BLL.Models;
-using LegalTrace.BLL.Models.ChargeDTO;
+﻿using LegalTrace.BLL.Models.ChargeDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.ChargeControllers;
-using LegalTrace.DAL.Controllers.ClientControllers;
 using LegalTrace.DAL.Models;
+using LegalTrace.DAL.Repository;
 using LegalTrace.GoogleDrive;
 using LegalTrace.GoogleDrive.Models;
 using LegalTrace.PDF.Models;
@@ -23,7 +21,7 @@ namespace LegalTrace.BLL.Controllers
         }
         public async Task<List<ChargeDTO>> GetChargeBy(int? id, int? clientId, DateTime? date, DateTime? dateTo, string? title, int? amount, int? type)
         {
-            var chargeController = new ChargeController(_context);
+            var chargeController = new ChargeRepository(_context);
             double? lowerLimit = null;
             double? upperLimit = null;
             if (amount.HasValue)
@@ -35,18 +33,7 @@ namespace LegalTrace.BLL.Controllers
             if (charges.Count() > 0)
             {
                 List<ChargeDTO> result = new List<ChargeDTO>();
-                charges.ForEach(row => result.Add(new ChargeDTO()
-                {
-                    Id = row.Id,
-                    ClientId = row.ClientId,
-                    Title = row.Title,
-                    Description = row.Description,
-                    Amount = row.Amount,
-                    Type = row.ChargeType.ToString(),
-                    Created = row.Created,
-                    FileLink = row.FileLink,
-                    Date = row.PaymentDate
-                }));
+                charges.ForEach(row => result.Add(MapFromEntity(row)));
                 return result;
             }
 
@@ -55,21 +42,10 @@ namespace LegalTrace.BLL.Controllers
 
         public async Task<ChargeDTO?> GetChargeById(int id)
         {
-            var chargeController = new ChargeController(_context);
+            var chargeController = new ChargeRepository(_context);
             var charge = await chargeController.GetChargeById(id);
             if (charge != null)
-            {
-                return new ChargeDTO()
-                {
-                    Id = charge.Id,
-                    ClientId = charge.ClientId,
-                    Title = charge.Title,
-                    Description = charge.Description,
-                    Amount = charge.Amount,
-                    Created = charge.Created,
-                    FileLink = charge.FileLink
-                };
-            }
+                return MapFromEntity(charge);
             return null;
         }
         public async Task<int> UpdateCharge(ChargeEditDTO chargeEdited)
@@ -80,13 +56,13 @@ namespace LegalTrace.BLL.Controllers
             var (isFileBeingUploaded, isFileProperlyUploaded) = isFileBeingUploadedProperly(chargeEdited);
             if (!isFileProperlyUploaded)
                 return 400;
-            var chargeController = new ChargeController(_context);
+            var chargeController = new ChargeRepository(_context);
             var charge = await chargeController.GetChargeById(chargeEdited.Id);
             if (charge != null)
             {
                 if (chargeEdited.ClientId > 0)
                 {
-                    var clientController = new ClientController(_context);
+                    var clientController = new ClientRepository(_context);
                     var client = await clientController.GetClientById(chargeEdited.ClientId);
                     if (client == null)
                         return -1;
@@ -137,7 +113,7 @@ namespace LegalTrace.BLL.Controllers
         }
         public async Task<bool> DeleteChargeById(int id)
         {
-            var chargeController = new ChargeController(_context);
+            var chargeController = new ChargeRepository(_context);
             var exist = await chargeController.GetChargeById(id);
             if (exist == null)
             {
@@ -159,21 +135,47 @@ namespace LegalTrace.BLL.Controllers
                 return 401;
             if (!string.IsNullOrEmpty(charge.Title) && !string.IsNullOrEmpty(charge.Description) &&  charge.Amount > 0)
             {
-                var chargeController = new ChargeController(_context);
-                var chargeCreate = new Charge()
-                {
-                    ClientId = charge.ClientId,
-                    Title = charge.Title,
-                    Description = charge.Description,
-                    Amount = charge.Amount,
-                    FileLink = FileLink,
-                    ChargeType = (int)charge.chargeType >= 3 ? 0 : charge.chargeType,
-                    Created = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
-                    Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc)
-                };
-                return await chargeController.InsertCharge(chargeCreate);
+                var chargeController = new ChargeRepository(_context);
+
+                return await chargeController.InsertCharge(MapFromInsertDTO(charge, FileLink));
             }
             return 0;
+        }
+
+
+        private Charge MapFromInsertDTO(ChargeInsertDTO insertDTO, string fileLink)
+        {
+            var chargeCreate = new Charge()
+            {
+                ClientId = insertDTO.ClientId,
+                Title = insertDTO.Title,
+                Description = insertDTO.Description,
+                PaymentDate = insertDTO.PaymentDate,
+                Amount = insertDTO.Amount,
+                FileLink = fileLink,
+                ChargeType = (int)insertDTO.chargeType >= 3 ? 0 : insertDTO.chargeType,
+                Created = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+                Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc)
+            };
+            return chargeCreate;
+        }
+
+        private ChargeDTO MapFromEntity(Charge entity)
+        {
+            var DTO = new ChargeDTO()
+            {
+                Id = entity.Id,
+                ClientId = entity.ClientId,
+                Title = entity.Title,
+                Date = entity.PaymentDate,
+                Type = entity.ChargeType.ToString(),
+                Description = entity.Description,
+                Amount = entity.Amount,
+                Created = entity.Created,
+                Updated = entity.Updated,
+                FileLink = entity.FileLink
+            };
+            return DTO;
         }
     }
 }

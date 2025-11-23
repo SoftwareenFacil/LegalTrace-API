@@ -1,7 +1,7 @@
 ﻿using LegalTrace.BLL.Models.CredentialDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.CredentialControllers;
 using LegalTrace.DAL.Models;
+using LegalTrace.DAL.Repository;
 
 namespace LegalTrace.BLL.Controllers.CredentialControllers
 {
@@ -15,7 +15,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
         public async Task<int> AddCredential(CredentialInsertDTO credential)
         {
             DateTime utcNow = DateTime.UtcNow;
-            var credentialController = new CredentialController(_context);
+            var credentialController = new CredentialRepository(_context);
             var credentialCreate = new Credential()
             {
                 ClientId = credential.ClientId,

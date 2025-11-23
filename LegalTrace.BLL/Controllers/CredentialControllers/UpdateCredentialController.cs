@@ -1,6 +1,7 @@
 ﻿using LegalTrace.BLL.Models.CredentialDTO;
 using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.CredentialControllers;
+using LegalTrace.DAL.Repository;
+
 
 namespace LegalTrace.BLL.Controllers.CredentialControllers
 {
@@ -19,7 +20,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
                 if (string.IsNullOrWhiteSpace(credentialEdited.Title) && string.IsNullOrWhiteSpace(credentialEdited.Username) && string.IsNullOrWhiteSpace(credentialEdited.KeyValue))
                     return 400;
 
-                var credentialController = new CredentialController(_context);
+                var credentialController = new CredentialRepository(_context);
                 var credential = await credentialController.GetCredentialById(credentialEdited.Id);
                 if (credential != null)
                 {
@@ -40,7 +41,7 @@ namespace LegalTrace.BLL.Controllers.CredentialControllers
 
         public async Task<int> UpdateCredentialVigency(int id)
         {
-            var credentialController = new CredentialController(_context);
+            var credentialController = new CredentialRepository(_context);
             var credential = await credentialController.GetCredentialById(id);
             if (credential != null)
             {

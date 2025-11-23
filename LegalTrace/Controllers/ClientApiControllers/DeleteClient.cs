@@ -18,7 +18,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var deleter = new DeleteClientsController(_context);
+            var deleter = new ClientService(_context);
             var isDeleted = await deleter.DeleteClientById(id);
             if (!isDeleted)
             {

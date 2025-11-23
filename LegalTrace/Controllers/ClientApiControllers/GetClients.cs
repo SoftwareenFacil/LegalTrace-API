@@ -3,7 +3,6 @@ using LegalTrace.BLL.Controllers.ClientControllers;
 using LegalTrace.Controllers.Services;
 using LegalTrace.DAL.Context;
 using LegalTrace.Models;
-using LegalTrace.BLL.Controllers.UserControllers;
 
 namespace LegalTrace.Controllers.ClientApiControllers
 {
@@ -19,7 +18,7 @@ namespace LegalTrace.Controllers.ClientApiControllers
 
         public async Task<IActionResult> GetBy(int? id, string? name, string? email, string? taxId, DateTime? createdFrom, DateTime? createdTo, bool? vigency)
         {
-            var clientGetter = new GetClientsController(_context);
+            var clientGetter = new ClientService(_context);
             var clients = await clientGetter.GetClientBy(id, name, email, taxId, createdFrom, createdTo, vigency);
             if (clients.Count() > 0)
             {

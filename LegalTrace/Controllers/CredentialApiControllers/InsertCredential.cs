@@ -19,7 +19,7 @@ namespace LegalTrace.Controllers.CredentialApiControllers
         }
         public async Task<IActionResult> Insert(CredentialInsertDTO credential)
         {
-            var clientVerify = new GetClientsController(_context);
+            var clientVerify = new ClientService(_context);
             var client = await clientVerify.GetClientById(credential.ClientId);
             if (client != null)
             {

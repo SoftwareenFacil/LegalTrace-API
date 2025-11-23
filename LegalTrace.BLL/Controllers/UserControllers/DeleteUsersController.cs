@@ -1,5 +1,5 @@
 ﻿using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserControllers;
+using LegalTrace.DAL.Repository;
 
 
 namespace LegalTrace.BLL.Controllers.UserControllers
@@ -14,7 +14,7 @@ namespace LegalTrace.BLL.Controllers.UserControllers
 
         public async Task<bool> DeleteUserById(int id)
         {
-            var userController = new UserController(_context);
+            var userController = new UserRepository(_context);
             var exist =  await userController.GetUserById(id);
             if (exist == null)
             {

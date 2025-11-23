@@ -1,8 +1,6 @@
-﻿using LegalTrace.BLL.Models.UserTaskDTO;
-using LegalTrace.DAL.Context;
-using LegalTrace.DAL.Controllers.UserTaskControllers;
+﻿using LegalTrace.DAL.Context;
+using LegalTrace.DAL.Repository;
 using LegalTrace.DAL.Models;
-using System;
 
 namespace LegalTrace.BLL.Controllers.UserTaskControllers
 {
@@ -16,7 +14,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 
         public async Task<bool> CheckRepetitiveUserTasks()
         {
-            var userTaskController = new UserTaskController(_context);
+            var userTaskController = new UserTaskRepository(_context);
             var userTasks = await userTaskController.GetRepeatableUserTasks();
             if (userTasks.Any())
             {
