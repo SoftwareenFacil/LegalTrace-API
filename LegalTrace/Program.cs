@@ -10,6 +10,7 @@ using DinkToPdf.Contracts;
 using DinkToPdf;
 using LegalTrace.GoogleDrive.Models;
 using System.Net;
+using LegalTrace.SMTP.Models;
 
 namespace LegalTrace
 {
@@ -103,6 +104,9 @@ namespace LegalTrace
             });
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+            builder.Services.AddSingleton<MailParameters>(provider =>
+                BuildMailParameters(provider.GetRequiredService<IConfiguration>())
+            );
             builder.Services.AddScoped<IManejoJwt, ManejoJwt>();
             builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
@@ -151,6 +155,16 @@ namespace LegalTrace
                 "Google Service Account JSON not found. " +
                 "Provide a valid file path in 'GoogleDriveSecurityLocation' or set the 'GOOGLE_SERVICE_ACCOUNT_JSON' environment variable."
             );
+        }
+        private static MailParameters BuildMailParameters(IConfiguration config)
+        {
+            var mailParamsSection = config.GetSection("MailParameters");
+            return new MailParameters
+            {
+                apiKey = mailParamsSection["apiKey"],
+                fromAddress = mailParamsSection["fromAddress"],
+                fromName = mailParamsSection["fromName"]
+            };
         }
     }
 }

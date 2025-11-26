@@ -14,7 +14,10 @@ namespace LegalTrace.DAL.Repository
 
         public async Task<Charge> GetChargeById(int id)
         {
-            var response = await _context.Charges.Where(chargeAux => chargeAux.Id.Equals(id)).FirstOrDefaultAsync();
+            var response = await _context.Charges
+                .Where(chargeAux => chargeAux.Id.Equals(id))
+                .Include(x => x.Client)
+                .FirstOrDefaultAsync();
             return response;
         }
 
