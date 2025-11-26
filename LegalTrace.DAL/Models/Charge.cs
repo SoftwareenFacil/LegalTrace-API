@@ -33,9 +33,9 @@ namespace LegalTrace.DAL.Models
     }
     public enum ChargeType
     {
-        Pesos,
-        UF,
-        UTM,
-        USD
+        F29,
+        Renta,
+        LeyesSociales,
+        Otros
     }
 }

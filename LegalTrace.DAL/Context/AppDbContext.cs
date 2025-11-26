@@ -50,13 +50,18 @@ namespace LegalTrace.DAL.Context
             .HasForeignKey(c => c.ClientId);
 
             modelBuilder.Entity<Client>()
+            .HasMany(x => x.Charges)
+            .WithOne(c => c.Client)
+            .HasForeignKey(c => c.ClientId);
+
+            modelBuilder.Entity<Client>()
             .HasMany(x => x.History)
             .WithOne(c => c.Client)
             .HasForeignKey(c => c.ClientId);
 
             modelBuilder.Entity<Charge>()
                 .HasOne(c => c.Client)
-                .WithMany()
+                .WithMany(x => x.Charges)
                 .HasForeignKey(c => c.ClientId);
 
 

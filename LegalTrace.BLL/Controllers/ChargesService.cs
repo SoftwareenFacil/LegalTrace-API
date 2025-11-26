@@ -10,9 +10,9 @@ namespace LegalTrace.BLL.Controllers
 {
     public class ChargesController
     {
-        private AppDbContext _context;
-        private GoogleServiceAccountJson _googleServiceAccountJson;
-        private string _googleAppName;
+        private readonly AppDbContext _context;
+        private readonly GoogleServiceAccountJson _googleServiceAccountJson;
+        private readonly string _googleAppName;
         public ChargesController(AppDbContext _dbContext, GoogleServiceAccountJson serviceAccountJson, string GoogleAppName)
         {
             _context = _dbContext;
@@ -167,13 +167,21 @@ namespace LegalTrace.BLL.Controllers
                 Id = entity.Id,
                 ClientId = entity.ClientId,
                 Title = entity.Title,
-                Date = entity.PaymentDate,
-                Type = entity.ChargeType.ToString(),
+                PaymentDate = entity.PaymentDate,
+                ChargeType = entity.ChargeType.ToString(),
                 Description = entity.Description,
                 Amount = entity.Amount,
                 Created = entity.Created,
                 Updated = entity.Updated,
-                FileLink = entity.FileLink
+                FileLink = entity.FileLink,
+                Client = entity.Client != null ? new ClientDTO()
+                {
+                    Id = entity.Client.Id,
+                    Name = entity.Client.Name,
+                    Email = entity.Client.Email,
+                    Address = entity.Client.Address,
+                    Created = entity.Client.Created
+                } : null,
             };
             return DTO;
         }
