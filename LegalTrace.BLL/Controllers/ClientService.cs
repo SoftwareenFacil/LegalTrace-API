@@ -60,7 +60,6 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                     Name = row.Name,
                     Email = row.Email,
                     TaxId = row.TaxId,
-                    Phone = row.Phone,
                     Address = row.Address,
                     Created = row.Created,
                     Vigency = row.Vigency
@@ -82,7 +81,6 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                     Name = row.Name,
                     Email = row.Email,
                     TaxId = row.TaxId,
-                    Phone = row.Phone,
                     Address = row.Address,
                     Created = row.Created,
                     Vigency = row.Vigency
@@ -104,7 +102,6 @@ namespace LegalTrace.BLL.Controllers.ClientControllers
                     Name = client.Name,
                     Email = client.Email,
                     TaxId = client.TaxId,
-                    Phone = client.Phone,
                     Address = client.Address,
                     Created = client.Created,
                     Vigency = client.Vigency
