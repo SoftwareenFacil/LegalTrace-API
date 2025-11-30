@@ -69,6 +69,16 @@ jobs:
         with:
           files: '${{ env.FOLDER_NAME }}/appsettings.json'
         env:
+          MailParameters.FromAddress: ${{ vars.MAIL_FROM_ADDRESS }}
+          MailParameters.FromName: ${{ vars.MAIL_FROM_NAME }}
+        # Sets the logo file location in the configuration
+        
+      # STEP 7: Configure Logo File Location
+      - name: "🖼️ Configure Logo File Location"
+        uses: microsoft/variable-substitution@v1 
+        with:
+          files: '${{ env.FOLDER_NAME }}/appsettings.json'
+        env:
           LogoLocation: ${{ vars.LOGO_LOCATION }}
         # Sets the logo file location in the configuration
 
