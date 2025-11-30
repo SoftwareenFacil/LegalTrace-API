@@ -131,6 +131,39 @@ namespace LegalTrace
 
             app.Run();
         }
+
+        private static MailParameters BuildMailParameters(IConfiguration config)
+        {
+            var mailParamsSection = config.GetSection("MailParameters");
+
+            // 1. Try to get the API Key from appsettings.json
+            var apiKeyFromConfig = mailParamsSection["apiKey"];
+
+            // 2. Try to get the API Key from the environment variable (FALLBACK)
+            var apiKeyFromEnv = Environment.GetEnvironmentVariable("MAILERSEND_API_KEY");
+
+            // 3. Select the first non-empty value
+            var finalApiKey =
+                !string.IsNullOrWhiteSpace(apiKeyFromConfig) ? apiKeyFromConfig :
+                !string.IsNullOrWhiteSpace(apiKeyFromEnv) ? apiKeyFromEnv :
+                null; // If both are null/empty, set to null
+
+            if (string.IsNullOrWhiteSpace(finalApiKey))
+            {
+                throw new InvalidOperationException(
+                    $"MailerSend API key is not configured. " +
+                    $"Please set 'MailParameters:apiKey' in config or the 'MAILERSEND_API_KEY' environment variable."
+                );
+            }
+
+            // You would typically return your fully configured MailParameters object here
+            return new MailParameters
+            {
+                apiKey = finalApiKey,
+                fromAddress = mailParamsSection["fromAddress"],
+                fromName = mailParamsSection["fromName"]
+            };
+        }
         private static (string, string, bool) ResolveGoogleServiceAccountJson(IConfiguration config)
         {
             string FolderID = Environment.GetEnvironmentVariable("GOOGLE_FOLDER_ID");
@@ -156,15 +189,6 @@ namespace LegalTrace
                 "Provide a valid file path in 'GoogleDriveSecurityLocation' or set the 'GOOGLE_SERVICE_ACCOUNT_JSON' environment variable."
             );
         }
-        private static MailParameters BuildMailParameters(IConfiguration config)
-        {
-            var mailParamsSection = config.GetSection("MailParameters");
-            return new MailParameters
-            {
-                apiKey = mailParamsSection["apiKey"],
-                fromAddress = mailParamsSection["fromAddress"],
-                fromName = mailParamsSection["fromName"]
-            };
-        }
+
     }
 }
