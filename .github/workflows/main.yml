@@ -63,8 +63,8 @@ jobs:
           CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
         # Replaces placeholder in config file with actual database connection string from secrets
 
-      # STEP 7: Configure Logo File Location
-      - name: "🖼️ Configure Logo File Location"
+      # STEP 7: Configure Mail Parameters
+      - name: "🖼️ Configure Mail Parameters"
         uses: microsoft/variable-substitution@v1 
         with:
           files: '${{ env.FOLDER_NAME }}/appsettings.json'
