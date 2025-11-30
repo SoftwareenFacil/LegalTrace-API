@@ -22,7 +22,7 @@ namespace LegalTrace.DAL.Context
             var adminUser = new User
             {
                 Id = 1,
-                Name = "admin",
+                Name = "Admin",
                 Email = "admin@admin.cl",
                 Password = HashPassword("admin1234"),
                 Phone = 0,
@@ -32,7 +32,20 @@ namespace LegalTrace.DAL.Context
                 Vigency = true
             };
 
-            modelBuilder.Entity<User>().HasData(adminUser);
+            var otherUser = new User
+            {
+                Id = 2,
+                Name = "Jose",
+                Email = "jddfuenzalida@gmail.com",
+                Password = HashPassword("Legalcont1234"),
+                Phone = 0,
+                SuperAdmin = true,
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow,
+                Vigency = true
+            };
+
+            modelBuilder.Entity<User>().HasData(adminUser, otherUser);
 
             modelBuilder.Entity<User>()
             .HasMany(x => x.Tasks)
