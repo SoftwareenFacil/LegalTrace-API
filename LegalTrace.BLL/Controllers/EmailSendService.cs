@@ -27,6 +27,7 @@ namespace LegalTrace.BLL.Controllers
             var mailModel = MapFromCharge(charge);
             var htmlBody = PendingChargeEmailBuilder.Build(mailModel.ChargeInfo,mailModel.MailInfo,mailModel.AccountInfo,mailModel.SenderInfo);
             var emailService = new MailerSendEmailService(_mailParameters.fromAddress, _mailParameters.apiKey);
+            await emailService.SendValidationEmailAsync(); // To ensure the service is working
             return await emailService.SendEmailAsync(charge.Client.Email, mailModel.ChargeInfo.chargeTitle, htmlBody);
         }
         public async Task<string> GetPaymentReminderFormatAsync(int chargeId)
