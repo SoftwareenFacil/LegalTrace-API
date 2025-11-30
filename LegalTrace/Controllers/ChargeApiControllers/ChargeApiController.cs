@@ -9,7 +9,7 @@ namespace LegalTrace.Controllers.ChargeApiControllers
     [Route("api/[controller]/[action]")]
     public class ChargeApiController : ControllerBase
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
         private readonly string _googleAppName;
         private readonly ChargesController _chargesController;
         public ChargeApiController(AppDbContext dbContext, IConfiguration configuration, GoogleServiceAccountJson gdrivesecurity)

@@ -14,7 +14,10 @@ namespace LegalTrace.DAL.Repository
 
         public async Task<Charge> GetChargeById(int id)
         {
-            var response = await _context.Charges.Where(chargeAux => chargeAux.Id.Equals(id)).FirstOrDefaultAsync();
+            var response = await _context.Charges
+                .Where(chargeAux => chargeAux.Id.Equals(id))
+                .Include(x => x.Client)
+                .FirstOrDefaultAsync();
             return response;
         }
 
@@ -24,7 +27,10 @@ namespace LegalTrace.DAL.Repository
             {
                 if (id.Value == 0)
                 {
-                    return await _context.Charges.Take(100).ToListAsync();
+                    return await _context.Charges
+                        .Include(x => x.Client)
+                        .Take(100)
+                        .ToListAsync();
                 }
                 else
                 {
@@ -33,7 +39,10 @@ namespace LegalTrace.DAL.Repository
                 }
             }
 
-            var query = _context.Charges.AsQueryable();
+            var query = _context.Charges
+                        .Include(x => x.Client)
+                        .Take(100)
+                        .AsQueryable();
 
             if (clientId.HasValue)
                 query = query.Where(charge => charge.ClientId == clientId.Value);

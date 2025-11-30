@@ -13,7 +13,7 @@ namespace LegalTrace.PDF.Models
         {
             ID = cliente.Id.ToString("00");
             Nombre = cliente.Name;
-            Telefono = cliente.Phone.ToString("0-0000-0000");
+            Telefono = "+56987654321";
             RUT = FormatRUT(cliente.TaxId);
         }
         public string FormatRUT(string input)

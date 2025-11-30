@@ -7,7 +7,7 @@ namespace LegalTrace.DAL.Context
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options): base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 
         public DbSet<User> Users { get; set; }
@@ -50,9 +50,19 @@ namespace LegalTrace.DAL.Context
             .HasForeignKey(c => c.ClientId);
 
             modelBuilder.Entity<Client>()
+            .HasMany(x => x.Charges)
+            .WithOne(c => c.Client)
+            .HasForeignKey(c => c.ClientId);
+
+            modelBuilder.Entity<Client>()
             .HasMany(x => x.History)
             .WithOne(c => c.Client)
             .HasForeignKey(c => c.ClientId);
+
+            modelBuilder.Entity<Charge>()
+                .HasOne(c => c.Client)
+                .WithMany(x => x.Charges)
+                .HasForeignKey(c => c.ClientId);
 
 
         }
@@ -60,7 +70,7 @@ namespace LegalTrace.DAL.Context
         {
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 1000); 
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 1000);
             byte[] hash = pbkdf2.GetBytes(20);
 
             byte[] hashBytes = new byte[36];

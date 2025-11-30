@@ -6,7 +6,7 @@ namespace LegalTrace.BLL.Controllers.UserTaskControllers
 {
     public class CheckUserTasksController
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
         public CheckUserTasksController(AppDbContext _dbContext)
         {
             _context = _dbContext;

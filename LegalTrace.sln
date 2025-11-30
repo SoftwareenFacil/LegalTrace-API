@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LegalTrace.PDF", "LegalTrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegalTrace.GoogleDrive", "LegalTrace.Drive\LegalTrace.GoogleDrive.csproj", "{9A0FCA68-2A59-4A57-BB87-D6643D9779DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegalTrace.SMTP", "LegalTrace.SMTP\LegalTrace.SMTP.csproj", "{DB983286-4B00-4243-ADE4-1AAAFBDBE80A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9A0FCA68-2A59-4A57-BB87-D6643D9779DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A0FCA68-2A59-4A57-BB87-D6643D9779DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A0FCA68-2A59-4A57-BB87-D6643D9779DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB983286-4B00-4243-ADE4-1AAAFBDBE80A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB983286-4B00-4243-ADE4-1AAAFBDBE80A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB983286-4B00-4243-ADE4-1AAAFBDBE80A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB983286-4B00-4243-ADE4-1AAAFBDBE80A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

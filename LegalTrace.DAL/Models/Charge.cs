@@ -26,12 +26,16 @@ namespace LegalTrace.DAL.Models
         public ChargeType ChargeType { get; set; }
 
         public DateTime? PaymentDate { get; set; }
+
+        public bool IsPaidByClient { get; set; }
+
+        public virtual Client Client { get; set; }
     }
     public enum ChargeType
     {
-        Pesos,
-        UF,
-        UTM,
-        USD
+        F29,
+        Renta,
+        LeyesSociales,
+        Otros
     }
 }
