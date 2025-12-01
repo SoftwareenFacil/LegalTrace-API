@@ -70,6 +70,7 @@ namespace LegalTrace.SMTP
 
             <div style=""padding-top: 12px; border-top: 1px solid #a7f3d0;"">
                 <p style=""font-size: 14px; color: #6b7280; margin-bottom: 4px;"">Monto Total</p>
+                <p style=""font-weight: 600; color: #111827;"">{chargeData.totalAmount}</p>
             </div>
         </div>
 

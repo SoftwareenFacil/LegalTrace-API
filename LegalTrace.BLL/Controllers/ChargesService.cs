@@ -94,6 +94,7 @@ namespace LegalTrace.BLL.Controllers
                 charge.PaymentDate = chargeEdited.PaymentDate.HasValue ? chargeEdited.PaymentDate.Value : charge.PaymentDate;
                 charge.Amount = chargeEdited.Amount > 0 ? chargeEdited.Amount : charge.Amount;
                 charge.Updated = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+                charge.IsPaidByClient = chargeEdited.IsPaidByClient.HasValue ? chargeEdited.IsPaidByClient.Value : charge.IsPaidByClient;
 
                 var isUpdated = await chargeController.UpdateCharge(charge);
                 if (!isUpdated)
