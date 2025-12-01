@@ -1,4 +1,5 @@
 ﻿using LegalTrace.BLL.Controllers;
+using LegalTrace.BLL.Models;
 using LegalTrace.Controllers.Services;
 using LegalTrace.DAL.Context;
 using LegalTrace.GoogleDrive.Models;
@@ -22,11 +23,11 @@ namespace LegalTrace.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendPaymentReminder([FromBody] int chargeId)
+        public async Task<IActionResult> SendPaymentReminder([FromBody] SendPaymentReminderDTO dto)
         {
-            if (await _emailSendService.SendPaymentReminderAsync(chargeId))
-                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, null, "Recordatorio de Pago para el cargo con ID: " + chargeId + " enviado exitósamente"));
-            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(500, null, "Error al enviar Recordatorio de Pago para el cargo con ID: " + chargeId));
+            if (await _emailSendService.SendPaymentReminderAsync(dto.chargeId))
+                return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(200, null, "Recordatorio de Pago para el cargo con ID: " + dto.chargeId + " enviado exitósamente"));
+            return _responseService.CreateResponse(ApiResponse<object>.SuccessResponse(500, null, "Error al enviar Recordatorio de Pago para el cargo con ID: " + dto.chargeId));
         }
         [HttpGet]
         public async Task<IActionResult> GetPaymentReminderFormat(int chargeId)
