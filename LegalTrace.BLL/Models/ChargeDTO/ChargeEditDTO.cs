@@ -16,5 +16,7 @@ namespace LegalTrace.BLL.Models.ChargeDTO
         public string fileType { get; set; } = string.Empty;
         public string fileString { get; set; } = string.Empty;
 
+        public bool? IsPaidByClient { get; set; }
+
     }
 }
