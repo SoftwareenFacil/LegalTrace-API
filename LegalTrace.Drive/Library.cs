@@ -104,7 +104,7 @@ namespace LegalTrace.GoogleDrive
         }
 
 
-        public async Task<bool> EditFile(string fileId, string newName, MemoryStream streamContent, string extension)
+        public async Task<bool> EditFile(string fileId, string newName, MemoryStream streamContent, string mimeType)
         {
             // Create a new File object with the new name.
             var newFile = new Google.Apis.Drive.v3.Data.File();
@@ -112,8 +112,6 @@ namespace LegalTrace.GoogleDrive
 
 
 
-            // Get the MIME type corresponding to the file extension.
-            var mimeType = GetMimeTypeByExtension(extension);
 
             // Create the request to update the file.
             var request = service.Files.Update(newFile, fileId, streamContent, mimeType);
@@ -261,22 +259,6 @@ namespace LegalTrace.GoogleDrive
             }
         }
 
-        private static string GetMimeTypeByExtension(string extension)
-        {
-            // Create a dictionary to map extensions to MIME types.
-            var mimeTypes = new Dictionary<string, string>
-            {
-                { ".pdf", "application/pdf" },
-                { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-                { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-                { ".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
-                { ".txt", "text/plain" },
-                { ".png", "image/png" },
-                { ".PNG", "image/png" },
-                { ".jpeg", "image/jpeg" },
-            };
-            return mimeTypes[extension];
-        }
 
 
 
